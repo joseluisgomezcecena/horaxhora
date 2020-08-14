@@ -54,6 +54,37 @@
   <!-- Custom scripts for all pages-->
   <script src="assets/js/sb-admin-2.min.js"></script>
 
+
+  <script>
+  $(document).ready(function(){
+      $(".tablahrxhr").on('change', function postinput(){
+         //alert("ya");
+          
+          /*
+          var matchvalue = $(this).val(); // this.value
+          $.ajax({ 
+              url: 'ajax/horaxhora/update.php',
+              data: { matchvalue: matchvalue },
+              type: 'post'
+          }).done(function(responseData) {
+              console.log('Done: ', responseData);
+          }).fail(function() {
+              console.log('Failed');
+          });
+          */
+          $.ajax({
+                type: 'POST',
+                data: ({ 
+                    "maquina" : $(this).data("age-min"), 
+                    "value" : $(this).val("6") 
+                }),
+            });
+          
+      });
+  }); 
+
+  </script>
+
 </body>
 
 </html>

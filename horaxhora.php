@@ -73,14 +73,53 @@ include_once("includes/top-menu.php");
                 </tr>
                 </tfoot>
                 <tbody>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                    <?php 
+                    $query = "SELECT * FROM horas";
+                    $result = mysqli_query($connection, $query);
+                    if(!$result)
+                    {
+                        die($query);
+                    }
+                        while($row = mysqli_fetch_array($result)):
+                    
+                    ?>
+
+
+                    <tr>
+                        <td><?php echo $row['maquina']; ?></td>
+                        <td>
+                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" name="6" value="<?php echo $row['6'] ?>">
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                        
+
+                    <?php 
+                    endwhile;
+                    ?>
                 </tbody>
             </table>
             </div>
