@@ -55,6 +55,13 @@
   <script src="assets/js/sb-admin-2.min.js"></script>
 
 
+  <!-- SweetAlert.js -->
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  
+  <!-- Main js document for DOM and functions -->
+  <script src="assets/js/main.js"></script>
+
+
   <script>
   $(document).ready(function(){
       $(".tablahrxhr").on('change', function postinput(){
@@ -74,17 +81,11 @@
           */
           $.ajax({
                 type: 'POST',
-                url: 'ajax/horaxhora/update.php',
                 data: ({ 
-                    "maquina" : $(this).data("maquina"),
-                    "hr" : $(this).data("hr"), 
-                    "value" : $(this).val()
+                    "maquina" : $(this).data("age-min"), 
+                    "value" : $(this).val("6") 
                 }),
-            }).done(function(responseData) {
-              console.log($(this));
-          }).fail(function() {
-              console.log('Failed');
-          });
+            });
           
       });
   }); 
