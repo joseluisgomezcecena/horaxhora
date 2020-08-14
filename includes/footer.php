@@ -74,11 +74,17 @@
           */
           $.ajax({
                 type: 'POST',
+                url: 'ajax/horaxhora/update.php',
                 data: ({ 
-                    "maquina" : $(this).data("age-min"), 
-                    "value" : $(this).val("6") 
+                    "maquina" : $(this).data("maquina"),
+                    "hr" : $(this).data("hr"), 
+                    "value" : $(this).val()
                 }),
-            });
+            }).done(function(responseData) {
+              console.log($(this));
+          }).fail(function() {
+              console.log('Failed');
+          });
           
       });
   }); 

@@ -88,7 +88,7 @@ include_once("includes/top-menu.php");
                     <tr>
                         <td><?php echo $row['maquina']; ?></td>
                         <td>
-                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" name="6" value="<?php echo $row['6'] ?>">
+                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="6" name="6" value="<?php echo $row['6'] ?>">
                         </td>
                         <td></td>
                         <td></td>
