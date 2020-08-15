@@ -40,7 +40,8 @@ include_once("includes/top-menu.php");
                     <th>02:00 am</th>
                     <th>03:00 am</th>
                     <th>04:00 am</th>
-                    <th>05:00 am</th>     
+                    <th>05:00 am</th>
+                    <th>Total</th>          
                 </tr>
                 </thead>
                 <tfoot>
@@ -69,7 +70,8 @@ include_once("includes/top-menu.php");
                     <th>02:00 am</th>
                     <th>03:00 am</th>
                     <th>04:00 am</th>
-                    <th>05:00 am</th>     
+                    <th>05:00 am</th>
+                    <th>Total</th>     
                 </tr>
                 </tfoot>
                 <tbody>
@@ -88,31 +90,80 @@ include_once("includes/top-menu.php");
                     <tr>
                         <td><?php echo $row['maquina']; ?></td>
                         <td>
-                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="6" name="6" value="<?php echo $row['6'] ?>">
+                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="6" name="value" value="<?php echo $row['6'] ?>">
                         </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>
+                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="7" name="value" value="<?php echo $row['7'] ?>">
+                        </td>
+                        <td>
+                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="8" name="value" value="<?php echo $row['8'] ?>">
+                        </td>
+                        <td>
+                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="9" name="value" value="<?php echo $row['9'] ?>">
+                        </td>
+                        <td>
+                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="10" name="value" value="<?php echo $row['10'] ?>">
+                        </td>
+                        <td>
+                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="11" name="value" value="<?php echo $row['11'] ?>">
+                        </td>
+                        <td>
+                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="12" name="value" value="<?php echo $row['12'] ?>">
+                        </td>
+                        <td>
+                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="13" name="value" value="<?php echo $row['13'] ?>">
+                        </td>
+                        <td>
+                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="14" name="value" value="<?php echo $row['14'] ?>">
+                        </td>
+                        <td>
+                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="15" name="value" value="<?php echo $row['15'] ?>">
+                        </td>
+                        <td>
+                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="16" name="value" value="<?php echo $row['16'] ?>">
+                        </td>
+                        <td>
+                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="17" name="value" value="<?php echo $row['17'] ?>">
+                        </td>
+                        <td>
+                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="18" name="value" value="<?php echo $row['18'] ?>">
+                        </td>
+                        <td>
+                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="19" name="value" value="<?php echo $row['19'] ?>">
+                        </td>
+                        <td>
+                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="20" name="value" value="<?php echo $row['20'] ?>">
+                        </td>
+                        <td>
+                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="21" name="value" value="<?php echo $row['21'] ?>">
+                        </td>
+                        <td>
+                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="22" name="value" value="<?php echo $row['22'] ?>">
+                        </td>
+                        <td>
+                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="23" name="value" value="<?php echo $row['23'] ?>">
+                        </td>
+                        <td>
+                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="24" name="value" value="<?php echo $row['24'] ?>">
+                        </td>
+                        <td>
+                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="1" name="value" value="<?php echo $row['1'] ?>">
+                        </td>
+                        <td>
+                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="2" name="value" value="<?php echo $row['2'] ?>">
+                        </td>
+                        <td>
+                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="3" name="value" value="<?php echo $row['3'] ?>">
+                        </td>
+                        <td>
+                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="4" name="value" value="<?php echo $row['4'] ?>">
+                        </td>
+                        <td>
+                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="5" name="value" value="<?php echo $row['5'] ?>">
+                        </td>
+                        <td>
+                            <input class="tablahrxhr"  value="<?php echo $row['total'] ?>">
+                        </td>
                     </tr>
 
                         

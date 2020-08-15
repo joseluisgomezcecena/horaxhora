@@ -58,20 +58,6 @@
   <script>
   $(document).ready(function(){
       $(".tablahrxhr").on('change', function postinput(){
-         //alert("ya");
-          
-          /*
-          var matchvalue = $(this).val(); // this.value
-          $.ajax({ 
-              url: 'ajax/horaxhora/update.php',
-              data: { matchvalue: matchvalue },
-              type: 'post'
-          }).done(function(responseData) {
-              console.log('Done: ', responseData);
-          }).fail(function() {
-              console.log('Failed');
-          });
-          */
           $.ajax({
                 type: 'POST',
                 url: 'ajax/horaxhora/update.php',
@@ -88,6 +74,13 @@
           
       });
   }); 
+
+  var d = new Date(); // for now
+  d.getHours(); // => 9
+  d.getMinutes(); // =>  30
+  d.getSeconds(); // => 51
+
+   
 
   </script>
 
