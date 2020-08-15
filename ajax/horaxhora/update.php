@@ -17,13 +17,4 @@ else
     echo "Update Success";
 }
 
-=======
-<?php
-require_once("../../_config/db.php");
-
-
-
-$update = "UPDATE horas SET ";
-
->>>>>>> 6b9a48d126bb2404b5928f625229f222f2af51f8
 ?>
