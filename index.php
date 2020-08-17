@@ -14,7 +14,7 @@ include_once("includes/top-menu.php");
         </div>
         <div class="card-body">
             <a href="horaxhora.php" class="btn btn-primary btn-lg btn-block">Hora x Hora</a>
-            <a href="horaxhora" class="btn btn-dark btn-lg btn-block">Cargar Ordenes</a>
+            <a href="cargar_ordenes.php" class="btn btn-dark btn-lg btn-block">Cargar Ordenes</a>
             <a href="horaxhora" class="btn btn-success btn-lg btn-block">Ordenes Actuales</a>
             <a href="horaxhora" class="btn btn-info btn-lg btn-block">Ordenes Completadas</a>
             <a href="horaxhora" class="btn btn-warning btn-lg btn-block">Planeacion</a>

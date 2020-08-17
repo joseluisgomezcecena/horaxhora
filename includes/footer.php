@@ -55,6 +55,13 @@
   <script src="assets/js/sb-admin-2.min.js"></script>
 
 
+  <!-- SweetAlert.js -->
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  
+  <!-- Main js document for DOM and functions -->
+  <script src="assets/js/main.js"></script>
+
+
   <script>
   $(document).ready(function(){
       $(".tablahrxhr").on('change', function postinput(){
