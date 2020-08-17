@@ -1,4 +1,3 @@
-
 </div>
         <!-- /.container-fluid -->
 
@@ -65,6 +64,8 @@
 
   <script>
   $(document).ready(function(){
+
+      //tabla hora x hora
       $(".tablahrxhr").on('change', function postinput(){
           $.ajax({
                 type: 'POST',
@@ -78,16 +79,46 @@
               console.log($(this));
           }).fail(function() {
               console.log('Failed');
-          });
-          
+          });   
       });
-  }); 
+      //termina ajax horax hora update
 
-  var d = new Date(); // for now
-  d.getHours(); // => 9
-  d.getMinutes(); // =>  30
-  d.getSeconds(); // => 51
+      
+      function paintCols(){
+        var d = new Date(); // for now
+        d.getHours(); // => 9
+        d.getMinutes(); // =>  30
+        d.getSeconds(); // => 51
 
+        if((d.getHours()==9))
+        {
+          document.getElementById("9am").style.backgroundColor = "#00a6ff";
+          document.getElementById("9am").style.color = "white";
+        }
+        if((d.getHours()==10))
+        {
+          document.getElementById("10am").style.backgroundColor = "#00a6ff";
+          document.getElementById("10am").style.color = "white";
+        }
+        if((d.getHours()==11))
+        {
+          document.getElementById("11am").style.backgroundColor = "#00a6ff";
+          document.getElementById("11am").style.color = "white";
+        }
+        if((d.getHours()==12))
+        {
+          document.getElementById("12pm").style.backgroundColor = "#00a6ff";
+          document.getElementById("12pm").style.color = "white";
+        }
+      }
+
+      window.setInterval(function(){
+        paintCols();
+      }, 2000);
+
+  });//termina document ready
+
+  
    
 
   </script>

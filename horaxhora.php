@@ -3,7 +3,13 @@ include_once("includes/header.php");
 //include_once("includes/sidebar.php");
 include_once("includes/top-menu.php");
 ?>
-
+<style>
+    input
+    {
+        border: none;
+        text-align: center;
+    }
+</style>
 <!-- Page Heading -->
 <h1 class="h3 mb-4 text-gray-800">Hora X Hora</h1>
 
@@ -13,35 +19,35 @@ include_once("includes/top-menu.php");
         </div>
         <div class="card-body">
             <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <table class="table table-bordered table-hover text-center" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                 <tr>
                     <th>Maquina</th>
-                    <th>6:00 am</th>
-                    <th>7:00 am</th>
-                    <th>8:00 am</th>
-                    <th>9:00 am</th>
-                    <th>10:00 am</th>
-                    <th>11:00 am</th>
-                    <th>12:00 pm</th>
-                    <th>13:00 pm</th>
-                    <th>14:00 pm</th>
-                    <th>15:00 pm</th>
-                    <th>16:00 pm</th>
-                    <th>17:00 pm</th>
-                    <th>18:00 pm</th>
-                    <th>19:00 pm</th>
-                    <th>20:00 pm</th>
-                    <th>21:00 pm</th>
-                    <th>22:00 pm</th>
-                    <th>23:00 pm</th>
-                    <th>00:00 am</th>
-                    <th>01:00 am</th>
-                    <th>02:00 am</th>
-                    <th>03:00 am</th>
-                    <th>04:00 am</th>
-                    <th>05:00 am</th>
-                    <th>Total</th>          
+                    <th id="6am">6:00 am</th>
+                    <th id="7am">7:00 am</th>
+                    <th id="8am">8:00 am</th>
+                    <th id="9am">9:00 am</th>
+                    <th id="10am">10:00 am</th>
+                    <th id="11am">11:00 am</th>
+                    <th id="12pm">12:00 pm</th>
+                    <th id="13pm">13:00 pm</th>
+                    <th id="14pm">14:00 pm</th>
+                    <th id="15pm">15:00 pm</th>
+                    <th id="16pm">16:00 pm</th>
+                    <th id="17pm">17:00 pm</th>
+                    <th id="18pm">18:00 pm</th>
+                    <th id="19pm">19:00 pm</th>
+                    <th id="20pm">20:00 pm</th>
+                    <th id="21pm">21:00 pm</th>
+                    <th id="22pm">22:00 pm</th>
+                    <th id="23pm">23:00 pm</th>
+                    <th id="12pm">00:00 am</th>
+                    <th id="1pm">01:00 am</th>
+                    <th id="2pm">02:00 am</th>
+                    <th id="3pm">03:00 am</th>
+                    <th id="4pm">04:00 am</th>
+                    <th id="5pm">05:00 am</th>
+                    <th id="total">Total</th>          
                 </tr>
                 </thead>
                 <tfoot>

@@ -318,3 +318,4 @@ function turno($time) //Regresa el turno dependiendo la hora que se meta
         return 3;
     }
 }
+?>
