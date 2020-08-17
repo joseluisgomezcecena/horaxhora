@@ -10,7 +10,7 @@ if(isset($_GET['f']))
     {
         $work_order    = htmlspecialchars($_GET['workorder']);
         $item          = htmlspecialchars($_GET['item']);
-        $machine_id    = htmlspecialchars($_GET['machine']);
+        $machine       = htmlspecialchars($_GET['machine']);
         $quantity      = htmlspecialchars($_GET['quantity']);
 
         /* filter space and transform to upper */
@@ -18,7 +18,7 @@ if(isset($_GET['f']))
         $item       = str_replace(" ", "", strtoupper($item));
 
         /* Search name, display and cell for machine */
-        $query_machine_data  = "SELECT maquina, display, celda FROM horas WHERE id = $machine_id";
+        $query_machine_data  = "SELECT mdisplay, celda FROM horas WHERE maquina = $machine";
         $result_machine_data = $connection->query($query_machine_data);
         if($result_machine_data)
         {
@@ -26,7 +26,6 @@ if(isset($_GET['f']))
             {
                 while($row_machine_data = $result_machine_data->fetch_assoc())
                 {
-                    $machine_name = $row_machine_data['maquina'];
                     $display      = $row_machine_data['display'];
                     $celda        = $row_machine_data['celda'];
                 }
@@ -64,7 +63,7 @@ if(isset($_GET['f']))
         }
 
         /* Search pph and setup */
-        $query_pph_setup  = "SELECT  pph, setup FROM pph WHERE routing = '$item' AND facility = '$machine_name'";
+        $query_pph_setup  = "SELECT  pph, setup FROM pph WHERE routing = '$item' AND facility = '$machine'";
         $result_pph_setup = $connection->query($query_pph_setup);
         if($result_pph_setup)
         {
@@ -92,7 +91,7 @@ if(isset($_GET['f']))
 
 
         $stmt   = $connection->prepare("INSERT INTO ordenes_main(`work_order`, `item`, `meta_orden`, `maquina`, `pph_std`, `setup`, `display`, `celda`, `break1`, `break2`, `break3`) VALUES(?, ?, ?, ?, $pph, $setup, $display, '$celda', $break_1, $break_2, $break_3)");
-        $stmt->bind_param("ssis", $work_order, $item, $quantity, $machine_name);
+        $stmt->bind_param("ssis", $work_order, $item, $quantity, $machine);
         $result = $stmt->execute();
 
         if($result)
@@ -102,7 +101,7 @@ if(isset($_GET['f']))
             echo "<td>$work_order</td>";
             echo "<td>$item</td>";
             echo "<td>$quantity</td>";
-            echo "<td>$machine_name</td>";
+            echo "<td>$machine</td>";
             echo "<td>$pph</td>";
             echo "<td>$setup</td>";
             echo "<td style=\"text-align: center\"><button class=\"btn btn-primary start-order\" data-id=\"$last_id\">Comenzar <i class=\"fas fa-play\"></i></button> <button class=\"btn btn-warning edit-order\" data-id=\"$last_id\">Editar <i class=\"fas fa-edit\"></i></button> <button class=\"btn btn-danger delete-order\" data-id=\"$last_id\">Eliminar <i class=\"fas fa-trash-alt\"></i></button> </td>";
@@ -148,7 +147,23 @@ if(isset($_GET['f']))
     }
     if($_GET['f'] == "editOrder")
     {
+        $work_order    = htmlspecialchars($_GET['workorder']);
+        $item          = htmlspecialchars($_GET['item']);
+        $machine       = htmlspecialchars($_GET['machine']);
+        $quantity      = htmlspecialchars($_GET['quantity']);
+        $pph           = htmlspecialchars($_GET['pph']);
+        $setup         = htmlspecialchars($_GET['setup']);
 
+        $id            = htmlspecialchars($_GET['id']);
+
+        $stmt_edit = $connection->prepare("UPDATE ordenes_main SET work_order = ?, item = ?, maquina = ?, meta_orden = ?, pph_std = ?, setup = ? WHERE orden_id = $id ");
+        $stmt_edit->bind_param("sssidi", $work_order, $item, $machine, $quantity, $pph, $setup);
+        $result = $stmt_edit->execute();
+
+        if($result)
+        {
+            echo "edit";
+        }
     }
     if($_GET['f'] == "deleteOrder")
     {
