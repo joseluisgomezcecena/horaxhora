@@ -23,7 +23,7 @@
               if($result_maquinas && $result_maquinas->num_rows > 0){
                 while($row_maquinas = $result_maquinas->fetch_assoc()){
               ?>
-                  <option value="<?php echo $row_maquinas['maquin'];?>"><?php echo $row_maquinas['maquina']; ?></option>
+                  <option value="<?php echo $row_maquinas['maquina'];?>"><?php echo $row_maquinas['maquina']; ?></option>
               <?php
                 }
               }

@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", function() {
     $(document).ready(function(){
         $('[data-toggle="tooltip"]').tooltip();
@@ -95,6 +96,8 @@ document.addEventListener("DOMContentLoaded", function() {
         {
             let url      = "_config/ajax-functions.php?f=addOrder&workorder=" + work_order.value + "&item=" + item.value + "&machine=" + machine.value + "&quantity=" + quantity.value;
                 xmlhttps = new XMLHttpRequest();
+            
+            console.log(url);
             xmlhttps.onreadystatechange = function()
             {
                 if(xmlhttps.readyState == 4 && xmlhttps.status == 200)
@@ -131,13 +134,11 @@ document.addEventListener("DOMContentLoaded", function() {
             pph  = document.getElementById("pph-std").value,
             url  = "_config/ajax-functions.php?f=startOrder&id=" + id + "&pph=" + pph + "&hc=" + hc,
             xmlhttps = new XMLHttpRequest();
-        console.log(url);
         if(hc != "" && hc != 0 && pph != "" && pph != 0 ){
             xmlhttps.onreadystatechange = function()
             {
                 if(xmlhttps.readyState == 4 && xmlhttps.status == 200)
                 {
-                
                     if(this.responseText == "start")
                     {
                         let item  = document.getElementById("row"+id);
