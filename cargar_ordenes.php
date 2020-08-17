@@ -5,6 +5,7 @@ include_once("includes/top-menu.php");
 
 include "modals/forms/load_order.php";
 include "modals/forms/start_order.php";
+include "modals/forms/edit_order.php";
 ?>
 
 <!-- Page Heading -->

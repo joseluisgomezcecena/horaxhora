@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 
 define("DB_HOST", "192.168.7.133");
@@ -11,4 +12,3 @@ if ($connection->connect_errno)
     echo "Error al conectar a Base de datos";
 }
 
-?>
