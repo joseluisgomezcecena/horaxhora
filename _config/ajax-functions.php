@@ -225,7 +225,6 @@ function agregar_reporteA($id_orden)
 
             while($cantidad > 0)
             {
-                echo "<br>" . $cantidad;
                 if($hora == 25) //If hour pass of 24 format restart it
                     $hora -= 24;
 
@@ -255,7 +254,7 @@ function agregar_reporteA($id_orden)
                         break;
                 }
 
-                $cant_hour = ($minutos * $pph_std) / 60;
+                $cant_hour = (int)($minutos * $pph_std) / 60;
                 if($cantidad > $cant_hour)
                 {
                     $query_qty_hour = "UPDATE plan SET `$hora`= `$hora`+$cant_hour WHERE id = $id";
@@ -266,7 +265,6 @@ function agregar_reporteA($id_orden)
                     $query_qty_hour = "UPDATE plan SET `$hora`= `$hora`+$cantidad WHERE id = $id";
                     $cantidad = 0;
                 }
-                echo " -- " .$query_qty_hour;
                 $result_qty_hour = $connection->query($query_qty_hour);
                 if($result_qty_hour)
                 {
@@ -298,7 +296,6 @@ function cambio_dia($id, $cantidad)
     $fecha = date('Y-m-d',strtotime('+' . $dias . ' day'));
 
     $query_insert  = "INSERT INTO plan(maquina, work_order, parte, meta, pph, fecha) SELECT maquina, work_order, parte, $cantidad, pph, '$fecha' FROM plan WHERE id = $id";
-    echo "<br>" . $query_insert;
     $result_insert = $connection->query($query_insert);
     if($result_insert)
     {
