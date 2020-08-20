@@ -89,26 +89,29 @@
         d.getHours(); // => 9
         d.getMinutes(); // =>  30
         d.getSeconds(); // => 51
-
-        if((d.getHours()==9))
+        if(window.location.pathname == "/horaxhora/horaxhora.php" || window.location.pathname == "/horaxhora/reporteA.php")
         {
-          document.getElementById("9am").style.backgroundColor = "#00a6ff";
-          document.getElementById("9am").style.color = "white";
-        }
-        if((d.getHours()==10))
-        {
-          document.getElementById("10am").style.backgroundColor = "#00a6ff";
-          document.getElementById("10am").style.color = "white";
-        }
-        if((d.getHours()==11))
-        {
-          document.getElementById("11am").style.backgroundColor = "#00a6ff";
-          document.getElementById("11am").style.color = "white";
-        }
-        if((d.getHours()==12))
-        {
-          document.getElementById("12pm").style.backgroundColor = "#00a6ff";
-          document.getElementById("12pm").style.color = "white";
+          console.log(d.getHours());
+          if((d.getHours()==9))
+          {
+            document.getElementById("9am").style.backgroundColor = "#00a6ff";
+            document.getElementById("9am").style.color = "white";
+          }
+          if((d.getHours()==10))
+          {
+            document.getElementById("10am").style.backgroundColor = "#00a6ff";
+            document.getElementById("10am").style.color = "white";
+          }
+          if((d.getHours()==11))
+          {
+            document.getElementById("11am").style.backgroundColor = "#00a6ff";
+            document.getElementById("11am").style.color = "white";
+          }
+          if((d.getHours()==12))
+          {
+            document.getElementById("12pm").style.backgroundColor = "#00a6ff";
+            document.getElementById("12pm").style.color = "white";
+          }
         }
       }
 

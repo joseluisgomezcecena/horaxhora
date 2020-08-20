@@ -17,7 +17,7 @@ include_once("includes/top-menu.php");
             <a href="cargar_ordenes.php" class="btn btn-dark btn-lg btn-block">Cargar Ordenes</a>
             <a href="horaxhora" class="btn btn-success btn-lg btn-block">Ordenes Actuales</a>
             <a href="horaxhora" class="btn btn-info btn-lg btn-block">Ordenes Completadas</a>
-            <a href="horaxhora" class="btn btn-warning btn-lg btn-block">Planeacion</a>
+            <a href="reporteA.php" class="btn btn-warning btn-lg btn-block">Planeacion</a>
         </div>
     </div>
 </div>

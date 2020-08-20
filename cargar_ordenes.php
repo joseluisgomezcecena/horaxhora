@@ -43,7 +43,7 @@ include "modals/forms/edit_order.php";
                 </tfoot>
                 <tbody>
                     <?php 
-                    $query_orders  = "SELECT * FROM ordenes_main WHERE estado = 0 OR estado = 3";
+                    $query_orders  = "SELECT * FROM ordenes_main WHERE estado != 1 OR estado != 2";
                     $result_orders = $connection->query($query_orders);
                     if(!$result_orders)
                     {

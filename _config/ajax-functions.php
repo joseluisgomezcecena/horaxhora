@@ -100,14 +100,14 @@ if(isset($_GET['f']))
         if($result)
         {
             $last_id = $connection->insert_id;
-
-            echo "<td>$work_order</td>";
-            echo "<td>$item</td>";
+            
+            echo "<tr id=\"row$last_id\"><td id=\"wo$last_id\">$work_order</td>";
+            echo "<td >$item</td>";
             echo "<td>$quantity</td>";
             echo "<td>$machine</td>";
-            echo "<td>$pph</td>";
+            echo "<td id=\"pph$last_id\">$pph</td>";
             echo "<td>$setup</td>";
-            echo "<td style=\"text-align: center\"><button class=\"btn btn-primary start-order\" data-id=\"$last_id\">Comenzar <i class=\"fas fa-play\"></i></button> <button class=\"btn btn-warning edit-order\" data-id=\"$last_id\">Editar <i class=\"fas fa-edit\"></i></button> <button class=\"btn btn-danger delete-order\" data-id=\"$last_id\">Eliminar <i class=\"fas fa-trash-alt\"></i></button> </td>";
+            echo "<td style=\"text-align: center\"><button class=\"btn btn-primary start-order\" data-id=\"$last_id\">Comenzar <i class=\"fas fa-play\"></i></button> <button class=\"btn btn-warning edit-order\" data-id=\"$last_id\">Editar <i class=\"fas fa-edit\"></i></button> <button class=\"btn btn-danger delete-order\" data-id=\"$last_id\">Eliminar <i class=\"fas fa-trash-alt\"></i></button> </td></tr>";
         }
         
 
@@ -141,6 +141,7 @@ if(isset($_GET['f']))
         $result_insert = $connection->query($query);
         if($result_insert)
         {
+            $connection->query("INSERT INTO ordenes_diarias(id_orden, fecha_dia) VALUES($id,'" . date("Y/m/d") ."');");
             echo "start";
             agregar_reporteA($id);
         }
@@ -163,7 +164,6 @@ if(isset($_GET['f']))
         $stmt_edit = $connection->prepare("UPDATE ordenes_main SET work_order = ?, item = ?, maquina = ?, meta_orden = ?, pph_std = ?, setup = ? WHERE orden_id = $id ");
         $stmt_edit->bind_param("sssidi", $work_order, $item, $machine, $quantity, $pph, $setup);
         $result = $stmt_edit->execute();
-
         if($result)
         {
             echo "edit";
@@ -180,22 +180,18 @@ if(isset($_GET['f']))
         else
             echo "Fail with: " . $query;
     }
-    
-
-
-
 }
-
-
 
 
 function agregar_reporteA($id_orden)
 {
     global $connection;
     $query_datos  = "SELECT * FROM ordenes_main WHERE orden_id = $id_orden";
+    
     $result_datos = $connection->query($query_datos);
     if($result_datos)
     {
+        echo "<br>". $query_datos;
         while($row_datos = $result_datos->fetch_assoc())
         {
             $maquina    = $row_datos['maquina'];
@@ -207,77 +203,83 @@ function agregar_reporteA($id_orden)
             $break2     = $row_datos['break2'];
             $break3     = $row_datos['break3'];
             $setup      = $row_datos['setup'];
-            $fecha      = date("Y/m/d");
         }
 
-        $query_insert  = "INSERT INTO plan(maquina, work_order, parte, meta, pph, fecha) VALUES('$maquina', '$work_order', '$item', $cantidad, $pph_std, '$fecha')";
-        $result_insert = $connection->query($query_insert);
-        if($result_insert)
+        $hora       = date("H");
+        $minutos    = 60 - date("i");
+        $breaktime  = 36;
+        $start_flag = 1;
+        echo "<br>".$hora;
+        if($hora == 0) //If hour is 0 we use it like 24
+            $hora = 24;
+
+        while($cantidad > 0)
         {
-            $id         = $connection->insert_id;
-            $hora       = date("H");
-            $minutos    = 60 - date("i");
-            $breaktime  = 36;
-            $start_flag = 1;
+            if($hora == 25) //If hour pass of 24 format restart it
+                $hora -= 24;
 
-            if($hora == 0) //If hour is 0 we use it like 24
-                $hora = 24;
-
-            while($cantidad > 0)
+            //removing time of setups or breaks
+            if($start_flag == 1)
             {
-                if($hora == 25) //If hour pass of 24 format restart it
-                    $hora -= 24;
-
-                //removing time of setups or breaks
-                if($start_flag == 1)
-                {
-                    $start_flag = 0;
-                    $minutos -= $setup;
-                }
-
-                if($hora == $break1 || $hora == $break2 || $hora == $break3)
-                    $minutos -= $breaktime;
-                
-                if($hora == 6 || $hora == 15 || $hora == 23)
-                    $minutos -= 15;
-
-                while($minutos <= 0) //Change hour
-                {
-                    $minutos += 60;
-                    $hora++;
-                    if($hora == 25)
-                        $hora -= 24;
-                    else if($hora == 6)
-                        $id = cambio_dia($id, $cantidad);
-
-                    if($minutos > 0)
-                        break;
-                }
-
-                $cant_hour = (int)($minutos * $pph_std) / 60;
-                if($cantidad > $cant_hour)
-                {
-                    $query_qty_hour = "UPDATE plan SET `$hora`= `$hora`+$cant_hour WHERE id = $id";
-                    $cantidad -= $cant_hour;
-                }
-                else
-                {
-                    $query_qty_hour = "UPDATE plan SET `$hora`= `$hora`+$cantidad WHERE id = $id";
-                    $cantidad = 0;
-                }
-                $result_qty_hour = $connection->query($query_qty_hour);
-                if($result_qty_hour)
-                {
-                    $hora++;
-                    $minutos = 60;
-
-                    if($hora == 6)
-                        $id = cambio_dia($id, $cantidad);
-                } 
+                $start_flag = 0;
+                $minutos -= $setup;
             }
+
+            if($hora == $break1 || $hora == $break2 || $hora == $break3)
+                $minutos -= $breaktime;
+            
+            if($hora == 6 || $hora == 15 || $hora == 23)
+                $minutos -= 15;
+
+            while($minutos <= 0) //Change hour
+            {
+                $minutos += 60;
+                $hora++;
+                if($hora == 25)
+                    $hora -= 24;
+                else if($hora == 6)
+                {
+                    $query_finish = "UPDATE ordenes_main SET finish_one_day = 0 WHERE orden_id = $id_orden";
+                    $connection->query($query_finish);
+                    break 2;
+                }
+                    
+
+                if($minutos > 0)
+                    break;
+            }
+
+            $cant_hour = (int)($minutos * $pph_std) / 60;
+            if($cantidad > $cant_hour)
+            {
+                $query_qty_hour = "UPDATE plan SET `$hora`= `$hora`+$cant_hour, total = total + $cant_hour WHERE maquina = '$maquina'";
+                $cantidad -= $cant_hour;
+            }
+            else
+            {
+                $query_qty_hour = "UPDATE plan SET `$hora`= `$hora`+$cantidad, total = total + $cantidad WHERE maquina = '$maquina'";
+                $cantidad = 0;
+            }
+            echo "<br>".$query_qty_hour;
+            $result_qty_hour = $connection->query($query_qty_hour);
+            if($result_qty_hour)
+            {
+                $hora++;
+                $minutos = 60;
+
+                if($hora == 6)
+                {
+                    $query_finish = "UPDATE ordenes_main SET finish_one_day = 0 WHERE orden_id = $id_orden";
+                    $connection->query($query_finish);
+                    break;
+                }
+            } 
         }
     }
+    else
+        echo "Error with query $query_datos, ". $connection->error;
 }
+
 
 function cambio_dia($id, $cantidad)
 {
@@ -295,7 +297,7 @@ function cambio_dia($id, $cantidad)
     
     $fecha = date('Y-m-d',strtotime('+' . $dias . ' day'));
 
-    $query_insert  = "INSERT INTO plan(maquina, work_order, parte, meta, pph, fecha) SELECT maquina, work_order, parte, $cantidad, pph, '$fecha' FROM plan WHERE id = $id";
+    $query_insert  = "INSERT INTO plan(maquina, fecha) SELECT maquina, '$fecha' FROM plan WHERE id = $id";
     $result_insert = $connection->query($query_insert);
     if($result_insert)
     {
