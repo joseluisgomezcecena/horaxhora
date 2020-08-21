@@ -21,155 +21,154 @@ include_once("includes/top-menu.php");
             <div class="table-responsive">
             <table class="table table-bordered table-hover text-center" id="dataTable" width="100%" cellspacing="0">
                 <thead>
-                <tr>
-                    <th>Maquina</th>
-                    <th id="6am">6:00 am</th>
-                    <th id="7am">7:00 am</th>
-                    <th id="8am">8:00 am</th>
-                    <th id="9am">9:00 am</th>
-                    <th id="10am">10:00 am</th>
-                    <th id="11am">11:00 am</th>
-                    <th id="12pm">12:00 pm</th>
-                    <th id="13pm">13:00 pm</th>
-                    <th id="14pm">14:00 pm</th>
-                    <th id="15pm">15:00 pm</th>
-                    <th id="16pm">16:00 pm</th>
-                    <th id="17pm">17:00 pm</th>
-                    <th id="18pm">18:00 pm</th>
-                    <th id="19pm">19:00 pm</th>
-                    <th id="20pm">20:00 pm</th>
-                    <th id="21pm">21:00 pm</th>
-                    <th id="22pm">22:00 pm</th>
-                    <th id="23pm">23:00 pm</th>
-                    <th id="12pm">00:00 am</th>
-                    <th id="1pm">01:00 am</th>
-                    <th id="2pm">02:00 am</th>
-                    <th id="3pm">03:00 am</th>
-                    <th id="4pm">04:00 am</th>
-                    <th id="5pm">05:00 am</th>
-                    <th id="total">Total</th>          
-                </tr>
+                    <tr>
+                        <th rowspan="2">Maquina</th>
+                        <th id="6am" colspan="2">6:00 am</th>
+                        <th id="7am" colspan="2">7:00 am</th>
+                        <th id="8am" colspan="2">8:00 am</th>
+                        <th id="9am" colspan="2">9:00 am</th>
+                        <th id="10am" colspan="2">10:00 am</th>
+                        <th id="11am" colspan="2">11:00 am</th>
+                        <th id="12pm" colspan="2">12:00 pm</th>
+                        <th id="13pm" colspan="2">13:00 pm</th>
+                        <th id="14pm" colspan="2">14:00 pm</th>
+                        <th id="15pm" colspan="2">15:00 pm</th>
+                        <th id="16pm" colspan="2">16:00 pm</th>
+                        <th id="17pm" colspan="2">17:00 pm</th>
+                        <th id="18pm" colspan="2">18:00 pm</th>
+                        <th id="19pm" colspan="2">19:00 pm</th>
+                        <th id="20pm" colspan="2">20:00 pm</th>
+                        <th id="21pm" colspan="2">21:00 pm</th>
+                        <th id="22pm" colspan="2">22:00 pm</th>
+                        <th id="23pm" colspan="2">23:00 pm</th>
+                        <th id="12pm" colspan="2">00:00 am</th>
+                        <th id="1pm" colspan="2">01:00 am</th>
+                        <th id="2pm" colspan="2">02:00 am</th>
+                        <th id="3pm" colspan="2">03:00 am</th>
+                        <th id="4pm" colspan="2">04:00 am</th>
+                        <th id="5pm" colspan="2">05:00 am</th>
+                        <th id="total" colspan="2">Total</th>          
+                    </tr>`
+                    <tr>
+                        <th>Real</th><th>Planeado</th>
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>    
+                        <th>Real</th><th>Planeado</th>  
+                    </tr>
                 </thead>
                 <tfoot>
-                <tr>
-                    <th>Maquina</th>
-                    <th>6:00 am</th>
-                    <th>7:00 am</th>
-                    <th>8:00 am</th>
-                    <th>9:00 am</th>
-                    <th>10:00 am</th>
-                    <th>11:00 am</th>
-                    <th>12:00 pm</th>
-                    <th>13:00 pm</th>
-                    <th>14:00 pm</th>
-                    <th>15:00 pm</th>
-                    <th>16:00 pm</th>
-                    <th>17:00 pm</th>
-                    <th>18:00 pm</th>
-                    <th>19:00 pm</th>
-                    <th>20:00 pm</th>
-                    <th>21:00 pm</th>
-                    <th>22:00 pm</th>
-                    <th>23:00 pm</th>
-                    <th>00:00 am</th>
-                    <th>01:00 am</th>
-                    <th>02:00 am</th>
-                    <th>03:00 am</th>
-                    <th>04:00 am</th>
-                    <th>05:00 am</th>
-                    <th>Total</th>     
-                </tr>
+                    <tr>
+                        <th rowspan="2">Maquina</th>
+                        <th>Real</th><th>Planeado</th>
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>  
+                        <th>Real</th><th>Planeado</th>    
+                        <th>Real</th><th>Planeado</th>  
+                    </tr>
+                    <tr>
+                        <th colspan="2">6:00 am</th>
+                        <th colspan="2">7:00 am</th>
+                        <th colspan="2">8:00 am</th>
+                        <th colspan="2">9:00 am</th>
+                        <th colspan="2">10:00 am</th>
+                        <th colspan="2">11:00 am</th>
+                        <th colspan="2">12:00 pm</th>
+                        <th colspan="2">13:00 pm</th>
+                        <th colspan="2">14:00 pm</th>
+                        <th colspan="2">15:00 pm</th>
+                        <th colspan="2">16:00 pm</th>
+                        <th colspan="2">17:00 pm</th>
+                        <th colspan="2">18:00 pm</th>
+                        <th colspan="2">19:00 pm</th>
+                        <th colspan="2">20:00 pm</th>
+                        <th colspan="2">21:00 pm</th>
+                        <th colspan="2">22:00 pm</th>
+                        <th colspan="2">23:00 pm</th>
+                        <th colspan="2">00:00 am</th>
+                        <th colspan="2">01:00 am</th>
+                        <th colspan="2">02:00 am</th>
+                        <th colspan="2">03:00 am</th>
+                        <th colspan="2">04:00 am</th>
+                        <th colspan="2">05:00 am</th>
+                        <th colspan="2">Total</th>     
+                    </tr>
                 </tfoot>
                 <tbody>
                     <?php 
-                    $query = "SELECT * FROM horas";
+                    // " A.`6` as '6P', B.`6` as '6R', A.`7` as '7P', B.`7` as '7R', A.`8` as '8P', B.`8` as '8R', A.`9` as '9P', B.`9` as '9:00 am Real', A.`10` as '10:00 am Planeado', B.`10` as '10:00 am Real', A.`11` as '11:00 am Planeado', B.`11` as '11:00 am Real', A.`12` as '12:00 pm Planeado', B.`12` as '12:00 pm Real', A.`13` as '1:00 pm Planeado', B.`13` as '1:00 pm Real', A.`14` as '2:00 pm Planeado', B.`14` as '2:00 pm Real', A.`15` as '3:00 pm Planeado', B.`15` as '3:00 pm Real', A.`16` as '4:00 pm Planeado', B.`16` as '4:00 pm Real', A.`17` as '5:00 pm Planeado', B.`17` as '5:00 pm Real', A.`18` as '6:00 pm Planeado', B.`18` as '6:00 pm Real', A.`19` as '7:00 pm Planeado', B.`19` as '7:00 pm Real', A.`20` as '8:00 pm Planeado', B.`20` as '8:00 pm Real', A.`21` as '9:00 pm Planeado', B.`21` as '9:00 pm Real', A.`22` as '10:00 pm Planeado', B.`22` as '10:00 pm Real', A.`23` as '11:00 pm Planeado', B.`23` as '11:00 pm Real', A.`24` as '12:00 am Planeado', B.`24` as '12:00 am Real', A.`1` as '1:00 am Planeado', B.`1` as '1:00 am Real', A.`2` as '2:00 am Planeado', B.`2` as '2:00 am Real', A.`3` as '3:00 am Planeado', B.`3` as '3:00 am Real', A.`4` as '4:00 am Planeado', B.`4` as '4:00 am Real', A.`5` as '5:00 am Planeado', B.`5` as '5:00 am Real',cumple, A.total as 'Piezas totales planeadas', B.total as 'Piezas totales producidas' from plan as A, horas as B where B.Maquina = A.Maquina and A.planta_id = 1
+                    $query = "SELECT A.maquina, A.`6` as '6:00 am planeado', B.`6` as '6:00 am Real', A.`7` as '7:00 am Planeado', B.`7` as '7:00 am Real', A.`8` as '8:00 am Planeado', B.`8` as '8:00 am Real', A.`9` as '9:00 am Planeado', B.`9` as '9:00 am Real', A.`10` as '10:00 am Planeado', B.`10` as '10:00 am Real', A.`11` as '11:00 am Planeado', B.`11` as '11:00 am Real', A.`12` as '12:00 pm Planeado', B.`12` as '12:00 pm Real', A.`13` as '1:00 pm Planeado', B.`13` as '1:00 pm Real', A.`14` as '2:00 pm Planeado', B.`14` as '2:00 pm Real', A.`15` as '3:00 pm Planeado', B.`15` as '3:00 pm Real', A.`16` as '4:00 pm Planeado', B.`16` as '4:00 pm Real', A.`17` as '5:00 pm Planeado', B.`17` as '5:00 pm Real', A.`18` as '6:00 pm Planeado', B.`18` as '6:00 pm Real', A.`19` as '7:00 pm Planeado', B.`19` as '7:00 pm Real', A.`20` as '8:00 pm Planeado', B.`20` as '8:00 pm Real', A.`21` as '9:00 pm Planeado', B.`21` as '9:00 pm Real', A.`22` as '10:00 pm Planeado', B.`22` as '10:00 pm Real', A.`23` as '11:00 pm Planeado', B.`23` as '11:00 pm Real', A.`24` as '12:00 am Planeado', B.`24` as '12:00 am Real', A.`1` as '1:00 am Planeado', B.`1` as '1:00 am Real', A.`2` as '2:00 am Planeado', B.`2` as '2:00 am Real', A.`3` as '3:00 am Planeado', B.`3` as '3:00 am Real', A.`4` as '4:00 am Planeado', B.`4` as '4:00 am Real', A.`5` as '5:00 am Planeado', B.`5` as '5:00 am Real', A.total as 'Piezas totales planeadas', B.total as 'Piezas totales producidas' FROM horas as A, plan as B where B.Maquina = A.Maquina";
                     $result = mysqli_query($connection, $query);
                     if(!$result)
                     {
                         die($query);
                     }
                         while($row = mysqli_fetch_array($result)):
-                    
                     ?>
-
-
                     <tr>
                         <td><?php echo $row['maquina']; ?></td>
-                        <td>
-                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="6" name="value" value="<?php echo $row['6'] ?>">
-                        </td>
-                        <td>
-                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="7" name="value" value="<?php echo $row['7'] ?>">
-                        </td>
-                        <td>
-                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="8" name="value" value="<?php echo $row['8'] ?>">
-                        </td>
-                        <td>
-                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="9" name="value" value="<?php echo $row['9'] ?>">
-                        </td>
-                        <td>
-                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="10" name="value" value="<?php echo $row['10'] ?>">
-                        </td>
-                        <td>
-                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="11" name="value" value="<?php echo $row['11'] ?>">
-                        </td>
-                        <td>
-                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="12" name="value" value="<?php echo $row['12'] ?>">
-                        </td>
-                        <td>
-                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="13" name="value" value="<?php echo $row['13'] ?>">
-                        </td>
-                        <td>
-                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="14" name="value" value="<?php echo $row['14'] ?>">
-                        </td>
-                        <td>
-                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="15" name="value" value="<?php echo $row['15'] ?>">
-                        </td>
-                        <td>
-                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="16" name="value" value="<?php echo $row['16'] ?>">
-                        </td>
-                        <td>
-                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="17" name="value" value="<?php echo $row['17'] ?>">
-                        </td>
-                        <td>
-                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="18" name="value" value="<?php echo $row['18'] ?>">
-                        </td>
-                        <td>
-                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="19" name="value" value="<?php echo $row['19'] ?>">
-                        </td>
-                        <td>
-                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="20" name="value" value="<?php echo $row['20'] ?>">
-                        </td>
-                        <td>
-                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="21" name="value" value="<?php echo $row['21'] ?>">
-                        </td>
-                        <td>
-                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="22" name="value" value="<?php echo $row['22'] ?>">
-                        </td>
-                        <td>
-                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="23" name="value" value="<?php echo $row['23'] ?>">
-                        </td>
-                        <td>
-                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="24" name="value" value="<?php echo $row['24'] ?>">
-                        </td>
-                        <td>
-                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="1" name="value" value="<?php echo $row['1'] ?>">
-                        </td>
-                        <td>
-                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="2" name="value" value="<?php echo $row['2'] ?>">
-                        </td>
-                        <td>
-                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="3" name="value" value="<?php echo $row['3'] ?>">
-                        </td>
-                        <td>
-                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="4" name="value" value="<?php echo $row['4'] ?>">
-                        </td>
-                        <td>
-                            <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="5" name="value" value="<?php echo $row['5'] ?>">
-                        </td>
-                        <td>
-                            <input class="tablahrxhr"  value="<?php echo $row['total'] ?>">
-                        </td>
+                        <?php
+                            $hr = 6;
+                            for($x = 1; $x < count($row); $x++)
+                            { 
+                        ?>
+                                
+                                <td>
+                                    <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="<?php echo $hr;?>" name="value" value="<?php echo $row[$x] ?>">
+                                </td>
+                                <td>
+                                    <?php 
+                                        $x++;
+                                        echo $row[$x];
+                                    ?>
+                                </td>
+                        <?php
+                                if($x == 50)
+                                    break;
+
+                                $hr++;
+                            }
+                        ?>
                     </tr>
 
                         

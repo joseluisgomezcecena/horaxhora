@@ -52,21 +52,21 @@ include "modals/forms/edit_order.php";
                         while($row_orders = $result_orders->fetch_assoc()):
                     ?>
                     <tr id="row<?php echo $row_orders['orden_id'];?>">
-                            <td id="wo<?php echo $row_orders['orden_id'];?>"><?php echo $row_orders['work_order'];?></td>
-                            <td><?php echo $row_orders['item'];?></td>
-                            <td><?php echo $row_orders['meta_orden'];?></td>
-                            <td><?php echo $row_orders['maquina'];?></td>
-                            <td id="pph<?php echo $row_orders['orden_id'];?>"><?php echo $row_orders['pph_std'];?></td>
-                            <td><?php echo $row_orders['setup'];?></td>
-                            <td style="text-align: center">
-                                <?php
-                                    if($row_orders['estado'] == 3)
-                                        echo "<button class=\"btn btn-outline-warning\">Interrumpida</button>";
-                                ?>
-                                <button class="btn btn-primary start-order" data-id="<?php echo $row_orders['orden_id'];?>">Comenzar <i class="fas fa-play"></i></button>
-                                <button class="btn btn-warning edit-order" data-id="<?php echo $row_orders['orden_id'];?>">Editar <i class="fas fa-edit"></i></button>
-                                <button class="btn btn-danger delete-order" data-id="<?php echo $row_orders['orden_id'];?>">Eliminar <i class="fas fa-trash-alt"></i></button>
-                            </td>
+                        <td id="wo<?php echo $row_orders['orden_id'];?>"><?php echo $row_orders['work_order'];?></td>
+                        <td><?php echo $row_orders['item'];?></td>
+                        <td><?php echo $row_orders['meta_orden'];?></td>
+                        <td><?php echo $row_orders['maquina'];?></td>
+                        <td id="pph<?php echo $row_orders['orden_id'];?>"><?php echo $row_orders['pph_std'];?></td>
+                        <td><?php echo $row_orders['setup'];?></td>
+                        <td style="text-align: center">
+                            <?php
+                                if($row_orders['estado'] == 3)
+                                    echo "<button class=\"btn btn-outline-warning\">Interrumpida</button>";
+                            ?>
+                            <button class="btn btn-primary start-order" data-id="<?php echo $row_orders['orden_id'];?>">Comenzar <i class="fas fa-play"></i></button>
+                            <button class="btn btn-warning edit-order" data-id="<?php echo $row_orders['orden_id'];?>">Editar <i class="fas fa-edit"></i></button>
+                            <button class="btn btn-danger delete-order" data-id="<?php echo $row_orders['orden_id'];?>">Eliminar <i class="fas fa-trash-alt"></i></button>
+                        </td>
                     </tr>
                     <?php 
                     endwhile;

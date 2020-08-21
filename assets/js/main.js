@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     {
                         let tbody_ordenes = document.querySelector("#tabla-ordenes tbody");
 
-                        tbody_ordenes.innerHTML = this.responseText + tbody_ordenes.innerHTML;
+                        tbody_ordenes.innerHTML += this.responseText;
                         //row_ordenes.innerHTML = this.responseText;
                         //tbody_ordenes.insertBefore(row_ordenes, tbody_ordenes.firstChild);
 
