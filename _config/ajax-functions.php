@@ -475,7 +475,10 @@ function cleanPlanbyMachine($hora, $maquina) //Return a query to clean columns i
 {
     global $connection;
 
-    $y = $hora + 1;
+    if(date("i") < 10)
+        $y = $horaS;
+    else    
+        $y = $hora + 1;
     $query_clean_plan = "UPDATE plan SET  `$y`=0 ";
     $query_clean_plan2 = ", `total`=`total`-`$y`";
 
