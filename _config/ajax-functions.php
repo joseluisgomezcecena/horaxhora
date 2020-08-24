@@ -126,8 +126,9 @@ if(isset($_GET['f']))
         $date = date("Y/m/d H:i");
         $turno = turno(date("H:i"));
 
+        $query = "UPDATE `ordenes_main` SET `pph_std` = $pph, `fecha_inicial` = '$date', `fecha_reinicio` = '$date', `head_count$turno` = $hc WHERE `orden_id` = $id;";
+        $connection->query($query);
         editar_reporteA($id);
-        $query = "UPDATE `ordenes_main` SET `estado` = 1, `pph_std` = $pph, `fecha_inicial` = '$date', `fecha_reinicio` = '$date', `head_count$turno` = $hc WHERE `orden_id` = $id;";
        /*
         switch($turno)
         {
@@ -140,9 +141,10 @@ if(isset($_GET['f']))
             case 3:
                 $query .= "UPDATE ordenes_main SET head_count3 = $hc WHERE orden_id = $id;";
                 break;
-        }
-        */
+        }*/
+        
 
+        $query = "UPDATE `ordenes_main` SET `estado` = 1 WHERE `orden_id` = $id;";
         $result_insert = $connection->query($query);
         if($result_insert)
         {
@@ -153,6 +155,7 @@ if(isset($_GET['f']))
         {
             echo "Fail with: " . $query;
         }
+        
     }
     if($_GET['f'] == "editOrder")
     {
@@ -318,12 +321,12 @@ function agregar_reporteA($id_orden)
 function editar_reporteA($id_orden)
 {
     global $connection;
-
-    $query_ordenes_maquina  = "SELECT * FROM ordenes_main WHERE maquina = (SELECT maquina from ordenes_main WHERE orden_id = $id ) ORDER BY `ordenes_main`.`orden_id` ASC";
+    $flag_clean = 1;
+    $query_ordenes_maquina  = "SELECT * FROM ordenes_main WHERE maquina = (SELECT maquina from ordenes_main WHERE orden_id = $id_orden ) AND estado != 2 AND estado != 3 ORDER BY `ordenes_main`.`orden_id` ASC";
     $result_ordenes_maquina = $connection->query($query_ordenes_maquina);
     if($result_ordenes_maquina)
     {
-        while($row_ordenes_maquina)
+        while($row_ordenes_maquina = $result_ordenes_maquina->fetch_assoc())
         {
             $maquina    = $row_ordenes_maquina['maquina'];
             $cantidad   = $row_ordenes_maquina['meta_orden'] - $row_ordenes_maquina['cantidad_actual'];
@@ -336,12 +339,17 @@ function editar_reporteA($id_orden)
             $break2     = $row_ordenes_maquina['break2'];
             $break3     = $row_ordenes_maquina['break3'];
 
-            $hora    = 1 * date("H");
-            $minutos = 60 - date("i");
-
             
-            cleanPlanbyMachine($hora, $maquina);
+            if($flag_clean == 1)
+            {
+                $hora    = 1 * date("H");
+                $minutos = 60 - date("i");
+                cleanPlanbyMachine($hora, $maquina);
+                $flag_clean = 0;
+            }
 
+            //_config/ajax-functions.php?f=startOrder&id=41&pph=100&hc=2
+            
             $query_plan  = "SELECT * FROM plan WHERE maquina = '$maquina'";
             $result_plan = $connection->query($query_plan);
             if($result_plan)
@@ -475,12 +483,12 @@ function cleanPlanbyMachine($hora, $maquina) //Return a query to clean columns i
 {
     global $connection;
 
-    if(date("i") < 10)
-        $y = $horaS;
+    if(date("i") < 50)
+        $y = $hora;
     else    
         $y = $hora + 1;
     $query_clean_plan = "UPDATE plan SET  `$y`=0 ";
-    $query_clean_plan2 = ", `total`=`total`-`$y`";
+    $query_clean_plan2 = " `total`=`total`-`$y`";
 
     if($hora != 5)
     {
@@ -495,7 +503,11 @@ function cleanPlanbyMachine($hora, $maquina) //Return a query to clean columns i
             $query_clean_plan2 .= "-`$y`";
         }
     }
-    $query_clean_plan .=  $query_clean_plan2 . " WHERE maquina = '$maquina';";
-    return $connection->query($query_clean_plan);
+    $query_clean_plan2 = "UPDATE plan SET $query_clean_plan2 WHERE maquina = '$maquina';"; 
+    $connection->query($query_clean_plan2);
+    
+    $query_clean_plan2 = $query_clean_plan . " WHERE maquina = '$maquina';";
+    $connection->query($query_clean_plan);
+    
 }
 ?>

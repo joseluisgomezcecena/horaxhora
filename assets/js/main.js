@@ -132,6 +132,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 pph  = document.getElementById("pph-std").value,
                 url  = "_config/ajax-functions.php?f=startOrder&id=" + id + "&pph=" + pph + "&hc=" + hc,
                 xmlhttps = new XMLHttpRequest();
+
+            console.log(url);
             if(hc != "" && hc != 0 && pph != "" && pph != 0 ){
                 xmlhttps.onreadystatechange = function()
                 {
@@ -153,6 +155,7 @@ document.addEventListener("DOMContentLoaded", function() {
             {
                 swal ( "Debes llenar todos los datos.", "" ,  "error" ); //Alert of sweetalert.js
             }
+            
         }
         function editar_orden(id)
         {

@@ -85,6 +85,7 @@
 
       
       function paintCols(){
+        var id;
         var d = new Date(); // for now
         d.getHours(); // => 9
         d.getMinutes(); // =>  30
@@ -92,6 +93,23 @@
         if(window.location.pathname == "/horaxhora/horaxhora.php" || window.location.pathname == "/horaxhora/reporteA.php")
         {
           console.log(d.getHours());
+          if(d.getHours() < 12)
+          {
+            id = d.getHours() + "am";
+          }
+          else if(d.getHours() == 12)
+          {
+            id = d.getHours() + "pm";
+          }
+          else
+          {
+            id = (d.getHours() - 12) + "pm";
+          }
+          console.log(id);
+          document.getElementById(id).style.backgroundColor = "#00a6ff";
+          document.getElementById(id).style.color = "white";
+
+/*
           if((d.getHours()==9))
           {
             document.getElementById("9am").style.backgroundColor = "#00a6ff";
@@ -112,6 +130,7 @@
             document.getElementById("12pm").style.backgroundColor = "#00a6ff";
             document.getElementById("12pm").style.color = "white";
           }
+          */
         }
       }
 
