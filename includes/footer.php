@@ -92,20 +92,14 @@
         d.getSeconds(); // => 51
         if(window.location.pathname == "/horaxhora/horaxhora.php" || window.location.pathname == "/horaxhora/reporteA.php")
         {
-          console.log(d.getHours());
           if(d.getHours() < 12)
           {
             id = d.getHours() + "am";
           }
-          else if(d.getHours() == 12)
+          else
           {
             id = d.getHours() + "pm";
           }
-          else
-          {
-            id = (d.getHours() - 12) + "pm";
-          }
-          console.log(id);
           document.getElementById(id).style.backgroundColor = "#00a6ff";
           document.getElementById(id).style.color = "white";
 
