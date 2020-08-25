@@ -214,4 +214,86 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
     }
+
+    /**************************************** -------------- ACTUAL ORDERS PAGE -------------- ****************************************/
+    if(window.location.pathname == "/horaxhora/ordenes_actuales.php")
+    {
+        const table_actuales = document.getElementById("tabla-ordenes-actuales");
+
+        table_actuales.addEventListener("click", control_buttons_actuales);
+
+        function control_buttons_actuales(e)
+        {
+            e.preventDefault();
+
+            if(e.target.classList.contains("complete-order"))
+            {
+                completar_orden(e.target.getAttribute("data-id"), e.target.parentElement.parentElement);
+            }
+            else if(e.target.classList.contains("pause-order"))
+            {
+                pausar_orden(e.target.getAttribute("data-id"), e.target.parentElement.parentElement);
+            }
+        }
+
+        function completar_orden(id, item)
+        {
+            swal({
+                title: "Completar Orden",
+                text: "¿Desea completar la orden?",
+                icon: "info",
+                buttons: [true, "Completar"],
+            })
+            .then((willComplete) => {
+                if (willComplete) {
+                    let url      = "_config/ajax-functions.php?f=completeOrder&id=" + id,
+                        xmlhttps = new XMLHttpRequest();
+                    xmlhttps.onreadystatechange = function()
+                    {
+                        if(xmlhttps.readyState == 4 && xmlhttps.status == 200)
+                        {
+                            item.remove();
+                            swal("La orden ha sido completada con exito", {
+                                icon: "success",
+                            });   
+                        }
+                    };
+                    xmlhttps.open("GET", url, true);
+                    xmlhttps.send();
+                } else {
+                }
+            });
+        }
+
+        function pausar_orden(id, item)
+        {
+            swal({
+                title: "Pausar Orden",
+                text: "¿Desea pausar la orden?",
+                icon: "info",
+                buttons: [true, "Pausar"],
+            })
+            .then((willPause) => {
+                if (willPause) {
+                    let url      = "_config/ajax-functions.php?f=pauseOrder&id=" + id,
+                        xmlhttps = new XMLHttpRequest();
+                    xmlhttps.onreadystatechange = function()
+                    {
+                        if(xmlhttps.readyState == 4 && xmlhttps.status == 200)
+                        {
+                            item.remove();
+                            swal("La orden ha sido completada con exito", {
+                                icon: "success",
+                            });   
+                        }
+                    };
+                    xmlhttps.open("GET", url, true);
+                    xmlhttps.send();
+                } else {
+                }
+            });
+        }
+
+    }
+
 });

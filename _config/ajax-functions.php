@@ -91,9 +91,6 @@ if(isset($_GET['f']))
         }
 
         //turno_1, turno_2, turno_3 FROM celdas_descansos WHERE celda = '$celda')
-
-
-
         $stmt   = $connection->prepare("INSERT INTO ordenes_main(`work_order`, `item`, `meta_orden`, `maquina`, `pph_std`, `setup`, `display`, `celda`, `break1`, `break2`, `break3`, `planta_id`) VALUES(?, ?, ?, ?, $pph, $setup, $display, '$celda', $break_1, $break_2, $break_3, $planta)");
         $stmt->bind_param("ssis", $work_order, $item, $quantity, $machine);
         $result = $stmt->execute();
@@ -113,12 +110,8 @@ if(isset($_GET['f']))
 
             agregar_reporteA($last_id);
         }
-        
-
-        
-
     }
-    if($_GET['f'] == "startOrder")
+    else if($_GET['f'] == "startOrder")
     {
         $id   = $_GET['id'];
         $pph  = $_GET['pph'];
@@ -129,21 +122,7 @@ if(isset($_GET['f']))
         $query = "UPDATE `ordenes_main` SET `pph_std` = $pph, `fecha_inicial` = '$date', `fecha_reinicio` = '$date', `head_count$turno` = $hc WHERE `orden_id` = $id;";
         $connection->query($query);
         editar_reporteA($id);
-       /*
-        switch($turno)
-        {
-            case 1:
-                $query .= "UPDATE `ordenes_main` SET `head_count1` = $hc WHERE orden_id = $id;";
-                break;
-            case 2:
-                $query .= "UPDATE ordenes_main SET head_count2 = $hc WHERE orden_id = $id;";
-                break;
-            case 3:
-                $query .= "UPDATE ordenes_main SET head_count3 = $hc WHERE orden_id = $id;";
-                break;
-        }*/
         
-
         $query = "UPDATE `ordenes_main` SET `estado` = 1 WHERE `orden_id` = $id;";
         $result_insert = $connection->query($query);
         if($result_insert)
@@ -157,7 +136,7 @@ if(isset($_GET['f']))
         }
         
     }
-    if($_GET['f'] == "editOrder")
+    else if($_GET['f'] == "editOrder")
     {
         $work_order    = htmlspecialchars($_GET['workorder']);
         $item          = htmlspecialchars($_GET['item']);
@@ -176,7 +155,7 @@ if(isset($_GET['f']))
             echo "edit";
         }
     }
-    if($_GET['f'] == "deleteOrder")
+    else if($_GET['f'] == "deleteOrder")
     {
         $id = $_GET['id'];
 
@@ -186,6 +165,27 @@ if(isset($_GET['f']))
             echo "delete";
         else
             echo "Fail with: " . $query;
+    }
+    else if($_GET['f'] == "completeOrder")
+    {
+        $id_orden = $_GET['id'];
+        $date     = date("Y/m/d H:i:s");
+        $query_complete  = "UPDATE ordenes_main SET estado = 2, fecha_final = '$date' WHERE orden_id = $id_orden";
+        $result_complete = $connection->query($query_complete);
+        if($result_complete)
+        {
+            echo "Complete";
+        }
+    }
+    else if($_GET['f'] == "pauseOrder")
+    {
+        $id_orden = $_GET['id'];
+        $query_complete  = "UPDATE ordenes_main SET estado = 3 WHERE orden_id = $id_orden";
+        $result_complete = $connection->query($query_complete);
+        if($result_complete)
+        {
+            echo "Pause";
+        }
     }
 }
 
@@ -231,7 +231,7 @@ function agregar_reporteA($id_orden)
                         $hora     = $row_plan['hora_pendiente'];
                         $minutos  = $row_plan['minutos_pendientes'];
     
-                        if($row_plan['total'] == 0)
+                        if($row_plan['total'] == 0 || $hora < (1 * date("H")))
                         {
                             $hora    = 1 * date("H"); //1 * to quit leading zero
                             $minutos = 60 - date("i");
@@ -437,32 +437,6 @@ function editar_reporteA($id_orden)
     }
 }
 
-/*
-function cambio_dia($id, $cantidad)
-{
-    global $connection;
-    global $rep;
-    global $dias;
-
-    if($rep == $id)
-        $dias++;
-    else
-    {
-        $dias = 1;
-        $rep = $id;
-    }
-    
-    $fecha = date('Y-m-d',strtotime('+' . $dias . ' day'));
-
-    $query_insert  = "INSERT INTO plan(maquina, fecha) SELECT maquina, '$fecha' FROM plan WHERE id = $id";
-    $result_insert = $connection->query($query_insert);
-    if($result_insert)
-    {
-        return $connection->insert_id;
-    }
-}
-*/
-
 function turno($time) //Regresa el turno dependiendo la hora que se meta
 {
     if(strtotime($time) >= strtotime("6:00") && strtotime($time) <= strtotime("15:36"))
@@ -510,4 +484,57 @@ function cleanPlanbyMachine($hora, $maquina) //Return a query to clean columns i
     $connection->query($query_clean_plan);
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+function cambio_dia($id, $cantidad)
+{
+    global $connection;
+    global $rep;
+    global $dias;
+
+    if($rep == $id)
+        $dias++;
+    else
+    {
+        $dias = 1;
+        $rep = $id;
+    }
+    
+    $fecha = date('Y-m-d',strtotime('+' . $dias . ' day'));
+
+    $query_insert  = "INSERT INTO plan(maquina, fecha) SELECT maquina, '$fecha' FROM plan WHERE id = $id";
+    $result_insert = $connection->query($query_insert);
+    if($result_insert)
+    {
+        return $connection->insert_id;
+    }
+}
+*/
 ?>
