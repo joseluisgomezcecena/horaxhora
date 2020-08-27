@@ -3,9 +3,12 @@ include_once("includes/header.php");
 //include_once("includes/sidebar.php");
 include_once("includes/top-menu.php");
 
-include "modals/forms/load_order.php";
-include "modals/forms/start_order.php";
-include "modals/forms/edit_order.php";
+if(isset($_GET['plant']))
+{
+    $planta = $_GET['plant'];
+}
+else
+    $planta = 1;
 ?>
 
 <!-- Page Heading -->
@@ -72,12 +75,14 @@ include "modals/forms/edit_order.php";
                     </tfoot>
                     <tbody>
                         <?php 
-                        $query_orders  = "SELECT A.orden_id, A.work_order, A.item, A.meta_orden, A.maquina, A.fecha_inicial, A.fecha_final, A.pph_std, SUM(B.cantidad_turno1) as cant_turno1, SUM(B.horas_aplicadas1) as horas_aplicadas1, SUM(B.cantidad_turno2) as cant_turno2, SUM(B.horas_aplicadas2) as horas_aplicadas2, SUM(B.cantidad_turno3) as cant_turno3, SUM(B.horas_aplicadas3) as horas_aplicadas3  FROM ordenes_main AS A LEFT JOIN ordenes_diarias AS B ON B.id_orden = A.orden_id  WHERE estado != 1 OR estado != 2";
+                        $query_orders  = "SELECT A.orden_id, A.work_order, A.item, A.meta_orden, A.maquina, A.fecha_inicial, A.fecha_final, A.pph_std, SUM(B.cantidad_turno1) as cant_turno1, SUM(B.horas_aplicadas1) as horas_aplicadas1, SUM(B.cantidad_turno2) as cant_turno2, SUM(B.horas_aplicadas2) as horas_aplicadas2, SUM(B.cantidad_turno3) as cant_turno3, SUM(B.horas_aplicadas3) as horas_aplicadas3  FROM ordenes_main AS A LEFT JOIN ordenes_diarias AS B ON B.id_orden = A.orden_id  WHERE estado = 2 AND planta_id = $planta";
                         $result_orders = $connection->query($query_orders);
                         if(!$result_orders)
                         {
                             die($query_orders);
                         }
+                        if($result_orders->num_rows > 0)
+                        {
                             while($row_orders = $result_orders->fetch_assoc()):
                         ?>
                         <tr id="row<?php echo $row_orders['orden_id'];?>">
@@ -192,6 +197,7 @@ include "modals/forms/edit_order.php";
                         </tr>
                         <?php 
                         endwhile;
+                        }
                         ?>
                     </tbody>
                 </table>

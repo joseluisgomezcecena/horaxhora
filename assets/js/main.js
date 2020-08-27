@@ -133,7 +133,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 url  = "_config/ajax-functions.php?f=startOrder&id=" + id + "&pph=" + pph + "&hc=" + hc,
                 xmlhttps = new XMLHttpRequest();
 
-            console.log(url);
             if(hc != "" && hc != 0 && pph != "" && pph != 0 ){
                 xmlhttps.onreadystatechange = function()
                 {
@@ -142,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         let item  = document.getElementById("row"+id);
                             orden = document.getElementById("wo"+id).textContent;
                         item.remove();
-                        
+                        //document.querySelector(".datos").innerHTML = this.responseText;
                         swal("La orden " + orden +" ha comenzado", {
                             icon: "success",
                         });
@@ -294,6 +293,50 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         }
 
+    }
+
+/**************************************** -------------- INDEX PAGE -------------- ****************************************/
+    if(window.location.pathname == "/horaxhora/")
+    {
+        setTimeout(function(){
+            $("#index").modal("show");
+        }, 1000);
+
+
+        const modal_plants  = document.querySelector("#index"),
+              change_plants = document.getElementById("change-plants"),
+              horaxhora     = document.getElementById("horaxhora"),
+              cargar        = document.getElementById("cargar"),
+              actual        = document.getElementById("actual"),
+              completas     = document.getElementById("completas"),
+              reporte       = document.getElementById("reporte");
+
+
+        modal_plants.addEventListener("click", control_plants);
+        change_plants.addEventListener("click", control_plants);
+
+
+        function control_plants(e)
+        {
+            e.preventDefault();
+            
+            let plant = 1;
+            if(e.target.classList.contains("plant-1"))
+                plant = 1;
+            else if(e.target.classList.contains("plant-2"))
+                plant = 2;
+            else if(e.target.classList.contains("plant-3"))
+                plant = 3;
+
+            horaxhora.setAttribute("href", "horaxhora.php?plant="+plant);
+            cargar.setAttribute("href", "cargar_ordenes.php?plant="+plant);
+            actual.setAttribute("href", "ordenes_actuales.php?plant="+plant);
+            completas.setAttribute("href", "ordenes_completadas.php?plant="+plant);
+            reporte.setAttribute("href", "reporteA.php?plant="+plant); 
+
+            document.querySelector("#titulo h6").textContent = "Planta "+plant;
+            $("#index").modal("hide");
+        }
     }
 
 });

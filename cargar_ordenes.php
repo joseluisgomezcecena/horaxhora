@@ -6,6 +6,13 @@ include_once("includes/top-menu.php");
 include "modals/forms/load_order.php";
 include "modals/forms/start_order.php";
 include "modals/forms/edit_order.php";
+
+if(isset($_GET['plant']))
+{
+    $planta = $_GET['plant'];
+}
+else
+    $planta = 1;
 ?>
 
 <!-- Page Heading -->
@@ -43,7 +50,7 @@ include "modals/forms/edit_order.php";
                 </tfoot>
                 <tbody>
                     <?php 
-                    $query_orders  = "SELECT * FROM ordenes_main WHERE estado = 2";
+                    $query_orders  = "SELECT * FROM ordenes_main WHERE estado != 1 AND estado != 2 AND planta_id = $planta";
                     $result_orders = $connection->query($query_orders);
                     if(!$result_orders)
                     {
@@ -76,7 +83,8 @@ include "modals/forms/edit_order.php";
             </div>
         </div>
     </div>
-
+<div class="datos">
+</div>
 
 <?php 
 include_once("includes/footer.php");

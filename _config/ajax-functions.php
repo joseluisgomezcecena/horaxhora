@@ -1,5 +1,5 @@
 <?php
-date_default_timezone_set("America/Tijuana");
+
 
 include_once "db.php";
 global $connection;
@@ -67,7 +67,14 @@ if(isset($_GET['f']))
         }
 
         /* Search pph and setup */
-        $query_pph_setup  = "SELECT  pph, setup FROM pph WHERE routing = '$item' AND facility = '$machine'";
+        if($planta == 1)
+        {
+            $query_pph_setup  = "SELECT  pph, setup FROM pph WHERE routing = '$item' AND facility = '$machine'";
+        }
+        else
+        {
+            $query_pph_setup  = "SELECT  pph, setup FROM pph_linea WHERE item = '$item'";
+        }
         $result_pph_setup = $connection->query($query_pph_setup);
         if($result_pph_setup)
         {
@@ -129,6 +136,20 @@ if(isset($_GET['f']))
         {
             $connection->query("INSERT INTO ordenes_diarias(id_orden, fecha_dia) VALUES($id,'" . date("Y/m/d") ."');");
             echo "start";
+
+
+            $select = "SELECT * FROM WHERE maquina = (SELECT maquina from ordenes_main WHERE orden_id = $id) AND date = '". date('Y/m/d') ."'";
+            $result = $connection->query($select);
+            if($result)
+            {
+                if($result->num_rows == 0)
+                {
+                    $insert = "INSERT INTO eficiencias(maquina, dia) SELECT maquina, '". date('Y/m/d') ."' from ordenes_main WHERE orden_id = $id ";
+                    $result = $connection->query($insert);
+                }
+            }
+            else
+                echo "Failed query in: ". $select;
         }
         else
         {
@@ -239,7 +260,7 @@ function agregar_reporteA($id_orden)
                     }
                     else
                     {
-                        $query   = "INSERT INTO plan(maquina , planta_id, fecha) VALUES('$maquina', '$planta_id')";
+                        $query   = "INSERT INTO plan(maquina , planta_id, fecha) VALUES('$maquina', '$planta')";
                         $result  = $connection->query($query);
                         $id_plan = $connection->insert_id;
                         $hora    = 1 * date("H");
@@ -322,7 +343,7 @@ function editar_reporteA($id_orden)
 {
     global $connection;
     $flag_clean = 1;
-    $query_ordenes_maquina  = "SELECT * FROM ordenes_main WHERE maquina = (SELECT maquina from ordenes_main WHERE orden_id = $id_orden ) AND estado != 2 AND estado != 3 ORDER BY `ordenes_main`.`orden_id` ASC";
+    $query_ordenes_maquina  = "SELECT * FROM ordenes_main WHERE maquina = (SELECT maquina from ordenes_main WHERE orden_id = $id_orden ) AND (estado = 0 OR estado = 3) ORDER BY `ordenes_main`.`estado` ASC, `ordenes_main`.`orden_id` ASC";
     $result_ordenes_maquina = $connection->query($query_ordenes_maquina);
     if($result_ordenes_maquina)
     {
@@ -453,6 +474,16 @@ function turno($time) //Regresa el turno dependiendo la hora que se meta
     }
 }
 
+function hora_turno($hr)
+{
+    if($hr > 6 && $hr <= 15)
+        return 1;
+    else if($hr > 15 && $hr <= 23)
+        return 2;
+    else if($hr > 23 || $hr < 6)
+        return 3;
+}
+
 function cleanPlanbyMachine($hora, $maquina) //Return a query to clean columns in database
 {
     global $connection;
@@ -462,7 +493,7 @@ function cleanPlanbyMachine($hora, $maquina) //Return a query to clean columns i
     else    
         $y = $hora + 1;
     $query_clean_plan = "UPDATE plan SET  `$y`=0 ";
-    $query_clean_plan2 = " `total`=`total`-`$y`";
+    $query_clean_plan2 = "UPDATE plan SET `total`=`total`-`$y`";
 
     if($hora != 5)
     {
@@ -477,64 +508,13 @@ function cleanPlanbyMachine($hora, $maquina) //Return a query to clean columns i
             $query_clean_plan2 .= "-`$y`";
         }
     }
-    $query_clean_plan2 = "UPDATE plan SET $query_clean_plan2 WHERE maquina = '$maquina';"; 
+
+    echo $query_clean_plan2 = " $query_clean_plan2 WHERE maquina = '$maquina';"; 
     $connection->query($query_clean_plan2);
     
-    $query_clean_plan2 = $query_clean_plan . " WHERE maquina = '$maquina';";
+    $query_clean_plan = $query_clean_plan . " WHERE maquina = '$maquina';";
     $connection->query($query_clean_plan);
     
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-function cambio_dia($id, $cantidad)
-{
-    global $connection;
-    global $rep;
-    global $dias;
-
-    if($rep == $id)
-        $dias++;
-    else
-    {
-        $dias = 1;
-        $rep = $id;
-    }
-    
-    $fecha = date('Y-m-d',strtotime('+' . $dias . ' day'));
-
-    $query_insert  = "INSERT INTO plan(maquina, fecha) SELECT maquina, '$fecha' FROM plan WHERE id = $id";
-    $result_insert = $connection->query($query_insert);
-    if($result_insert)
-    {
-        return $connection->insert_id;
-    }
-}
-*/
 ?>

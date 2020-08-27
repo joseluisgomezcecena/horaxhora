@@ -1,6 +1,6 @@
 
 <?php
-
+date_default_timezone_set("America/Tijuana");
 define("DB_HOST", "localhost");
 define("DB_NAME", "hourxhour");
 define("DB_USER", "root");

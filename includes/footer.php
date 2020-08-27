@@ -76,7 +76,7 @@
                     "value" : $(this).val()
                 }),
             }).done(function(responseData) {
-              console.log($(this));
+              console.log(responseData);
           }).fail(function() {
               console.log('Failed');
           });   

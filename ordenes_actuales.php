@@ -6,6 +6,13 @@ include_once("includes/top-menu.php");
 include_once "_config/ajax-functions.php";
 
 $turn = turno(date("H:i"));
+
+if(isset($_GET['plant']))
+{
+    $planta = $_GET['plant'];
+}
+else
+    $planta = 1;
 ?>
 
 <!-- Page Heading -->
@@ -50,7 +57,7 @@ $turn = turno(date("H:i"));
                     </tfoot>
                     <tbody>
                     <?php 
-                        $query_orders  = "SELECT * FROM ordenes_main WHERE estado = 1";
+                        $query_orders  = "SELECT * FROM ordenes_main WHERE estado = 1 AND planta_id = $planta";
                         $result_orders = $connection->query($query_orders);
                         if(!$result_orders)
                         {

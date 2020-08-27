@@ -1,3 +1,12 @@
+<?php
+if(isset($_GET['plant']))
+{
+    $planta = $_GET['plant'];
+}
+else
+    $planta = 1;
+
+?>
 <div class="modal" id="agregar-orden-modal">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -18,7 +27,7 @@
           <select id="machine" class="form-control m-1" style="border-radius: .35rem!important;">
               <option value="" selected disabled>SELECCIONE MAQUINA</option>
               <?php
-              $query_maquinas  = "SELECT * FROM horas";
+              $query_maquinas  = "SELECT * FROM horas WHERE planta_id = $planta";
               $result_maquinas = $connection->query($query_maquinas);
               if($result_maquinas && $result_maquinas->num_rows > 0){
                 while($row_maquinas = $result_maquinas->fetch_assoc()){
