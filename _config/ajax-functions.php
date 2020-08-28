@@ -183,7 +183,9 @@ if(isset($_GET['f']))
         $query  = "DELETE FROM ordenes_main WHERE orden_id = $id";
         $result = $connection->query($query);
         if($result)
+        {
             echo "delete";
+        }
         else
             echo "Fail with: " . $query;
     }
@@ -214,6 +216,8 @@ if(isset($_GET['f']))
 function agregar_reporteA($id_orden)
 {
     global $connection;
+
+    $date = date("Y/m/d");
     $query_datos  = "SELECT * FROM ordenes_main WHERE orden_id = $id_orden";
     $result_datos = $connection->query($query_datos);
     if($result_datos)
@@ -236,7 +240,7 @@ function agregar_reporteA($id_orden)
         }
 
         //Search if already exist a plan in this machine
-        $query_plan  = "SELECT * FROM plan WHERE maquina = '$maquina'";
+        $query_plan  = "SELECT * FROM plan WHERE maquina = '$maquina' AND fecha = '$date'";
         $result_plan = $connection->query($query_plan);
         if($result_plan)
         {
@@ -258,24 +262,27 @@ function agregar_reporteA($id_orden)
                             $minutos = 60 - date("i");
                         }
                     }
-                    else
-                    {
-                        $query   = "INSERT INTO plan(maquina , planta_id, fecha) VALUES('$maquina', '$planta')";
-                        $result  = $connection->query($query);
-                        $id_plan = $connection->insert_id;
-                        $hora    = 1 * date("H");
-                        $minutos = 60 - date("i");
-                    }
                 }
+            }
+            else
+            {
+                $query   = "INSERT INTO plan(maquina , planta_id, fecha) VALUES('$maquina', '$planta', '$date')";
+                $result  = $connection->query($query);
+                $id_plan = $connection->insert_id;
+                $lleno = 0;
+                $hora    = 1 * date("H");
+                $minutos = 60 - date("i");
             }
         }
         $breaktime  = 36;
         $start_flag = 1;
+
         if($hora == 0) //If hour is 0 we use it like 24
             $hora = 24;
 
         while($cantidad > 0)
         {
+
             if($hora == 25) //If hour pass of 24 format restart it
                 $hora -= 24;
 
@@ -311,13 +318,13 @@ function agregar_reporteA($id_orden)
             $cant_hour = (int)($minutos * $pph_std) / 60;
             if($cantidad > $cant_hour)
             {
-                $query_qty_hour = "UPDATE plan SET `$hora`= `$hora`+$cant_hour, total = total + $cant_hour WHERE maquina = '$maquina'";
+                $query_qty_hour = "UPDATE plan SET `$hora`= `$hora`+$cant_hour, total = total + $cant_hour WHERE id = $id_plan";
                 $cantidad -= $cant_hour;
             }
             else
             {   
                 $minutos_pendientes = 60 - ($cantidad * 60)/$pph_std;
-                $query_qty_hour = "UPDATE plan SET `$hora`= `$hora`+$cantidad, total = total + $cantidad, hora_pendiente = $hora, minutos_pendientes = $minutos_pendientes WHERE maquina = '$maquina'";
+                $query_qty_hour = "UPDATE plan SET `$hora`= `$hora`+$cantidad, total = total + $cantidad, hora_pendiente = $hora, minutos_pendientes = $minutos_pendientes WHERE id = $id_plan";
                 $cantidad = 0;
             }
             $result_qty_hour = $connection->query($query_qty_hour);
@@ -343,6 +350,7 @@ function editar_reporteA($id_orden)
 {
     global $connection;
     $flag_clean = 1;
+    $date = date("Y/m/d");
     $query_ordenes_maquina  = "SELECT * FROM ordenes_main WHERE maquina = (SELECT maquina from ordenes_main WHERE orden_id = $id_orden ) AND (estado = 0 OR estado = 3) ORDER BY `ordenes_main`.`estado` ASC, `ordenes_main`.`orden_id` ASC";
     $result_ordenes_maquina = $connection->query($query_ordenes_maquina);
     if($result_ordenes_maquina)
@@ -371,7 +379,7 @@ function editar_reporteA($id_orden)
 
             //_config/ajax-functions.php?f=startOrder&id=41&pph=100&hc=2
             
-            $query_plan  = "SELECT * FROM plan WHERE maquina = '$maquina'";
+            $query_plan  = "SELECT * FROM plan WHERE maquina = '$maquina' AND fecha = '$date' ";
             $result_plan = $connection->query($query_plan);
             if($result_plan)
             {
@@ -428,7 +436,7 @@ function editar_reporteA($id_orden)
                             $cant_hour = (int)($minutos * $pph_por_headcount) / 60;
                             if($cantidad > $cant_hour)
                             {
-                                $query_qty_hour = "UPDATE plan SET `$hora`= `$hora`+$cant_hour, total = total + $cant_hour WHERE maquina = '$maquina'";
+                                $query_qty_hour = "UPDATE plan SET `$hora`= `$hora`+$cant_hour, total = total + $cant_hour WHERE id = $id_plan";
                                 $cantidad -= $cant_hour;
                             }
                             else
@@ -445,7 +453,7 @@ function editar_reporteA($id_orden)
                 
                                 if($hora == 6)
                                 {
-                                    $query_finish = "UPDATE ordenes_main SET finish_one_day = 0 WHERE orden_id = $id_orden; UPDATE plan SET lleno = 1 WHERE maquina = '$maquina'";
+                                    $query_finish = "UPDATE ordenes_main SET finish_one_day = 0 WHERE orden_id = $id_orden; UPDATE plan SET lleno = 1 WHERE id = $id_plan";
                                     $connection->multi_query($query_finish);
                                     break;
                                 }

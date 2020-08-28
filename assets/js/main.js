@@ -111,6 +111,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         item.value = "";
                         machine.value = "";
                         quantity.value = "";
+                        //console.log(this.responseText);
 
                         $("#agregar-orden-modal").modal("hide");
 
@@ -295,11 +296,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
     }
 
-/**************************************** -------------- INDEX PAGE -------------- ****************************************/
-    if(window.location.pathname == "/horaxhora/")
+    /**************************************** -------------- INDEX PAGE -------------- ****************************************/
+    if(window.location.pathname == "/horaxhora/index.php" || window.location.pathname == "/horaxhora/")
     {
         setTimeout(function(){
-            $("#index").modal("show");
+            if(document.querySelector("#titulo h6").textContent == "")
+                $("#index").modal("show");
         }, 1000);
 
 
@@ -336,6 +338,33 @@ document.addEventListener("DOMContentLoaded", function() {
 
             document.querySelector("#titulo h6").textContent = "Planta "+plant;
             $("#index").modal("hide");
+        }
+    }
+
+    /**************************************** -------------- INDEX PAGE -------------- ****************************************/
+    if(window.location.pathname != "/horaxhora/index.php" && window.location.pathname != "/horaxhora/")
+    {
+       
+
+        const change_plants = document.getElementById("change-plants");
+              
+        change_plants.addEventListener("click", control_plants);
+
+
+        function control_plants(e)
+        {
+            e.preventDefault();
+            
+            let plant = 0;
+            
+            if(e.target.classList.contains("plant-1"))
+                plant = 1;
+            else if(e.target.classList.contains("plant-2"))
+                plant = 2;
+            else if(e.target.classList.contains("plant-3"))
+                plant = 3;
+            if(plant > 0)
+                window.location.assign("/horaxhora/index.php?plant="+plant);
         }
     }
 

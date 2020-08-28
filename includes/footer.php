@@ -100,8 +100,20 @@
           {
             id = d.getHours() + "pm";
           }
+
+          if(d.getHours() - 1 < 12)
+          {
+            old_id = d.getHours() - 1 + "am"
+          }
+          else
+          {
+            old_id = d.getHours() - 1 + "pm"
+          }
+          //#858796
           document.getElementById(id).style.backgroundColor = "#00a6ff";
           document.getElementById(id).style.color = "white";
+          document.getElementById(old_id).style.backgroundColor = "white";
+          document.getElementById(old_id).style.color = "#858796";
 
 /*
           if((d.getHours()==9))

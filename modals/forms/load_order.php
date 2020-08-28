@@ -7,7 +7,7 @@ else
     $planta = 1;
 
 ?>
-<div class="modal" id="agregar-orden-modal">
+<div class="modal fade" id="agregar-orden-modal">
   <div class="modal-dialog">
     <div class="modal-content">
 

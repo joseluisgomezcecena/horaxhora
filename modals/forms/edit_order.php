@@ -1,4 +1,4 @@
-<div class="modal" id="editar-orden-modal">
+<div class="modal fade" id="editar-orden-modal">
   <div class="modal-dialog">
     <div class="modal-content">
 

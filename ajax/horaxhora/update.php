@@ -46,8 +46,8 @@ else
             {
                 
                 calc_cantidad_actual($id_orden);
-                calc_eficiencia_turno($hr, $turno);
-                calc_eficiencia_total($hr);
+                calc_eficiencia_turno($turno);
+                calc_eficiencia_total();
 
             }
         }
@@ -79,11 +79,13 @@ function calc_cantidad_actual($id_orden)
 }
 
 
-function calc_eficiencia_turno($hr, $turno)
+function calc_eficiencia_turno($turno)
 {
     global $connection;
     global $date;
     global $maquina;
+
+    $hr = date("H") * 1;
 
     if($turno == 1)
         $i = 6;
@@ -105,7 +107,7 @@ function calc_eficiencia_turno($hr, $turno)
     else
         $min = 1;
 
-    echo $query_cantidades_turno .= " + A.`$hr` AS cantidad_total" . $query_cantidades_turno2 . " + ( B.`$hr` * $min) AS cantidad_planeada FROM horas AS A INNER JOIN plan AS B ON B.maquina = A.maquina WHERE A.maquina = '$maquina'";
+    $query_cantidades_turno .= " + A.`$hr` AS cantidad_total" . $query_cantidades_turno2 . " + ( B.`$hr` * $min) AS cantidad_planeada FROM horas AS A INNER JOIN plan AS B ON B.maquina = A.maquina WHERE A.maquina = '$maquina'";
     $result_cantidades_turno = $connection->query($query_cantidades_turno);
 
     if($result_cantidades_turno)
@@ -114,9 +116,8 @@ function calc_eficiencia_turno($hr, $turno)
         {
             while($row_cantidades_turno = $result_cantidades_turno->fetch_assoc())
             {
-                echo $cantidad_realizada = $row_cantidades_turno['cantidad_total'];
-                echo "  -  ";
-                echo $cantidad_planeada  = $row_cantidades_turno['cantidad_planeada'];
+                $cantidad_realizada = $row_cantidades_turno['cantidad_total'];
+                $cantidad_planeada  = $row_cantidades_turno['cantidad_planeada'];
             }
 
             if($cantidad_planeada > 0)
@@ -124,19 +125,28 @@ function calc_eficiencia_turno($hr, $turno)
             else
                 $eficiencia_turno = 0;
 
-            
-            $query_eficiencia_turno  = "UPDATE eficiencias SET `eficiencia_turno$turno`=$eficiencia_turno WHERE maquina = '$maquina' AND dia = '$date'";
+            $select = "SELECT * FROM eficiencias WHERE maquina = '$maquina' AND dia = '$date'";
+            $result = $connection->query($select);
+            if($result)
+            {
+                if($result->num_rows == 1)
+                    $query_eficiencia_turno  = "UPDATE eficiencias SET `eficiencia_turno$turno`=$eficiencia_turno WHERE maquina = '$maquina' AND dia = '$date'";
+                else 
+                    $query_eficiencia_turno  = "INSERT INTO eficiencias(`eficiencia_turno$turno`, maquina, dia) VALUES($eficiencia_turno,'$maquina','$date')";
+            }
             $result_eficiencia_turno = $connection->query($query_eficiencia_turno);
         }
     }
 
 }
 
-function calc_eficiencia_total($hr)
+function calc_eficiencia_total()
 {
     global $connection;
     global $date;
     global $maquina;
+
+    $hr = date("H") * 1;
 
     $query_cantidades_total  = "SELECT A.`6`";
     $query_cantidades_total2 = ", B.`6` ";

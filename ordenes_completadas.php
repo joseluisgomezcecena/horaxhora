@@ -30,21 +30,10 @@ else
                             <th style="width: 100px">Fecha de Inicio</th>
                             <th>Fecha de Finalizacion</th>
                             <th>PPH Standard</th>
-                            <th>Horas aplicadas 1er turno</th>
                             <th>Cantidad 1er turno</th>
-                            <th>PPH real 1er turno</th>
-                            <th>Eficiencia 1er turno</th>
-                            <th>Horas aplicadas 2do turno</th>
                             <th>Cantidad 2do turno</th>
-                            <th>PPH real 2do turno</th>
-                            <th>Eficiencia 2do turno</th>
-                            <th>Horas Aplicadas 3er turno</th>
                             <th>Cantidad 3er turno</th>
-                            <th>PPH real 3er turno</th>
-                            <th>Eficiencia 3er turno</th>
                             <th>H.A. total</th>
-                            <th>PPH real total</th>
-                            <th>Eficiencia total</th>
                         </tr>
                     </thead>
                     <tfoot>
@@ -56,27 +45,17 @@ else
                             <th style="width: 100px">Fecha de Inicio</th>
                             <th>Fecha de Finalizacion</th>
                             <th>PPH Standard</th>
-                            <th>Horas aplicadas 1er turno</th>
                             <th>Cantidad 1er turno</th>
-                            <th>PPH real 1er turno</th>
-                            <th>Eficiencia 1er turno</th>
-                            <th>Horas aplicadas 2do turno</th>
                             <th>Cantidad 2do turno</th>
-                            <th>PPH real 2do turno</th>
-                            <th>Eficiencia 2do turno</th>
-                            <th>Horas Aplicadas 3er turno</th>
                             <th>Cantidad 3er turno</th>
-                            <th>PPH real 3er turno</th>
-                            <th>Eficiencia 3er turno</th>
                             <th>H.A. total</th>
-                            <th>PPH real total</th>
-                            <th>Eficiencia total</th>
                         </tr>
                     </tfoot>
                     <tbody>
                         <?php 
-                        $query_orders  = "SELECT A.orden_id, A.work_order, A.item, A.meta_orden, A.maquina, A.fecha_inicial, A.fecha_final, A.pph_std, SUM(B.cantidad_turno1) as cant_turno1, SUM(B.horas_aplicadas1) as horas_aplicadas1, SUM(B.cantidad_turno2) as cant_turno2, SUM(B.horas_aplicadas2) as horas_aplicadas2, SUM(B.cantidad_turno3) as cant_turno3, SUM(B.horas_aplicadas3) as horas_aplicadas3  FROM ordenes_main AS A LEFT JOIN ordenes_diarias AS B ON B.id_orden = A.orden_id  WHERE estado = 2 AND planta_id = $planta";
+                        $query_orders  = "SELECT A.orden_id, A.work_order, A.item, A.meta_orden, A.maquina, A.fecha_inicial, A.fecha_final, A.pph_std FROM ordenes_main AS A WHERE estado = 2 AND planta_id = $planta";
                         $result_orders = $connection->query($query_orders);
+  
                         if(!$result_orders)
                         {
                             die($query_orders);
@@ -84,6 +63,24 @@ else
                         if($result_orders->num_rows > 0)
                         {
                             while($row_orders = $result_orders->fetch_assoc()):
+
+                                $final_date = new DateTime($row_orders['fecha_final']);
+                                $initial_date = new DateTime($row_orders['fecha_inicial']);
+
+                                $total_time = $final_date->diff($initial_date);
+                                
+                                $query_cantidades  = "SELECT SUM(B.cantidad_turno1) as cant_turno1, SUM(B.cantidad_turno2) as cant_turno2, SUM(B.cantidad_turno3) as cant_turno3 FROM ordenes_diarias AS B WHERE B.id_orden = {$row_orders['orden_id']}";
+                                $result_cantidades = $connection->query($query_cantidades);
+                                if($result_cantidades)
+                                {
+                                    if($result_cantidades->num_rows == 1)
+                                    {
+                                        $row_cantidades = $result_cantidades->fetch_assoc();
+                                        $cantidad_turno1 = $row_cantidades['cant_turno1'] > 0 ?  $row_cantidades['cant_turno1'] :  "N/A";
+                                        $cantidad_turno2 = $row_cantidades['cant_turno2'] > 0 ?  $row_cantidades['cant_turno2'] :  "N/A";
+                                        $cantidad_turno3 = $row_cantidades['cant_turno3'] > 0 ?  $row_cantidades['cant_turno3'] :  "N/A";
+                                    }
+                                }
                         ?>
                         <tr id="row<?php echo $row_orders['orden_id'];?>">
                             <td><?php echo $row_orders['work_order'];?></td>
@@ -93,106 +90,10 @@ else
                             <td><?php echo date("m/d/Y H:i:s", strtotime($row_orders['fecha_inicial']));?></td>
                             <td><?php echo date("m/d/Y H:i:s", strtotime($row_orders['fecha_final']));?></td>
                             <td><?php echo $row_orders['pph_std'];?></td>
-                            <td><?php echo $row_orders['horas_aplicadas1'];?></td>
-                            <td><?php echo $row_orders['cant_turno1'];?></td>
-                            <td>
-                                <?php
-                                    if($row_orders['horas_aplicadas1'] > 0)
-                                    {
-                                        $pph1 = $row_orders['cant_turno1'] / $row_orders['horas_aplicadas1'];
-                                        echo $pph1;
-                                    }
-                                    else
-                                    {
-                                        $pph1 = 0;
-                                        echo "N/A";
-                                    }
-                                ?>
-                            </td>
-                            <td>
-                                <?php
-                                    if($pph1 > 0 && $row_orders['pph_std'] > 0)
-                                       echo (100 * ($pph1 / $row_orders['pph_std'])) . "%";
-                                    else
-                                        echo "N/A";
-                                ?>
-                            </td>
-                            <td><?php echo $row_orders['horas_aplicadas2'];?></td>
-                            <td><?php echo $row_orders['cant_turno2'];?></td>
-                            <td>
-                                <?php
-                                    if($row_orders['horas_aplicadas2'] > 0)
-                                    {
-                                        $pph2 = $row_orders['cant_turno2'] / $row_orders['horas_aplicadas2'];
-                                        echo $pph2;
-                                    }
-                                    else
-                                    {
-                                        $pph2 = 0;
-                                        echo "N/A";
-                                    }
-                                ?>
-                            </td>
-                            <td>
-                                <?php
-                                    if($pph2 > 0 && $row_orders['pph_std'] > 0)
-                                       echo (100 * ($pph2 / $row_orders['pph_std'])) . "%";
-                                    else
-                                        echo "N/A";
-                                ?>
-                            </td>
-                            <td><?php echo $row_orders['horas_aplicadas3'];?></td>
-                            <td><?php echo $row_orders['cant_turno3'];?></td>
-                            <td>
-                                <?php
-                                    if($row_orders['horas_aplicadas3'] > 0)
-                                    {
-                                        $pph3 = $row_orders['cant_turno3'] / $row_orders['horas_aplicadas3'];
-                                        echo $pph3;
-                                    }
-                                    else
-                                    {
-                                        $pph3 = 0;
-                                        echo "N/A";
-                                    }
-                                ?>
-                            </td>
-                            <td>
-                                <?php
-                                    if($pph3 > 0 && $row_orders['pph_std'] > 0)
-                                       echo (100 * ($pph3 / $row_orders['pph_std'])) . "%";
-                                    else
-                                        echo "N/A";
-                                ?>
-                            </td>
-                            <td>
-                                <?php
-                                    $horas_total = $row_orders['horas_aplicadas1'] + $row_orders['horas_aplicadas2'] + $row_orders['horas_aplicadas3'];
-                                    echo $horas_total;
-                                ?>
-                            </td>
-                            <td>
-                                <?php
-                                    if( $horas_total > 0)
-                                    {
-                                        $pph_total = $row_orders['meta_orden']/$horas_total;
-                                        echo $pph_total;
-                                    }
-                                    else
-                                    {
-                                        $pph_total = 0;
-                                        echo "N/A";
-                                    }
-                                ?>
-                            </td>
-                            <td>
-                                <?php
-                                    if( $pph_total > 0 && $row_orders['pph_std'] > 0)
-                                        echo (100 * ($pph_total / $row_orders['pph_std'] )) . "%";
-                                    else
-                                        echo "N/A";
-                                ?>
-                            </td>
+                            <td><?php echo $cantidad_turno1;?></td>
+                            <td><?php echo $cantidad_turno2;?></td>
+                            <td><?php echo $cantidad_turno3;?></td>
+                            <td><?php echo round($total_time->days * 24 + $total_time->h + $total_time->i / 60, 2) . " horas";?></td>
                             
                         </tr>
                         <?php 
