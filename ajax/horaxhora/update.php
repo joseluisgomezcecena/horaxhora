@@ -97,7 +97,7 @@ function calc_eficiencia_turno($turno)
     $query_cantidades_turno  = "SELECT A.`$i`";
     $query_cantidades_turno2 = ", B.`$i` ";
 
-    for($i = $i + 1; $i < $hr; $i++)
+    for($i = $i + 1; $i <= $hr; $i++)
     {
         $query_cantidades_turno .= " + A.`$i`";
         $query_cantidades_turno2 .= " + B.`$i` ";
@@ -107,7 +107,8 @@ function calc_eficiencia_turno($turno)
     else
         $min = 1;
 
-    $query_cantidades_turno .= " + A.`$hr` AS cantidad_total" . $query_cantidades_turno2 . " + ( B.`$hr` * $min) AS cantidad_planeada FROM horas AS A INNER JOIN plan AS B ON B.maquina = A.maquina WHERE A.maquina = '$maquina'";
+    //$query_cantidades_turno .= " + A.`$hr` AS cantidad_total" . $query_cantidades_turno2 . " + ( B.`$hr` * $min) AS cantidad_planeada FROM horas AS A INNER JOIN plan AS B ON B.maquina = A.maquina WHERE A.maquina = '$maquina'";
+    $query_cantidades_turno .= " AS cantidad_total" . $query_cantidades_turno2 . " AS cantidad_planeada FROM horas AS A INNER JOIN plan AS B ON B.maquina = A.maquina WHERE A.maquina = '$maquina'";
     $result_cantidades_turno = $connection->query($query_cantidades_turno);
 
     if($result_cantidades_turno)
