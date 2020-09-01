@@ -33,7 +33,7 @@ else
                             <th>Cantidad 1er turno</th>
                             <th>Cantidad 2do turno</th>
                             <th>Cantidad 3er turno</th>
-                            <th>H.A. total</th>
+                            <th>Horas totales</th>
                         </tr>
                     </thead>
                     <tfoot>
@@ -48,7 +48,7 @@ else
                             <th>Cantidad 1er turno</th>
                             <th>Cantidad 2do turno</th>
                             <th>Cantidad 3er turno</th>
-                            <th>H.A. total</th>
+                            <th>Horas totales</th>
                         </tr>
                     </tfoot>
                     <tbody>

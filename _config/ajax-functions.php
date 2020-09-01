@@ -138,7 +138,7 @@ if(isset($_GET['f']))
             echo "start";
 
 
-            $select = "SELECT * FROM WHERE maquina = (SELECT maquina from ordenes_main WHERE orden_id = $id) AND date = '". date('Y/m/d') ."'";
+            $select = "SELECT * FROM eficiencias WHERE maquina = (SELECT maquina from ordenes_main WHERE orden_id = $id) AND date = '". date('Y/m/d') ."'";
             $result = $connection->query($select);
             if($result)
             {
@@ -198,6 +198,18 @@ if(isset($_GET['f']))
         if($result_complete)
         {
             echo "Complete";
+            $query_next_order  = "SELECT * FROM ordenes_main WHERE maquina = (SELECT maquina FROM ordenes_main WHERE orden_id = $id_orden) AND estado = 0 LIM 1";
+            $result_next_order = $connection->query($query_next_order);
+            if($result_next_order)
+            {
+                if($result_next_level->num_rows == 1)
+                {
+                    $row_next_order = $result_next_order->fetch_assoc();
+                    $id = $row_next_order['orden_id'];
+
+
+                }
+            }
         }
     }
     else if($_GET['f'] == "pauseOrder")
@@ -240,7 +252,7 @@ function agregar_reporteA($id_orden)
         }
 
         //Search if already exist a plan in this machine
-        $query_plan  = "SELECT * FROM plan WHERE maquina = '$maquina' AND fecha = '$date'";
+        $query_plan  = "SELECT * FROM plan WHERE maquina = '$maquina'";
         $result_plan = $connection->query($query_plan);
         if($result_plan)
         {
@@ -263,15 +275,6 @@ function agregar_reporteA($id_orden)
                         }
                     }
                 }
-            }
-            else
-            {
-                $query   = "INSERT INTO plan(maquina , planta_id, fecha) VALUES('$maquina', '$planta', '$date')";
-                $result  = $connection->query($query);
-                $id_plan = $connection->insert_id;
-                $lleno = 0;
-                $hora    = 1 * date("H");
-                $minutos = 60 - date("i");
             }
         }
         $breaktime  = 36;
@@ -379,7 +382,7 @@ function editar_reporteA($id_orden)
 
             //_config/ajax-functions.php?f=startOrder&id=41&pph=100&hc=2
             
-            $query_plan  = "SELECT * FROM plan WHERE maquina = '$maquina' AND fecha = '$date' ";
+            $query_plan  = "SELECT * FROM plan WHERE maquina = '$maquina'";
             $result_plan = $connection->query($query_plan);
             if($result_plan)
             {
@@ -433,7 +436,9 @@ function editar_reporteA($id_orden)
                                 $pph_por_headcount = $pph_std * $headcount1;
                             else if($hora >= 23  || $hora < 6)
                                 $pph_por_headcount = $pph_std * $headcount1;
+
                             $cant_hour = (int)($minutos * $pph_por_headcount) / 60;
+                            
                             if($cantidad > $cant_hour)
                             {
                                 $query_qty_hour = "UPDATE plan SET `$hora`= `$hora`+$cant_hour, total = total + $cant_hour WHERE id = $id_plan";
@@ -496,10 +501,10 @@ function cleanPlanbyMachine($hora, $maquina) //Return a query to clean columns i
 {
     global $connection;
 
-    if(date("i") < 50)
-        $y = $hora;
-    else    
-        $y = $hora + 1;
+    echo $query = "UPDATE plan, horas SET plan.`$hora`=0, plan.`total`=plan.`total`-plan.`$hora` WHERE horas.`$hora` = 0 ";
+    $connection->query($query);
+
+    $y = $hora + 1;
     $query_clean_plan = "UPDATE plan SET  `$y`=0 ";
     $query_clean_plan2 = "UPDATE plan SET `total`=`total`-`$y`";
 
@@ -520,7 +525,7 @@ function cleanPlanbyMachine($hora, $maquina) //Return a query to clean columns i
     echo $query_clean_plan2 = " $query_clean_plan2 WHERE maquina = '$maquina';"; 
     $connection->query($query_clean_plan2);
     
-    $query_clean_plan = $query_clean_plan . " WHERE maquina = '$maquina';";
+    echo $query_clean_plan = $query_clean_plan . " WHERE maquina = '$maquina';";
     $connection->query($query_clean_plan);
     
 }

@@ -347,7 +347,6 @@ document.addEventListener("DOMContentLoaded", function() {
        
 
         const change_plants = document.getElementById("change-plants");
-              
         change_plants.addEventListener("click", control_plants);
 
 

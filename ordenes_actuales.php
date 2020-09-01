@@ -4,6 +4,7 @@ include_once("includes/header.php");
 include_once("includes/top-menu.php");
 
 include_once "_config/ajax-functions.php";
+include_once "modals/forms/start_order.php";
 
 $turn = turno(date("H:i"));
 

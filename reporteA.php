@@ -89,8 +89,9 @@ else
                 </tfoot>
                 <tbody>
                     <?php 
+                    $date = date("Y/m/d");
                     // " A.`6` as '6P', B.`6` as '6R', A.`7` as '7P', B.`7` as '7R', A.`8` as '8P', B.`8` as '8R', A.`9` as '9P', B.`9` as '9:00 am Real', A.`10` as '10:00 am Planeado', B.`10` as '10:00 am Real', A.`11` as '11:00 am Planeado', B.`11` as '11:00 am Real', A.`12` as '12:00 pm Planeado', B.`12` as '12:00 pm Real', A.`13` as '1:00 pm Planeado', B.`13` as '1:00 pm Real', A.`14` as '2:00 pm Planeado', B.`14` as '2:00 pm Real', A.`15` as '3:00 pm Planeado', B.`15` as '3:00 pm Real', A.`16` as '4:00 pm Planeado', B.`16` as '4:00 pm Real', A.`17` as '5:00 pm Planeado', B.`17` as '5:00 pm Real', A.`18` as '6:00 pm Planeado', B.`18` as '6:00 pm Real', A.`19` as '7:00 pm Planeado', B.`19` as '7:00 pm Real', A.`20` as '8:00 pm Planeado', B.`20` as '8:00 pm Real', A.`21` as '9:00 pm Planeado', B.`21` as '9:00 pm Real', A.`22` as '10:00 pm Planeado', B.`22` as '10:00 pm Real', A.`23` as '11:00 pm Planeado', B.`23` as '11:00 pm Real', A.`24` as '12:00 am Planeado', B.`24` as '12:00 am Real', A.`1` as '1:00 am Planeado', B.`1` as '1:00 am Real', A.`2` as '2:00 am Planeado', B.`2` as '2:00 am Real', A.`3` as '3:00 am Planeado', B.`3` as '3:00 am Real', A.`4` as '4:00 am Planeado', B.`4` as '4:00 am Real', A.`5` as '5:00 am Planeado', B.`5` as '5:00 am Real',cumple, A.total as 'Piezas totales planeadas', B.total as 'Piezas totales producidas' from plan as A, horas as B where B.Maquina = A.Maquina and A.planta_id = 1
-                    $query = "SELECT * FROM plan WHERE planta_id = $planta ";
+                    $query = "SELECT * FROM plan WHERE planta_id = $planta";
                     $result = mysqli_query($connection, $query);
                     if(!$result)
                     {

@@ -152,7 +152,7 @@ function calc_eficiencia_total()
     $query_cantidades_total  = "SELECT A.`6`";
     $query_cantidades_total2 = ", B.`6` ";
 
-    for($i = 7; $i < $hr; $i++)
+    for($i = 7; $i <= $hr; $i++)
     {
         $query_cantidades_total .= " + A.`$i`";
         $query_cantidades_total2 .= " + B.`$i` ";
@@ -163,7 +163,8 @@ function calc_eficiencia_total()
     else
         $min = 1;
 
-    $query_cantidades_total .= "+ A.`$hr` AS cantidad_total" . $query_cantidades_total2 . " + ( B.`$hr` * $min) AS cantidad_planeada FROM horas AS A INNER JOIN plan AS B ON B.maquina = A.maquina WHERE A.maquina = '$maquina'";
+    //$query_cantidades_total .= "+ A.`$hr` AS cantidad_total" . $query_cantidades_total2 . " + ( B.`$hr` * $min) AS cantidad_planeada FROM horas AS A INNER JOIN plan AS B ON B.maquina = A.maquina WHERE A.maquina = '$maquina'";
+    $query_cantidades_total .= " AS cantidad_total" . $query_cantidades_total2 . " AS cantidad_planeada FROM horas AS A INNER JOIN plan AS B ON B.maquina = A.maquina WHERE A.maquina = '$maquina'";
     $result_cantidades_total = $connection->query($query_cantidades_total);
 
     if($result_cantidades_total)

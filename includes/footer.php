@@ -114,29 +114,6 @@
           document.getElementById(id).style.color = "white";
           document.getElementById(old_id).style.backgroundColor = "white";
           document.getElementById(old_id).style.color = "#858796";
-
-/*
-          if((d.getHours()==9))
-          {
-            document.getElementById("9am").style.backgroundColor = "#00a6ff";
-            document.getElementById("9am").style.color = "white";
-          }
-          if((d.getHours()==10))
-          {
-            document.getElementById("10am").style.backgroundColor = "#00a6ff";
-            document.getElementById("10am").style.color = "white";
-          }
-          if((d.getHours()==11))
-          {
-            document.getElementById("11am").style.backgroundColor = "#00a6ff";
-            document.getElementById("11am").style.color = "white";
-          }
-          if((d.getHours()==12))
-          {
-            document.getElementById("12pm").style.backgroundColor = "#00a6ff";
-            document.getElementById("12pm").style.color = "white";
-          }
-          */
         }
       }
 
