@@ -19,11 +19,11 @@
             <h5 class="m-0 font-weight-bold text-primary">Seleccione una opcion</h5>
         </div>
         <div class="card-body">
-            <a id="horaxhora" href="horaxhora.php<?php if(isset($plant)) echo '?plant='.$plant;?>" target="_blank" class="btn btn-primary btn-lg btn-block">Hora x Hora</a>
-            <a id="cargar" href="cargar_ordenes.php<?php if(isset($plant)) echo '?plant='.$plant;?>" target="_blank" class="btn btn-dark btn-lg btn-block">Cargar Ordenes</a>
-            <a id="actual" href="ordenes_actuales.php<?php if(isset($plant)) echo '?plant='.$plant;?>"target="_blank"  class="btn btn-success btn-lg btn-block">Ordenes Actuales</a>
-            <a id="completas" href="ordenes_completadas.php<?php if(isset($plant)) echo '?plant='.$plant;?>" target="_blank" class="btn btn-info btn-lg btn-block">Ordenes Completadas</a>
-            <a id="reporte" href="reporteA.php<?php if(isset($plant)) echo '?plant='.$plant;?>" target="_blank" class="btn btn-warning btn-lg btn-block">Planeacion</a>
+            <a id="horaxhora" href="horaxhora.php<?php if(isset($plant)) echo '?plant='.$plant;?>" class="btn btn-primary btn-lg btn-block">Hora x Hora</a>
+            <a id="cargar" href="cargar_ordenes.php<?php if(isset($plant)) echo '?plant='.$plant;?>" class="btn btn-dark btn-lg btn-block">Cargar Ordenes</a>
+            <a id="actual" href="ordenes_actuales.php<?php if(isset($plant)) echo '?plant='.$plant;?>  class="btn btn-success btn-lg btn-block">Ordenes Actuales</a>
+            <a id="completas" href="ordenes_completadas.php<?php if(isset($plant)) echo '?plant='.$plant;?>" class="btn btn-info btn-lg btn-block">Ordenes Completadas</a>
+            <a id="reporte" href="reporteA.php<?php if(isset($plant)) echo '?plant='.$plant;?>" class="btn btn-warning btn-lg btn-block">Planeacion</a>
         </div>
     </div>
 </div>

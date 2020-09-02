@@ -176,11 +176,8 @@ document.addEventListener("DOMContentLoaded", function() {
     /**************************************** -------------- NO INDEX PAGE -------------- ****************************************/
     if(window.location.pathname != "/horaxhora/index.php" && window.location.pathname != "/horaxhora/")
     {
-       
-
         const change_plants = document.getElementById("change-plants");
         change_plants.addEventListener("click", control_plants);
-
 
         function control_plants(e)
         {
@@ -195,7 +192,7 @@ document.addEventListener("DOMContentLoaded", function() {
             else if(e.target.classList.contains("plant-3"))
                 plant = 3;
             if(plant > 0)
-                window.location.assign("/horaxhora/index.php?plant="+plant);
+                window.location.assign("/horaxhora/?plant="+plant);
         }
     }
 });
