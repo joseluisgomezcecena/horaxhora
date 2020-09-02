@@ -38,10 +38,19 @@ else
         if($result_last_update->num_rows == 1)
         {
             $row_last_update = $result_last_update->fetch_assoc();
-
             $id_orden  = $row_last_update['orden_id'];
-            $update_cantidad = "UPDATE ordenes_diarias SET `cantidad_turno$turno` = `cantidad_turno$turno` + $value WHERE id_orden = $id_orden AND fecha_dia = '$date'";
-            
+
+            $query_daily_order  = "SELECT * FROM ordenes_diarias WHERE id_orden = $id_orden AND fecha_dia = '$date'";
+            $result_daily_order = $connection->query($query_daily_order);
+            if($result_daily_order->num_rows == 1)
+            {
+                $update_cantidad = "UPDATE ordenes_diarias SET `cantidad_turno$turno` = `cantidad_turno$turno` + $value WHERE id_orden = $id_orden AND fecha_dia = '$date'";
+            }
+            else
+            {
+                $update_cantidad = "INSERT INTO ordenes_diarias(`cantidad_turno$turno`, id_orden, fecha_dia) VALUES($value, $id_orden, '$date')";
+            }
+
             if($connection->query($update_cantidad))
             {
                 
