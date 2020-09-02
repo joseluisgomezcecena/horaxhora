@@ -198,16 +198,21 @@ if(isset($_GET['f']))
         if($result_complete)
         {
             echo "Complete";
-            $query_next_order  = "SELECT * FROM ordenes_main WHERE maquina = (SELECT maquina FROM ordenes_main WHERE orden_id = $id_orden) AND estado = 0 LIM 1";
+            $query_next_order  = "SELECT * FROM ordenes_main WHERE maquina = (SELECT maquina FROM ordenes_main WHERE orden_id = $id_orden) AND estado = 0 LIMIT 1";
             $result_next_order = $connection->query($query_next_order);
             if($result_next_order)
             {
-                if($result_next_level->num_rows == 1)
+                if($result_next_order->num_rows == 1)
                 {
                     $row_next_order = $result_next_order->fetch_assoc();
-                    $id = $row_next_order['orden_id'];
-
-
+                    $turno          = turno(date("H:i"));
+    
+                    echo "<uv>
+                            <li>{$row_next_order['work_order']}</li>
+                            <li>{$row_next_order['orden_id']}</li>
+                            <li>{$row_next_order['head_count'.$turno]}</li>
+                            <li>{$row_next_order['pph_std']}</li>
+                          </uv>";
                 }
             }
         }
@@ -222,6 +227,46 @@ if(isset($_GET['f']))
             echo "Pause";
         }
     }
+    else if($_GET['f'] == "searchOrder")
+    {
+        $id_orden = $_GET['id'];
+        $r        = $_GET['r'];
+        $turno    = turno(date("H:i"));
+
+        $query_search  = "SELECT * FROM ordenes_main WHERE orden_id = $id_orden";
+        $result_search = $connection->query($query_search);
+        if($result_search)
+        {
+            if($result_search->num_rows == 1)
+            {
+                while($row_search = $result_search->fetch_assoc())
+                {
+                    if($r == "start")
+                    {
+                        echo "<ul>
+                                <li>{$row_search['head_count'.$turno]}</li>
+                                <li>{$row_search['pph_std']}</li>
+                              </ul>";
+                    }
+                    else if($r == "edit")
+                    {
+                        echo "<ul>
+                                <li>{$row_search['work_order']}</li>
+                                <li>{$row_search['item']}</li>
+                                <li>{$row_search['maquina']}</li>
+                                <li>{$row_search['meta_orden']}</li>
+                                <li>{$row_search['pph_std']}</li>
+                                <li>{$row_search['setup']}</li>
+                                <li>{$row_search['head_count1']}</li>
+                                <li>{$row_search['head_count2']}</li>
+                                <li>{$row_search['head_count3']}</li>
+                              </ul>";
+                    }
+                }
+            }
+        }
+    }
+
 }
 
 
@@ -267,12 +312,23 @@ function agregar_reporteA($id_orden)
                         $id_plan  = $row_plan['id'];
                         $hora     = $row_plan['hora_pendiente'];
                         $minutos  = $row_plan['minutos_pendientes'];
+
+                        
     
                         if($row_plan['total'] == 0 || $hora < (1 * date("H")))
                         {
-                            $hora    = 1 * date("H"); //1 * to quit leading zero
-                            $minutos = 60 - date("i");
+                            if($hora >= 0 && $hora < 6 && $hora < (1 * date("H")))
+                            {
+                                $hora     = $row_plan['hora_pendiente'];
+                                $minutos  = $row_plan['minutos_pendientes'];
+                            }
+                            else
+                            {
+                                $hora    = 1 * date("H"); //1 * to quit leading zero
+                                $minutos = 60 - date("i");
+                            }
                         }
+
                     }
                 }
             }
@@ -438,7 +494,7 @@ function editar_reporteA($id_orden)
                                 $pph_por_headcount = $pph_std * $headcount1;
 
                             $cant_hour = (int)($minutos * $pph_por_headcount) / 60;
-                            
+
                             if($cantidad > $cant_hour)
                             {
                                 $query_qty_hour = "UPDATE plan SET `$hora`= `$hora`+$cant_hour, total = total + $cant_hour WHERE id = $id_plan";

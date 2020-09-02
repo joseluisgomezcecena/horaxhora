@@ -133,7 +133,7 @@ function calc_eficiencia_turno($turno)
                 if($result->num_rows == 1)
                     $query_eficiencia_turno  = "UPDATE eficiencias SET `eficiencia_turno$turno`=$eficiencia_turno WHERE maquina = '$maquina' AND dia = '$date'";
                 else 
-                    $query_eficiencia_turno  = "INSERT INTO eficiencias(`eficiencia_turno$turno`, maquina, dia) VALUES($eficiencia_turno,'$maquina','$date')";
+                    echo $query_eficiencia_turno  = "INSERT INTO eficiencias(`eficiencia_turno$turno`, maquina, dia) VALUES($eficiencia_turno,'$maquina','$date')";
             }
             $result_eficiencia_turno = $connection->query($query_eficiencia_turno);
         }

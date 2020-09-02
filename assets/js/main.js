@@ -32,13 +32,31 @@ document.addEventListener("DOMContentLoaded", function() {
             {
                 //comenzar_orden(e.target.getAttribute("data-id"));
                 let id_orden = e.target.getAttribute("data-id"),
-                    pph      = document.getElementById("pph"+id_orden).textContent,
-                    wo       = document.getElementById("wo"+id_orden).textContent;
+                    wo       = document.getElementById("wo"+id_orden).textContent,
+                    url      = "_config/ajax-functions.php?f=searchOrder&r=start&id="+id_orden,
+                    xmlhttps = new XMLHttpRequest();
+                    
+                xmlhttps.onreadystatechange = function()
+                {
+                    if(this.readyState == 4 && this.status == 200)
+                    {
+                        let order =  document.querySelector(".order");
+
+                        order.innerHTML = this.responseText;
+                        let li = document.querySelectorAll(".order li");
+
+                        document.getElementById("headcount").value = li[0].textContent;
+                        document.getElementById("pph-std").value = li[1].textContent;
+
+                        order.innerHTML = "";
+
+                    }
+                };
+                xmlhttps.open("GET", url, true);
+                xmlhttps.send();
 
 
                 document.querySelector("#comenzar-orden-modal .modal-title").textContent = "Comenzar orden: " + wo;
-                if(pph != "" && pph != "0")
-                    document.getElementById("pph-std").value = pph;
 
                 start_order.setAttribute("data-id", id_orden)
                 $("#comenzar-orden-modal").modal("show");
@@ -52,167 +70,40 @@ document.addEventListener("DOMContentLoaded", function() {
                 let id_orden = e.target.getAttribute("data-id"),
                     columnas = e.target.parentElement.parentElement.querySelectorAll("td"),
                     inputs   = document.querySelectorAll("#editar-orden-modal input"),
-                    select   = document.querySelector("#editar-orden-modal select");
-
-                    document.querySelector("#editar-orden-modal .modal-title").textContent = "Editar orden: " + columnas[0].textContent;
-                    inputs[0].value = columnas[0].textContent;
-                    inputs[1].value = columnas[1].textContent;
-                    inputs[2].value = columnas[2].textContent;
-                    select.value    = columnas[3].textContent;
-                    inputs[3].value = columnas[4].textContent;
-                    inputs[4].value = columnas[5].textContent;
-                    edit_order.setAttribute("data-id", id_orden);
-                $("#editar-orden-modal").modal("show");
-            }
-
-        }
-        function agregar_orden()
-        {
-            let work_order = document.getElementById("work-order"),
-                item       = document.getElementById("item"),
-                machine    = document.getElementById("machine"),
-                quantity   = document.getElementById("quantity"),
-                flag_empty = 0;
-
-            //Validate that the inputs have values
-            if(work_order.value == "")
-                work_order.style.borderColor = "red";
-            else
-                work_order.style.borderColor = "#d1d3e2";
-            if(item.value == "")
-                item.style.borderColor = "red";
-            else
-                item.style.borderColor = "#d1d3e2";
-            if(machine.value == "")
-                machine.style.borderColor = "red";
-            else
-                machine.style.borderColor = "#d1d3e2";
-            if(quantity.value == "")
-                quantity.style.borderColor = "red";
-            else
-                quantity.style.borderColor = "#d1d3e2";
-
-
-            if(work_order.value != "" && item != "" && machine.value != "" && quantity.value != "")
-            {
-                let url      = "_config/ajax-functions.php?f=addOrder&workorder=" + work_order.value + "&item=" + item.value + "&machine=" + machine.value + "&quantity=" + quantity.value;
+                    select   = document.querySelector("#editar-orden-modal select")
+                    url      = "_config/ajax-functions.php?f=searchOrder&r=edit&id="+id_orden,
                     xmlhttps = new XMLHttpRequest();
-                xmlhttps.onreadystatechange = function()
-                {
-                    if(xmlhttps.readyState == 4 && xmlhttps.status == 200)
-                    {
-                        let tbody_ordenes = document.querySelector("#tabla-ordenes tbody");
-
-                        tbody_ordenes.innerHTML += this.responseText;
-                        //row_ordenes.innerHTML = this.responseText;
-                        //tbody_ordenes.insertBefore(row_ordenes, tbody_ordenes.firstChild);
-
-                        work_order.value = "";
-                        item.value = "";
-                        machine.value = "";
-                        quantity.value = "";
-                        //console.log(this.responseText);
-
-                        $("#agregar-orden-modal").modal("hide");
-
-                    }
-                };
-                xmlhttps.open("GET", url, true);
-                xmlhttps.send();
-                //console.log(url);
-            }
-            else
-            {
-                swal ( "Debes llenar todos los datos.", "" ,  "error" ); //Alert of sweetalert.js
-            }
-        }
-        function comenzar_orden()
-        {
-            let id   = start_order.getAttribute("data-id"),
-                hc   = document.getElementById("headcount").value,
-                pph  = document.getElementById("pph-std").value,
-                url  = "_config/ajax-functions.php?f=startOrder&id=" + id + "&pph=" + pph + "&hc=" + hc,
-                xmlhttps = new XMLHttpRequest();
-
-            if(hc != "" && hc != 0 && pph != "" && pph != 0 ){
+                    
                 xmlhttps.onreadystatechange = function()
                 {
                     if(this.readyState == 4 && this.status == 200)
                     {
-                        let item  = document.getElementById("row"+id);
-                            orden = document.getElementById("wo"+id).textContent;
-                        item.remove();
-                        //document.querySelector(".datos").innerHTML = this.responseText;
-                        swal("La orden " + orden +" ha comenzado", {
-                            icon: "success",
-                        });
+                        let order =  document.querySelector(".order");
+
+                        order.innerHTML = this.responseText;
+                        let li = document.querySelectorAll(".order li");
+
+                        document.querySelector("#editar-orden-modal .modal-title").textContent = "Editar orden: " + li[0].textContent;
+                        inputs[0].value = li[0].textContent;
+                        inputs[1].value = li[1].textContent;
+                        select.value    = li[2].textContent;
+                        inputs[2].value = li[3].textContent;
+                        inputs[3].value = li[4].textContent;
+                        inputs[4].value = li[5].textContent;
+                        inputs[5].value = li[6].textContent;
+                        inputs[6].value = li[7].textContent;
+                        inputs[7].value = li[8].textContent;
+
+                        order.innerHTML = "";
+
                     }
                 };
                 xmlhttps.open("GET", url, true);
                 xmlhttps.send();
+                edit_order.setAttribute("data-id", id_orden);
+                $("#editar-orden-modal").modal("show");
             }
-            else
-            {
-                swal ( "Debes llenar todos los datos.", "" ,  "error" ); //Alert of sweetalert.js
-            }
-            
         }
-        function editar_orden(id)
-        {
-            let inputs   = document.querySelectorAll("#editar-orden-modal input"),
-                select   = document.querySelector("#editar-orden-modal select");
-
-            let url      = "_config/ajax-functions.php?f=editOrder&workorder=" + inputs[0].value + "&item=" + inputs[1].value + "&machine=" + select.value + "&quantity=" + inputs[2].value + "&pph=" + inputs[3].value + "&setup=" + inputs[4].value + "&id=" + id,
-                xmlhttps = new XMLHttpRequest();
-
-            xmlhttps.onreadystatechange = function()
-            {
-            if(this.readyState == 4 && this.status == 200)
-            {
-                    let columnas = document.querySelectorAll("#row"+ id +" td");
-                    columnas[0].textContent = inputs[0].value;
-                    columnas[1].textContent = inputs[1].value;
-                    columnas[2].textContent = inputs[2].value;
-                    columnas[3].textContent = select.value;
-                    columnas[4].textContent = inputs[3].value;
-                    columnas[5].textContent = inputs[4].value;
-
-                    $("#editar-orden-modal").modal("hide");
-            }
-            };
-            xmlhttps.open("GET", url, true);
-            xmlhttps.send();
-        }
-        function eliminar_orden(id, item)
-        {
-            swal({
-                title: "Atención!",
-                text: "Una vez eliminada, no sera capaz de recuperarla.",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            })
-            .then((willDelete) => {
-                if (willDelete) {
-                    let url      = "_config/ajax-functions.php?f=deleteOrder&id=" + id,
-                        xmlhttps = new XMLHttpRequest();
-                    xmlhttps.onreadystatechange = function()
-                    {
-                        if(xmlhttps.readyState == 4 && xmlhttps.status == 200)
-                        {
-                            item.remove();
-                            swal("La orden ha sido eliminada", {
-                                icon: "success",
-                            });   
-                        }
-                    };
-                    xmlhttps.open("GET", url, true);
-                    xmlhttps.send();
-                } else {
-                }
-            });
-        }
-
     }
 
     /**************************************** -------------- ACTUAL ORDERS PAGE -------------- ****************************************/
@@ -235,65 +126,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 pausar_orden(e.target.getAttribute("data-id"), e.target.parentElement.parentElement);
             }
         }
-
-        function completar_orden(id, item)
-        {
-            swal({
-                title: "Completar Orden",
-                text: "¿Desea completar la orden?",
-                icon: "info",
-                buttons: [true, "Completar"],
-            })
-            .then((willComplete) => {
-                if (willComplete) {
-                    let url      = "_config/ajax-functions.php?f=completeOrder&id=" + id,
-                        xmlhttps = new XMLHttpRequest();
-                    xmlhttps.onreadystatechange = function()
-                    {
-                        if(xmlhttps.readyState == 4 && xmlhttps.status == 200)
-                        {
-                            item.remove();
-                            swal("La orden ha sido completada con exito", {
-                                icon: "success",
-                            });   
-                        }
-                    };
-                    xmlhttps.open("GET", url, true);
-                    xmlhttps.send();
-                } else {
-                }
-            });
-        }
-
-        function pausar_orden(id, item)
-        {
-            swal({
-                title: "Pausar Orden",
-                text: "¿Desea pausar la orden?",
-                icon: "info",
-                buttons: [true, "Pausar"],
-            })
-            .then((willPause) => {
-                if (willPause) {
-                    let url      = "_config/ajax-functions.php?f=pauseOrder&id=" + id,
-                        xmlhttps = new XMLHttpRequest();
-                    xmlhttps.onreadystatechange = function()
-                    {
-                        if(xmlhttps.readyState == 4 && xmlhttps.status == 200)
-                        {
-                            item.remove();
-                            swal("La orden ha sido completada con exito", {
-                                icon: "success",
-                            });   
-                        }
-                    };
-                    xmlhttps.open("GET", url, true);
-                    xmlhttps.send();
-                } else {
-                }
-            });
-        }
-
     }
 
     /**************************************** -------------- INDEX PAGE -------------- ****************************************/
@@ -341,7 +173,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    /**************************************** -------------- INDEX PAGE -------------- ****************************************/
+    /**************************************** -------------- NO INDEX PAGE -------------- ****************************************/
     if(window.location.pathname != "/horaxhora/index.php" && window.location.pathname != "/horaxhora/")
     {
        
@@ -366,5 +198,230 @@ document.addEventListener("DOMContentLoaded", function() {
                 window.location.assign("/horaxhora/index.php?plant="+plant);
         }
     }
-
 });
+
+    /**************************************** -------------- FUNCTIONS -------------- ****************************************/
+
+
+    function agregar_orden()
+    {
+        let work_order = document.getElementById("work-order"),
+            item       = document.getElementById("item"),
+            machine    = document.getElementById("machine"),
+            quantity   = document.getElementById("quantity"),
+            flag_empty = 0;
+
+        //Validate that the inputs have values
+        if(work_order.value == "")
+            work_order.style.borderColor = "red";
+        else
+            work_order.style.borderColor = "#d1d3e2";
+        if(item.value == "")
+            item.style.borderColor = "red";
+        else
+            item.style.borderColor = "#d1d3e2";
+        if(machine.value == "")
+            machine.style.borderColor = "red";
+        else
+            machine.style.borderColor = "#d1d3e2";
+        if(quantity.value == "")
+            quantity.style.borderColor = "red";
+        else
+            quantity.style.borderColor = "#d1d3e2";
+
+
+        if(work_order.value != "" && item != "" && machine.value != "" && quantity.value != "")
+        {
+            let url      = "_config/ajax-functions.php?f=addOrder&workorder=" + work_order.value + "&item=" + item.value + "&machine=" + machine.value + "&quantity=" + quantity.value;
+                xmlhttps = new XMLHttpRequest();
+            xmlhttps.onreadystatechange = function()
+            {
+                if(xmlhttps.readyState == 4 && xmlhttps.status == 200)
+                {
+                    let tbody_ordenes = document.querySelector("#tabla-ordenes tbody");
+
+                    tbody_ordenes.innerHTML += this.responseText;
+                    //row_ordenes.innerHTML = this.responseText;
+                    //tbody_ordenes.insertBefore(row_ordenes, tbody_ordenes.firstChild);
+
+                    work_order.value = "";
+                    item.value = "";
+                    machine.value = "";
+                    quantity.value = "";
+                    //console.log(this.responseText);
+
+                    $("#agregar-orden-modal").modal("hide");
+
+                }
+            };
+            xmlhttps.open("GET", url, true);
+            xmlhttps.send();
+            //console.log(url);
+        }
+        else
+        {
+            swal ( "Debes llenar todos los datos.", "" ,  "error" ); //Alert of sweetalert.js
+        }
+    }
+    function comenzar_orden()
+    {
+        let id   = document.getElementById("start-order").getAttribute("data-id"),
+            hc   = document.getElementById("headcount").value,
+            pph  = document.getElementById("pph-std").value,
+            url  = "_config/ajax-functions.php?f=startOrder&id=" + id + "&pph=" + pph + "&hc=" + hc,
+            xmlhttps = new XMLHttpRequest();
+
+        if(hc != "" && hc != 0 && pph != "" && pph != 0 ){
+            xmlhttps.onreadystatechange = function()
+            {
+                if(this.readyState == 4 && this.status == 200)
+                {
+                    let item  = document.getElementById("row"+id);
+                        orden = document.getElementById("wo"+id).textContent;
+                    item.remove();
+                    //document.querySelector(".datos").innerHTML = this.responseText;
+                    swal("La orden " + orden +" ha comenzado", {
+                        icon: "success",
+                    });
+                }
+            };
+            xmlhttps.open("GET", url, true);
+            xmlhttps.send();
+        }
+        else
+        {
+            swal ( "Debes llenar todos los datos.", "" ,  "error" ); //Alert of sweetalert.js
+        }
+        
+    }
+    function editar_orden(id)
+    {
+        let inputs   = document.querySelectorAll("#editar-orden-modal input"),
+            select   = document.querySelector("#editar-orden-modal select");
+
+        let url      = "_config/ajax-functions.php?f=editOrder&workorder=" + inputs[0].value + "&item=" + inputs[1].value + "&machine=" + select.value + "&quantity=" + inputs[2].value + "&pph=" + inputs[3].value + "&setup=" + inputs[4].value + "&id=" + id,
+            xmlhttps = new XMLHttpRequest();
+
+        xmlhttps.onreadystatechange = function()
+        {
+        if(this.readyState == 4 && this.status == 200)
+        {
+                let columnas = document.querySelectorAll("#row"+ id +" td");
+                columnas[0].textContent = inputs[0].value;
+                columnas[1].textContent = inputs[1].value;
+                columnas[2].textContent = inputs[2].value;
+                columnas[3].textContent = select.value;
+                columnas[4].textContent = inputs[3].value;
+                columnas[5].textContent = inputs[4].value;
+
+                $("#editar-orden-modal").modal("hide");
+        }
+        };
+        xmlhttps.open("GET", url, true);
+        xmlhttps.send();
+    }
+    function eliminar_orden(id, item)
+    {
+        swal({
+            title: "Atención!",
+            text: "Una vez eliminada, no sera capaz de recuperarla.",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+            if (willDelete) {
+                let url      = "_config/ajax-functions.php?f=deleteOrder&id=" + id,
+                    xmlhttps = new XMLHttpRequest();
+                xmlhttps.onreadystatechange = function()
+                {
+                    if(xmlhttps.readyState == 4 && xmlhttps.status == 200)
+                    {
+                        item.remove();
+                        swal("La orden ha sido eliminada", {
+                            icon: "success",
+                        });   
+                    }
+                };
+                xmlhttps.open("GET", url, true);
+                xmlhttps.send();
+            } else {
+            }
+        });
+    }
+    function completar_orden(id, item)
+    {
+        swal({
+            title: "Completar Orden",
+            text: "¿Desea completar la orden?",
+            icon: "info",
+            buttons: [true, "Completar"],
+        })
+        .then((willComplete) => {
+            if (willComplete) {
+                let url      = "_config/ajax-functions.php?f=completeOrder&id=" + id,
+                    xmlhttps = new XMLHttpRequest();
+                xmlhttps.onreadystatechange = function()
+                {
+                    if(xmlhttps.readyState == 4 && xmlhttps.status == 200)
+                    {                            
+                        document.querySelector(".order").innerHTML = this.responseText;
+                        var li = document.querySelectorAll(".order li");
+
+                        item.remove();
+                        swal({
+                            title: "La orden se ha completado exitosamente!",
+                            text: "¿Desea comenzar la siguiente orden orden ("+ li[0].textContent +")?",
+                            icon: "success",
+                            buttons: [true, "Comenzar"],
+                        })   
+                        .then((willNext) => {
+                            if(willNext)
+                            {
+                                document.getElementById("start-order").setAttribute("data-id", li[1].textContent);
+                                document.getElementById("headcount").value = li[2].textContent;
+                                document.getElementById("pph-std").value = li[3].textContent;
+
+                                document.getElementById("start-order").addEventListener("click", comenzar_orden);
+
+                                $("#comenzar-orden-modal").modal("show");
+
+                                order.innerHTML = "";
+                            }
+                        });
+                    }
+                };
+                xmlhttps.open("GET", url, true);
+                xmlhttps.send();
+            } else {
+            }
+        });
+    }
+    function pausar_orden(id, item)
+    {
+        swal({
+            title: "Pausar Orden",
+            text: "¿Desea pausar la orden?",
+            icon: "info",
+            buttons: [true, "Pausar"],
+        })
+        .then((willPause) => {
+            if (willPause) {
+                let url      = "_config/ajax-functions.php?f=pauseOrder&id=" + id,
+                    xmlhttps = new XMLHttpRequest();
+                xmlhttps.onreadystatechange = function()
+                {
+                    if(xmlhttps.readyState == 4 && xmlhttps.status == 200)
+                    {
+                        item.remove();
+                        swal("La orden ha sido completada con exito", {
+                            icon: "success",
+                        });   
+                    }
+                };
+                xmlhttps.open("GET", url, true);
+                xmlhttps.send();
+            } else {
+            }
+        });
+    }

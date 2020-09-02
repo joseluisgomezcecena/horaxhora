@@ -10,10 +10,16 @@
 
       <!-- Modal body -->
       <div class="modal-body">
-        <b>Para comenzar la orden debe añadir los siguientes datos:</b>
+        <b>Para comenzar la orden debe añadir los siguientes datos:</b>        
         <div class="input-group">
-          <input type="number" id="headcount" class="form-control m-2" data-toggle="tooltip" title="Ingrese la cantidad de personas que trabajaran en la orden." placeholder="HEADCOUNT" min="1" style="border-radius: .35rem!important;">
-          <input type="number" id="pph-std" class="form-control m-2" data-toggle="tooltip" title="Ingrese el PPH Standard, en caso de no saberlo, preguntar a un superior." placeholder="PPH STANDARD" min="1" style="border-radius: .35rem!important;">
+          <div class="form-group m-1">
+            <label style="font-size: 14px; margin: 0; margin-left: 1rem">Headcount</label>
+            <input type="number" id="headcount" class="form-control mx-2" data-toggle="tooltip" title="Ingrese la cantidad de personas que trabajaran en la orden." data-placement="down" placeholder="HEADCOUNT" min="1" style="border-radius: .35rem!important;">
+          </div>
+          <div class="form-group m-1">
+            <label style="font-size: 14px; margin: 0; margin-left: 1rem">PPH</label>
+            <input type="number" id="pph-std" class="form-control mx-2" data-toggle="tooltip" title="Ingrese el PPH Standard, en caso de no saberlo, preguntar a un superior." data-placement="down" placeholder="PPH STANDARD" min="1" style="border-radius: .35rem!important;">
+          </div>
         </div>
       </div>
 
