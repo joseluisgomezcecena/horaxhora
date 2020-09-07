@@ -400,6 +400,8 @@ function agregar_reporteA($id_orden)
                 }
             } 
         }
+        $result_datos->free();
+        $connection->next_result();
     }
     else
         echo "Error with query $query_datos, ". $connection->error;
