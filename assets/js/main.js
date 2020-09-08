@@ -299,23 +299,29 @@ document.addEventListener("DOMContentLoaded", function() {
         let url      = "_config/ajax-functions.php?f=editOrder&workorder=" + inputs[0].value + "&item=" + inputs[1].value + "&machine=" + select.value + "&quantity=" + inputs[2].value + "&pph=" + inputs[3].value + "&setup=" + inputs[4].value + "&id=" + id,
             xmlhttps = new XMLHttpRequest();
 
+        let data = new FormData();
+
+        data.append("headcount1", inputs[5].value);
+        data.append("headcount2", inputs[6].value);
+        data.append("headcount3", inputs[7].value);
+        
         xmlhttps.onreadystatechange = function()
         {
         if(this.readyState == 4 && this.status == 200)
         {
-                let columnas = document.querySelectorAll("#row"+ id +" td");
-                columnas[0].textContent = inputs[0].value;
-                columnas[1].textContent = inputs[1].value;
-                columnas[2].textContent = inputs[2].value;
-                columnas[3].textContent = select.value;
-                columnas[4].textContent = inputs[3].value;
-                columnas[5].textContent = inputs[4].value;
+            let columnas = document.querySelectorAll("#row"+ id +" td");
+            columnas[0].textContent = inputs[0].value;
+            columnas[1].textContent = inputs[1].value;
+            columnas[2].textContent = inputs[2].value;
+            columnas[3].textContent = select.value;
+            columnas[4].textContent = inputs[3].value;
+            columnas[5].textContent = inputs[4].value;
 
-                $("#editar-orden-modal").modal("hide");
+            $("#editar-orden-modal").modal("hide");
         }
         };
-        xmlhttps.open("GET", url, true);
-        xmlhttps.send();
+        xmlhttps.open("POST", url, true);
+        xmlhttps.send(data);
     }
     function eliminar_orden(id, item)
     {

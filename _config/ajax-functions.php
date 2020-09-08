@@ -120,10 +120,10 @@ if(isset($_GET['f']))
     }
     else if($_GET['f'] == "startOrder")
     {
-        $id   = $_GET['id'];
-        $pph  = $_GET['pph'];
-        $hc   = $_GET['hc'];
-        $date = date("Y/m/d H:i");
+        $id    = $_GET['id'];
+        $pph   = $_GET['pph'];
+        $hc    = $_GET['hc'];
+        $date  = date("Y/m/d H:i");
         $turno = turno(date("H:i"));
 
         $query = "UPDATE `ordenes_main` SET `pph_std` = $pph, `fecha_inicial` = '$date', `fecha_reinicio` = '$date', `head_count$turno` = $hc WHERE `orden_id` = $id;";
@@ -153,27 +153,36 @@ if(isset($_GET['f']))
         }
         else
         {
-            echo "Fail with: " . $query;
+            echo $connection->error;
         }
         
     }
     else if($_GET['f'] == "editOrder")
     {
+        $id            = htmlspecialchars($_GET['id']);
         $work_order    = htmlspecialchars($_GET['workorder']);
         $item          = htmlspecialchars($_GET['item']);
         $machine       = htmlspecialchars($_GET['machine']);
         $quantity      = htmlspecialchars($_GET['quantity']);
         $pph           = htmlspecialchars($_GET['pph']);
         $setup         = htmlspecialchars($_GET['setup']);
+        $headcount1    = htmlspecialchars($_POST['headcount1']);
+        $headcount2    = htmlspecialchars($_POST['headcount2']);
+        $headcount3    = htmlspecialchars($_POST['headcount3']);
 
-        $id            = htmlspecialchars($_GET['id']);
 
-        $stmt_edit = $connection->prepare("UPDATE ordenes_main SET work_order = ?, item = ?, maquina = ?, meta_orden = ?, pph_std = ?, setup = ? WHERE orden_id = $id ");
+        
+
+        $stmt_edit = $connection->prepare("UPDATE ordenes_main SET work_order = ?, item = ?, maquina = ?, meta_orden = ?, pph_std = ?, setup = ?, head_count1 = $headcount1, head_count2 = $headcount2, head_count3 = $headcount3  WHERE orden_id = $id ");
         $stmt_edit->bind_param("sssidi", $work_order, $item, $machine, $quantity, $pph, $setup);
         $result = $stmt_edit->execute();
         if($result)
         {
             echo "edit";
+        }
+        else
+        {
+            $connection->error;
         }
     }
     else if($_GET['f'] == "deleteOrder")
@@ -313,8 +322,6 @@ function agregar_reporteA($id_orden)
                         $hora     = $row_plan['hora_pendiente'];
                         $minutos  = $row_plan['minutos_pendientes'];
 
-                        
-    
                         if($row_plan['total'] == 0 || $hora < (1 * date("H")))
                         {
                             if($hora >= 0 && $hora < 6 && $hora < (1 * date("H")))
@@ -328,7 +335,6 @@ function agregar_reporteA($id_orden)
                                 $minutos = 60 - date("i");
                             }
                         }
-
                     }
                 }
             }
@@ -449,83 +455,87 @@ function editar_reporteA($id_orden)
                     while($row_plan = $result_plan->fetch_assoc())
                         $id_plan  = $row_plan['id'];
 
-                        $breaktime  = 36;
-                        $start_flag = 1;
-                        if($hora == 0) //If hour is 0 we use it like 24
-                            $hora = 24;
-                
-                        while($cantidad > 0)
+                    $breaktime  = 36;
+                    $start_flag = 1;
+                    if($hora == 0) //If hour is 0 we use it like 24
+                        $hora = 24;
+            
+                    while($cantidad > 0)
+                    {
+                        if($hora == 25) //If hour pass of 24 format restart it
+                            $hora -= 24;
+            
+                        //removing time of setups or breaks
+                        if($start_flag == 1)
                         {
-                            if($hora == 25) //If hour pass of 24 format restart it
-                                $hora -= 24;
-                
-                            //removing time of setups or breaks
-                            if($start_flag == 1)
-                            {
-                                $start_flag = 0;
-                                $minutos -= $setup;
-                            }
-                
-                            if($hora == $break1 || $hora == $break2 || $hora == $break3)
-                                $minutos -= $breaktime;
-                            
-                            if($hora == 6 || $hora == 15 || $hora == 23)
-                                $minutos -= 15;
-                
-                            while($minutos <= 0) //Change hour
-                            {
-                                $minutos += 60;
-                                $hora++;
-                                if($hora == 25)
-                                    $hora -= 24;
-                                else if($hora == 6)
-                                {
-                                    $query_finish = "UPDATE ordenes_main SET finish_one_day = 0 WHERE orden_id = $id_orden; UPDATE plan SET lleno = 1 WHERE maquina = '$maquina'";
-                                    $connection->multi_query($query_finish);
-                                    break 2;
-                                }
-                                
-                                if($minutos > 0)
-                                    break;
-                            }
-                            if($hora >= 6 && $hora <= 15)
-                                $pph_por_headcount = $pph_std * $headcount1;
-                            else if($hora >= 16 && $hora < 23)
-                                $pph_por_headcount = $pph_std * $headcount1;
-                            else if($hora >= 23  || $hora < 6)
-                                $pph_por_headcount = $pph_std * $headcount1;
-
-                            $cant_hour = (int)($minutos * $pph_por_headcount) / 60;
-
-                            if($cantidad > $cant_hour)
-                            {
-                                $query_qty_hour = "UPDATE plan SET `$hora`= `$hora`+$cant_hour, total = total + $cant_hour WHERE id = $id_plan";
-                                $cantidad -= $cant_hour;
-                            }
-                            else
-                            {   
-                                $minutos_pendientes = 60 - ($cantidad * 60)/$pph_std;
-                                $query_qty_hour = "UPDATE plan SET `$hora`= `$hora`+$cantidad, total = total + $cantidad, hora_pendiente = $hora, minutos_pendientes = $minutos_pendientes WHERE maquina = '$maquina'";
-                                $cantidad = 0;
-                            }
-                            $result_qty_hour = $connection->query($query_qty_hour);
-                            if($result_qty_hour)
-                            {
-                                $hora++;
-                                $minutos = 60;
-                
-                                if($hora == 6)
-                                {
-                                    $query_finish = "UPDATE ordenes_main SET finish_one_day = 0 WHERE orden_id = $id_orden; UPDATE plan SET lleno = 1 WHERE id = $id_plan";
-                                    $connection->multi_query($query_finish);
-                                    break;
-                                }
-                            } 
+                            $start_flag = 0;
+                            $minutos -= $setup;
                         }
-                    
+            
+                        if($hora == $break1 || $hora == $break2 || $hora == $break3)
+                            $minutos -= $breaktime;
+                        
+                        if($hora == 6 || $hora == 15 || $hora == 23)
+                            $minutos -= 15;
+            
+                        while($minutos <= 0) //Change hour
+                        {
+                            $minutos += 60;
+                            $hora++;
+                            if($hora == 25)
+                                $hora -= 24;
+                            else if($hora == 6)
+                            {
+                                $query_finish = "UPDATE ordenes_main SET finish_one_day = 0 WHERE orden_id = $id_orden; UPDATE plan SET lleno = 1 WHERE maquina = '$maquina'";
+                                $connection->multi_query($query_finish);
+                                break 2;
+                            }
+                            
+                            if($minutos > 0)
+                                break;
+                        }
+                        if($hora >= 6 && $hora <= 15)
+                            $pph_por_headcount = $pph_std * $headcount1;
+                        else if($hora >= 16 && $hora < 23)
+                            $pph_por_headcount = $pph_std * $headcount2;
+                        else if($hora >= 23  || $hora < 6)
+                            $pph_por_headcount = $pph_std * $headcount3;
+
+                        $cant_hour = (int)($minutos * $pph_por_headcount) / 60;
+
+                        if($cantidad > $cant_hour)
+                        {
+                            $query_qty_hour = "UPDATE plan SET `$hora`= `$hora`+$cant_hour, total = total + $cant_hour WHERE id = $id_plan";
+                            $cantidad -= $cant_hour;
+                        }
+                        else
+                        {   
+                            $minutos_pendientes = 60 - ($cantidad * 60)/$pph_std;
+                            $query_qty_hour = "UPDATE plan SET `$hora`= `$hora`+$cantidad, total = total + $cantidad, hora_pendiente = $hora, minutos_pendientes = $minutos_pendientes WHERE maquina = '$maquina'";
+                            $cantidad = 0;
+                        }
+                        $result_qty_hour = $connection->query($query_qty_hour);
+                        if($result_qty_hour)
+                        {
+                            $hora++;
+                            $minutos = 60;
+            
+                            if($hora == 6)
+                            {
+                                $query_finish = "UPDATE ordenes_main SET finish_one_day = 0 WHERE orden_id = $id_orden; UPDATE plan SET lleno = 1 WHERE id = $id_plan";
+                                $connection->multi_query($query_finish);
+                                break;
+                            }
+                        } 
+                    }
                 }
+                $result_plan->free();
+                $connection->next_result();
             }
         }
+        
+        $result_ordenes_maquina->free();
+        $connection->next_result();
     }
 }
 
@@ -555,11 +565,11 @@ function hora_turno($hr)
         return 3;
 }
 
-function cleanPlanbyMachine($hora, $maquina) //Return a query to clean columns in database
+function cleanPlanbyMachine($hora, $maquina) //Clean columns in database
 {
     global $connection;
 
-    echo $query = "UPDATE plan, horas SET plan.`$hora`=0, plan.`total`=plan.`total`-plan.`$hora` WHERE horas.`$hora` = 0 ";
+    $query = "UPDATE plan, horas SET plan.`$hora`=0, plan.`total`=plan.`total`-plan.`$hora` WHERE horas.`$hora` = 0 AND maquina = '$maquina'";
     $connection->query($query);
 
     $y = $hora + 1;
@@ -580,10 +590,10 @@ function cleanPlanbyMachine($hora, $maquina) //Return a query to clean columns i
         }
     }
 
-    echo $query_clean_plan2 = " $query_clean_plan2 WHERE maquina = '$maquina';"; 
+    $query_clean_plan2 = " $query_clean_plan2 WHERE maquina = '$maquina';"; 
     $connection->query($query_clean_plan2);
     
-    echo $query_clean_plan = $query_clean_plan . " WHERE maquina = '$maquina';";
+    $query_clean_plan = $query_clean_plan . " WHERE maquina = '$maquina';";
     $connection->query($query_clean_plan);
     
 }
