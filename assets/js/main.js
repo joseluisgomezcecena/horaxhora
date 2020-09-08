@@ -355,29 +355,39 @@ document.addEventListener("DOMContentLoaded", function() {
                 xmlhttps.onreadystatechange = function()
                 {
                     if(xmlhttps.readyState == 4 && xmlhttps.status == 200)
-                    {                            
-                        let data = JSON.parse(this.responseText);
-                        console.log(data);
+                    {            
+                        console.log(this.responseText);   
+                        if(this.responseText.lenght > 0)
+                        {
+                            let data = JSON.parse(this.responseText);
+                            item.remove();
+                            swal({
+                                title: "La orden se ha completado exitosamente!",
+                                text: "¿Desea comenzar la siguiente orden orden ("+ data.workorder +")?",
+                                icon: "success",
+                                buttons: [true, "Comenzar"],
+                            })   
+                            .then((willNext) => {
+                                if(willNext)
+                                {
+                                    document.getElementById("start-order").setAttribute("data-id", data.id);
+                                    document.getElementById("headcount").value = data.headcount;
+                                    document.getElementById("pph-std").value = data.pph;
 
-                        item.remove();
-                        swal({
-                            title: "La orden se ha completado exitosamente!",
-                            text: "¿Desea comenzar la siguiente orden orden ("+ data.workorder +")?",
-                            icon: "success",
-                            buttons: [true, "Comenzar"],
-                        })   
-                        .then((willNext) => {
-                            if(willNext)
-                            {
-                                document.getElementById("start-order").setAttribute("data-id", data.id);
-                                document.getElementById("headcount").value = data.headcount;
-                                document.getElementById("pph-std").value = data.pph;
+                                    document.getElementById("start-order").addEventListener("click", comenzar_orden);
 
-                                document.getElementById("start-order").addEventListener("click", comenzar_orden);
-
-                                $("#comenzar-orden-modal").modal("show");
-                            }
-                        });
+                                    $("#comenzar-orden-modal").modal("show");
+                                }
+                            });
+                        }      
+                        else
+                        {
+                            swal({
+                                title: "La orden se ha completado exitosamente!",
+                                icon: "success",
+                            })  
+                        }       
+                        
                     }
                 };
                 xmlhttps.open("GET", url, true);

@@ -57,7 +57,6 @@ else
                 calc_cantidad_actual($id_orden);
                 calc_eficiencia_turno($turno);
                 calc_eficiencia_total();
-
             }
         }
     }
@@ -97,20 +96,48 @@ function calc_eficiencia_turno($turno)
     $hr = date("H") * 1;
 
     if($turno == 1)
+    {
         $i = 6;
+        if($hr > 15)
+            $hr = 15;
+    }
     else if($turno == 2)
+    {
         $i = 16;
+        if($hr > 23)
+            $hr = 22;
+    }
     else
+    {
         $i = 23;
+        if($hr > 6)
+            $hr = 5;
+    }
 
     $query_cantidades_turno  = "SELECT A.`$i`";
     $query_cantidades_turno2 = ", B.`$i` ";
 
-    for($i = $i + 1; $i <= $hr; $i++)
+    if($turno == 1 || $turno == 2)
     {
-        $query_cantidades_turno .= " + A.`$i`";
-        $query_cantidades_turno2 .= " + B.`$i` ";
+        for($i = $i + 1; $i <= $hr; $i++)
+        {
+            $query_cantidades_turno .= " + A.`$i`";
+            $query_cantidades_turno2 .= " + B.`$i` ";
+        }
     }
+    else
+    {
+        for($i = $i + 1; $i >= 23 || $i <= $hr; $i++)
+        {
+            if($i == 25)
+                $i -= 24;
+            $query_cantidades_turno .= " + A.`$i`";
+            $query_cantidades_turno2 .= " + B.`$i` ";
+        }
+    }
+
+
+
     if($hr == date("H"))
         $min = date("i")/60;
     else
