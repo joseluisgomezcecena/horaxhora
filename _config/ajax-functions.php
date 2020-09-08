@@ -138,7 +138,7 @@ if(isset($_GET['f']))
             echo "start";
 
 
-            $select = "SELECT * FROM eficiencias WHERE maquina = (SELECT maquina from ordenes_main WHERE orden_id = $id) AND date = '". date('Y/m/d') ."'";
+            $select = "SELECT * FROM eficiencias WHERE maquina = (SELECT maquina from ordenes_main WHERE orden_id = $id) AND dia = '". date('Y/m/d') ."'";
             $result = $connection->query($select);
             if($result)
             {
@@ -206,7 +206,6 @@ if(isset($_GET['f']))
         $result_complete = $connection->query($query_complete);
         if($result_complete)
         {
-            echo "Complete";
             $query_next_order  = "SELECT * FROM ordenes_main WHERE maquina = (SELECT maquina FROM ordenes_main WHERE orden_id = $id_orden) AND estado = 0 LIMIT 1";
             $result_next_order = $connection->query($query_next_order);
             if($result_next_order)
@@ -215,13 +214,8 @@ if(isset($_GET['f']))
                 {
                     $row_next_order = $result_next_order->fetch_assoc();
                     $turno          = turno(date("H:i"));
-    
-                    echo "<uv>
-                            <li>{$row_next_order['work_order']}</li>
-                            <li>{$row_next_order['orden_id']}</li>
-                            <li>{$row_next_order['head_count'.$turno]}</li>
-                            <li>{$row_next_order['pph_std']}</li>
-                          </uv>";
+
+                    echo "{\"workorder\" : \"{$row_next_order['work_order']}\", \"id\" : {$row_next_order['orden_id']}, \"headcount\" : {$row_next_order['head_count'.$turno]}, \"pph\" : {$row_next_order['pph_std']}}";
                 }
             }
         }
@@ -252,24 +246,14 @@ if(isset($_GET['f']))
                 {
                     if($r == "start")
                     {
-                        echo "<ul>
-                                <li>{$row_search['head_count'.$turno]}</li>
-                                <li>{$row_search['pph_std']}</li>
-                              </ul>";
+                        $headcount = $row_search['head_count'.$turno];
+                        $pph       = $row_search['pph_std'];
+
+                        echo "{\"headcount\":$headcount, \"pph\":$pph}";
                     }
                     else if($r == "edit")
                     {
-                        echo "<ul>
-                                <li>{$row_search['work_order']}</li>
-                                <li>{$row_search['item']}</li>
-                                <li>{$row_search['maquina']}</li>
-                                <li>{$row_search['meta_orden']}</li>
-                                <li>{$row_search['pph_std']}</li>
-                                <li>{$row_search['setup']}</li>
-                                <li>{$row_search['head_count1']}</li>
-                                <li>{$row_search['head_count2']}</li>
-                                <li>{$row_search['head_count3']}</li>
-                              </ul>";
+                        echo "{\"workorder\" : \"{$row_search['work_order']}\", \"item\" : \"{$row_search['item']}\", \"maquina\" : \"{$row_search['maquina']}\", \"cantidad\" : {$row_search['meta_orden']}, \"pph\" : {$row_search['pph_std']}, \"setup\" : {$row_search['setup']}, \"headcount1\" : {$row_search['head_count1']}, \"headcount2\" : {$row_search['head_count2']}, \"headcount3\" : {$row_search['head_count3']}}";
                     }
                 }
             }
@@ -569,7 +553,7 @@ function cleanPlanbyMachine($hora, $maquina) //Clean columns in database
 {
     global $connection;
 
-    $query = "UPDATE plan, horas SET plan.`$hora`=0, plan.`total`=plan.`total`-plan.`$hora` WHERE horas.`$hora` = 0 AND maquina = '$maquina'";
+    $query = "UPDATE plan, horas SET plan.`$hora`=0, plan.`total`=plan.`total`-plan.`$hora` WHERE horas.`$hora` = 0 AND horas.maquina = plan.maquina AND horas.maquina = '$maquina'";
     $connection->query($query);
 
     $y = $hora + 1;

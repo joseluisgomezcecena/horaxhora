@@ -40,16 +40,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 {
                     if(this.readyState == 4 && this.status == 200)
                     {
-                        let order =  document.querySelector(".order");
+                        let data = JSON.parse(this.responseText);
 
-                        order.innerHTML = this.responseText;
-                        let li = document.querySelectorAll(".order li");
-
-                        document.getElementById("headcount").value = li[0].textContent;
-                        document.getElementById("pph-std").value = li[1].textContent;
-
-                        order.innerHTML = "";
-
+                        document.getElementById("headcount").value = data.headcount;
+                        document.getElementById("pph-std").value = data.pph;
                     }
                 };
                 xmlhttps.open("GET", url, true);
@@ -78,24 +72,18 @@ document.addEventListener("DOMContentLoaded", function() {
                 {
                     if(this.readyState == 4 && this.status == 200)
                     {
-                        let order =  document.querySelector(".order");
+                        let data = JSON.parse(this.responseText);
 
-                        order.innerHTML = this.responseText;
-                        let li = document.querySelectorAll(".order li");
-
-                        document.querySelector("#editar-orden-modal .modal-title").textContent = "Editar orden: " + li[0].textContent;
-                        inputs[0].value = li[0].textContent;
-                        inputs[1].value = li[1].textContent;
-                        select.value    = li[2].textContent;
-                        inputs[2].value = li[3].textContent;
-                        inputs[3].value = li[4].textContent;
-                        inputs[4].value = li[5].textContent;
-                        inputs[5].value = li[6].textContent;
-                        inputs[6].value = li[7].textContent;
-                        inputs[7].value = li[8].textContent;
-
-                        order.innerHTML = "";
-
+                        document.querySelector("#editar-orden-modal .modal-title").textContent = "Editar orden: " + data.workorder;
+                        inputs[0].value = data.workorder;
+                        inputs[1].value = data.item;
+                        select.value    = data.maquina;
+                        inputs[2].value = data.cantidad;
+                        inputs[3].value = data.pph;
+                        inputs[4].value = data.setup;
+                        inputs[5].value = data.headcount1;
+                        inputs[6].value = data.headcount2;
+                        inputs[7].value = data.headcount3;
                     }
                 };
                 xmlhttps.open("GET", url, true);
@@ -368,28 +356,26 @@ document.addEventListener("DOMContentLoaded", function() {
                 {
                     if(xmlhttps.readyState == 4 && xmlhttps.status == 200)
                     {                            
-                        document.querySelector(".order").innerHTML = this.responseText;
-                        var li = document.querySelectorAll(".order li");
+                        let data = JSON.parse(this.responseText);
+                        console.log(data);
 
                         item.remove();
                         swal({
                             title: "La orden se ha completado exitosamente!",
-                            text: "¿Desea comenzar la siguiente orden orden ("+ li[0].textContent +")?",
+                            text: "¿Desea comenzar la siguiente orden orden ("+ data.workorder +")?",
                             icon: "success",
                             buttons: [true, "Comenzar"],
                         })   
                         .then((willNext) => {
                             if(willNext)
                             {
-                                document.getElementById("start-order").setAttribute("data-id", li[1].textContent);
-                                document.getElementById("headcount").value = li[2].textContent;
-                                document.getElementById("pph-std").value = li[3].textContent;
+                                document.getElementById("start-order").setAttribute("data-id", data.id);
+                                document.getElementById("headcount").value = data.headcount;
+                                document.getElementById("pph-std").value = data.pph;
 
                                 document.getElementById("start-order").addEventListener("click", comenzar_orden);
 
                                 $("#comenzar-orden-modal").modal("show");
-
-                                order.innerHTML = "";
                             }
                         });
                     }
