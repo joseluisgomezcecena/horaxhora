@@ -382,6 +382,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         }      
                         else
                         {
+                            item.remove();
                             swal({
                                 title: "La orden se ha completado exitosamente!",
                                 icon: "success",

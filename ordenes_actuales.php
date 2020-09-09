@@ -31,8 +31,8 @@ else
                             <th>Work order</th>
                             <th>Item</th>
                             <th>Maquina</th>
-                            <th>Cantidad actual</th>
                             <th>Cantidad total de orden</th>
+                            <th>Cantidad actual</th>
                             <th>PPH Standard</th>
                             <th>Setup (Minutos)</th>
                             <th>Fecha de inicio</th>
@@ -46,8 +46,8 @@ else
                             <th>Work order</th>
                             <th>Item</th>
                             <th>Maquina</th>
-                            <th>Cantidad actual</th>
                             <th>Cantidad total de orden</th>
+                            <th>Cantidad actual</th>
                             <th>PPH Standard</th>
                             <th>Setup (Minutos)</th>
                             <th>Fecha de inicio</th>

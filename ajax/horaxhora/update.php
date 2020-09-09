@@ -48,7 +48,7 @@ else
             }
             else
             {
-                $update_cantidad = "INSERT INTO ordenes_diarias(`cantidad_turno$turno`, id_orden, fecha_dia) VALUES($value, $id_orden, '$date')";
+                echo $update_cantidad = "INSERT INTO ordenes_diarias(`cantidad_turno$turno`, id_orden, fecha_dia) VALUES($value, $id_orden, '$date')";
             }
 
             if($connection->query($update_cantidad))
@@ -169,7 +169,7 @@ function calc_eficiencia_turno($turno)
                 if($result->num_rows == 1)
                     $query_eficiencia_turno  = "UPDATE eficiencias SET `eficiencia_turno$turno`=$eficiencia_turno WHERE maquina = '$maquina' AND dia = '$date'";
                 else 
-                    echo $query_eficiencia_turno  = "INSERT INTO eficiencias(`eficiencia_turno$turno`, maquina, dia) VALUES($eficiencia_turno,'$maquina','$date')";
+                    $query_eficiencia_turno  = "INSERT INTO eficiencias(`eficiencia_turno$turno`, maquina, dia) VALUES($eficiencia_turno,'$maquina','$date')";
             }
             $result_eficiencia_turno = $connection->query($query_eficiencia_turno);
         }
@@ -227,11 +227,11 @@ function calc_eficiencia_total()
 
 function hora_turno($hr)
 {
-    if($hr > 6 && $hr <= 15)
+    if($hr >= 6 && $hr < 16)
         return 1;
-    else if($hr > 15 && $hr <= 23)
+    else if($hr >= 16 && $hr < 23)
         return 2;
-    else if($hr > 23 || $hr < 6)
+    else if($hr >= 23 || $hr < 6)
         return 3;
 }
 ?>
