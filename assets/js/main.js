@@ -9,10 +9,12 @@ document.addEventListener("DOMContentLoaded", function() {
     {
         //Variables
         const agregar_orden_btn   = document.getElementById("agregar-orden"),
-            confirmar_orden_btn = document.getElementById("confirmar-agregar-orden"),
-            tabla_ordenes       = document.querySelector("#tabla-ordenes"),
-            start_order         = document.getElementById("start-order"),
-            edit_order          = document.getElementById("edit-order");
+              confirmar_orden_btn = document.getElementById("confirmar-agregar-orden"),
+              tabla_ordenes       = document.querySelector("#tabla-ordenes"),
+              start_order         = document.getElementById("start-order"),
+              edit_order          = document.getElementById("edit-order"),
+              check_time          = document.querySelectorAll("#time-check"),
+              div_time            = document.querySelectorAll("#time");
 
 
         //AddEventListeners
@@ -21,7 +23,16 @@ document.addEventListener("DOMContentLoaded", function() {
         confirmar_orden_btn.addEventListener("click", agregar_orden);
         start_order.addEventListener("click", comenzar_orden);
         edit_order.addEventListener("click", function(){editar_orden(this.getAttribute("data-id"))});
-
+        
+        for(let i = 0; i < check_time.length; i++)
+        {
+            check_time[i].addEventListener("change", function(){
+                if(check_time[i].checked)
+                    div_time[i].style.display = "block";
+                else
+                    div_time[i].style.display = "none";
+            });
+        }
 
         //Functions
         function control_buttons(e)
@@ -194,7 +205,7 @@ document.addEventListener("DOMContentLoaded", function() {
             item       = document.getElementById("item"),
             machine    = document.getElementById("machine"),
             quantity   = document.getElementById("quantity"),
-            flag_empty = 0;
+            time       = document.getElementById("time-input-load");
 
         //Validate that the inputs have values
         if(work_order.value == "")
@@ -219,6 +230,11 @@ document.addEventListener("DOMContentLoaded", function() {
         {
             let url      = "_config/ajax-functions.php?f=addOrder&workorder=" + work_order.value + "&item=" + item.value + "&machine=" + machine.value + "&quantity=" + quantity.value;
                 xmlhttps = new XMLHttpRequest();
+
+            if(time.value)
+            {
+                url += "&time="+time.value;
+            }
             xmlhttps.onreadystatechange = function()
             {
                 if(xmlhttps.readyState == 4 && xmlhttps.status == 200)
@@ -233,6 +249,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     item.value = "";
                     machine.value = "";
                     quantity.value = "";
+                    time.value = "";
                     //console.log(this.responseText);
 
                     $("#agregar-orden-modal").modal("hide");
@@ -253,8 +270,14 @@ document.addEventListener("DOMContentLoaded", function() {
         let id   = document.getElementById("start-order").getAttribute("data-id"),
             hc   = document.getElementById("headcount").value,
             pph  = document.getElementById("pph-std").value,
+            time = document.getElementById("time-input-start"),
             url  = "_config/ajax-functions.php?f=startOrder&id=" + id + "&pph=" + pph + "&hc=" + hc,
             xmlhttps = new XMLHttpRequest();
+
+        if(time.value)
+        {
+            url += "&time="+time.value;
+        }
 
         if(hc != "" && hc != 0 && pph != "" && pph != 0 ){
             xmlhttps.onreadystatechange = function()
@@ -414,7 +437,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     if(xmlhttps.readyState == 4 && xmlhttps.status == 200)
                     {
                         item.remove();
-                        swal("La orden ha sido completada con exito", {
+                        swal("La orden ha sido pausada con exito", {
                             icon: "success",
                         });   
                     }

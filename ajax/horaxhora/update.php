@@ -48,7 +48,7 @@ else
             }
             else
             {
-                echo $update_cantidad = "INSERT INTO ordenes_diarias(`cantidad_turno$turno`, id_orden, fecha_dia) VALUES($value, $id_orden, '$date')";
+                $update_cantidad = "INSERT INTO ordenes_diarias(`cantidad_turno$turno`, id_orden, fecha_dia) VALUES($value, $id_orden, '$date')";
             }
 
             if($connection->query($update_cantidad))

@@ -275,7 +275,6 @@ function agregar_reporteA($id_orden)
         while($row_datos = $result_datos->fetch_assoc())
         {
             $maquina    = $row_datos['maquina'];
-            $work_order = $row_datos['work_order'];
             $cantidad   = $row_datos['meta_orden'] - $row_datos['cantidad_actual'];
             $item       = $row_datos['item'];
             $pph_std    = $row_datos['pph_std'];
@@ -306,12 +305,13 @@ function agregar_reporteA($id_orden)
                         $hora     = $row_plan['hora_pendiente'];
                         $minutos  = $row_plan['minutos_pendientes'];
 
-                        if($row_plan['total'] == 0 || $hora < (1 * date("H")))
+                        if($row_plan['total'] == 0)
                         {
-                            if($hora >= 0 && $hora < 6 && $hora < (1 * date("H")))
+                            if(isset($_GET['time']))
                             {
-                                $hora     = $row_plan['hora_pendiente'];
-                                $minutos  = $row_plan['minutos_pendientes'];
+                                $time = strtotime($_GET['time']);
+                                $hora     = Date("H", $time) * 1;
+                                $minutos  = 60 - Date("i", $time) * 1;
                             }
                             else
                             {
@@ -367,7 +367,7 @@ function agregar_reporteA($id_orden)
             $cant_hour = (int)($minutos * $pph_std) / 60;
             if($cantidad > $cant_hour)
             {
-                $query_qty_hour = "UPDATE plan SET `$hora`= `$hora`+$cant_hour, total = total + $cant_hour WHERE id = $id_plan";
+                $query_qty_hour  = "UPDATE plan SET `$hora`= `$hora`+$cant_hour, total = total + $cant_hour WHERE id = $id_plan";
                 $cantidad -= $cant_hour;
             }
             else
@@ -379,6 +379,26 @@ function agregar_reporteA($id_orden)
             $result_qty_hour = $connection->query($query_qty_hour);
             if($result_qty_hour)
             {
+                $query_plan_items  = "SELECT `$hora` as 'hora' FROM plan_items WHERE maquina = '$maquina'";
+                $result_plan_items = $connection->query($query_plan_items);
+                if($result_plan_items)
+                {
+                    if($result_plan_items->num_rows == 1)
+                    {
+                        $row_plan_items = $result_plan_items->fetch_assoc();
+                        $columna = $row_plan_items['hora'];
+                        if(!empty($columna))
+                        {
+                           $columna .= "<br><b>$item</b>"; 
+                        }
+                        else
+                        {
+                            $columna .= "<b>$item</b>"; 
+                        }
+                        $query_insert_item = "UPDATE plan_items SET `$hora` = '$columna' WHERE maquina = '$maquina'";
+                        $connection->query($query_insert_item);
+                    }
+                }
                 $hora++;
                 $minutos = 60;
 
@@ -411,6 +431,7 @@ function editar_reporteA($id_orden)
             $maquina    = $row_ordenes_maquina['maquina'];
             $cantidad   = $row_ordenes_maquina['meta_orden'] - $row_ordenes_maquina['cantidad_actual'];
             $pph_std    = $row_ordenes_maquina['pph_std'];
+            $item       = $row_ordenes_maquina['item'];
             $setup      = $row_ordenes_maquina['setup'];
             $headcount1 = $row_ordenes_maquina['head_count1'];
             $headcount2 = $row_ordenes_maquina['head_count2'];
@@ -422,8 +443,18 @@ function editar_reporteA($id_orden)
             
             if($flag_clean == 1)
             {
-                $hora    = 1 * date("H");
-                $minutos = 60 - date("i");
+
+                if(isset($_GET['time']))
+                {
+                    $time = strtotime($_GET['time']);
+                    $hora     = Date("H", $time) * 1;
+                    $minutos  = 60 - Date("i", $time) * 1;
+                }
+                else
+                {
+                    $hora    = 1 * date("H"); //1 * to quit leading zero
+                    $minutos = 60 - date("i");
+                }
                 cleanPlanbyMachine($hora, $maquina);
                 $flag_clean = 0;
             }
@@ -501,6 +532,26 @@ function editar_reporteA($id_orden)
                         $result_qty_hour = $connection->query($query_qty_hour);
                         if($result_qty_hour)
                         {
+                            $query_plan_items  = "SELECT `$hora` as 'hora' FROM plan_items WHERE maquina = '$maquina'";
+                            $result_plan_items = $connection->query($query_plan_items);
+                            if($result_plan_items)
+                            {
+                                if($result_plan_items->num_rows == 1)
+                                {
+                                    $row_plan_items = $result_plan_items->fetch_assoc();
+                                    $columna = $row_plan_items['hora'];
+                                    if(!empty($columna))
+                                    {
+                                    $columna .= "<br><b>$item</b>"; 
+                                    }
+                                    else
+                                    {
+                                        $columna .= "<b>$item</b>"; 
+                                    }
+                                    $query_insert_item = "UPDATE plan_items SET `$hora` = '$columna' WHERE maquina = '$maquina'";
+                                    $connection->query($query_insert_item);
+                                }
+                            }
                             $hora++;
                             $minutos = 60;
             
@@ -553,12 +604,14 @@ function cleanPlanbyMachine($hora, $maquina) //Clean columns in database
 {
     global $connection;
 
-    $query = "UPDATE plan, horas SET plan.`$hora`=0, plan.`total`=plan.`total`-plan.`$hora` WHERE horas.`$hora` = 0 AND horas.maquina = plan.maquina AND horas.maquina = '$maquina'";
+    $query = "UPDATE plan, horas, plan_items SET plan.`$hora`=0, plan.`total`=plan.`total`-plan.`$hora`, plan_items.`$hora` = null WHERE horas.`$hora` = 0 AND horas.maquina = plan.maquina AND horas.maquina = '$maquina'";
     $connection->query($query);
 
     $y = $hora + 1;
-    $query_clean_plan = "UPDATE plan SET  `$y`=0 ";
+    $query_clean_plan  = "UPDATE plan SET  `$y`=0 ";
     $query_clean_plan2 = "UPDATE plan SET `total`=`total`-`$y`";
+
+    $query_clean_plan_items  = "UPDATE plan_items SET  `$y`= null ";
 
     if($hora != 5)
     {
@@ -569,8 +622,10 @@ function cleanPlanbyMachine($hora, $maquina) //Clean columns in database
             else
                 $y = $x;
     
-            $query_clean_plan .= " ,`$y`=0";
+            $query_clean_plan .= " , `$y`=0";
             $query_clean_plan2 .= "-`$y`";
+
+            $query_clean_plan_items  .= " , `$y`= null ";
         }
     }
 
@@ -579,6 +634,10 @@ function cleanPlanbyMachine($hora, $maquina) //Clean columns in database
     
     $query_clean_plan = $query_clean_plan . " WHERE maquina = '$maquina';";
     $connection->query($query_clean_plan);
+    
+    $query_clean_plan_items = $query_clean_plan_items . " WHERE maquina = '$maquina';";
+    $connection->query($query_clean_plan_items);
+
     
 }
 
