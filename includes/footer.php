@@ -58,7 +58,7 @@
 
 
   <!-- SweetAlert.js -->
-  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="assets/js/sweetalert.min.js"></script>
   
   <!-- Main js document for DOM and functions -->
   <script src="assets/js/main.js"></script>
