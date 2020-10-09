@@ -125,10 +125,21 @@ if(isset($_GET['f']))
         $id    = $_GET['id'];
         $pph   = $_GET['pph'];
         $hc    = $_GET['hc'];
-        $date  = date("Y/m/d H:i");
-        $turno = turno(date("H:i"));
+        if(isset($_GET['time_start']))
+        {
+            $date  = date("Y/m/d");
+            $time = strtotime($_GET['time_start']);
+            $turno = turno(strtotime($_GET['time_start']));
+        }
+        else
+        {
+            $date  = date("Y/m/d");
+            $time = date("H:i");
+            $turno = turno(date("H:i"));
+        }
 
-        $query = "UPDATE `ordenes_main` SET `pph_std` = $pph, `fecha_inicial` = '$date', `fecha_reinicio` = '$date', `head_count$turno` = $hc WHERE `orden_id` = $id;";
+
+        $query = "UPDATE `ordenes_main` SET `pph_std` = $pph, `fecha_inicial` = '$date $time', `fecha_reinicio` = '$date $time', `head_count$turno` = $hc WHERE `orden_id` = $id;";
         $connection->query($query);
         editar_reporteA($id);
         
@@ -162,12 +173,12 @@ if(isset($_GET['f']))
     else if($_GET['f'] == "editOrder")
     {
         $id            = htmlspecialchars($_GET['id']);
-        $work_order    = htmlspecialchars($_GET['workorder']);
-        $item          = htmlspecialchars($_GET['item']);
-        $machine       = htmlspecialchars($_GET['machine']);
-        $quantity      = htmlspecialchars($_GET['quantity']);
-        $pph           = htmlspecialchars($_GET['pph']);
-        $setup         = htmlspecialchars($_GET['setup']);
+        $work_order    = htmlspecialchars($_POST['workorder']);
+        $item          = htmlspecialchars($_POST['item']);
+        $machine       = htmlspecialchars($_POST['machine']);
+        $quantity      = htmlspecialchars($_POST['quantity']);
+        $pph           = htmlspecialchars($_POST['pph']);
+        $setup         = htmlspecialchars($_POST['setup']);
         $headcount1    = htmlspecialchars($_POST['headcount1']);
         $headcount2    = htmlspecialchars($_POST['headcount2']);
         $headcount3    = htmlspecialchars($_POST['headcount3']);
@@ -203,7 +214,7 @@ if(isset($_GET['f']))
     else if($_GET['f'] == "completeOrder")
     {
         $id_orden = $_GET['id'];
-        $date     = date("Y/m/d H:i:s");
+        $date     = date("Y/m/d");
         $query_complete  = "UPDATE ordenes_main SET estado = 2, fecha_final = '$date' WHERE orden_id = $id_orden";
         $result_complete = $connection->query($query_complete);
         if($result_complete)
@@ -304,8 +315,17 @@ function agregar_reporteA($id_orden)
                     if($lleno == 0)
                     {
                         $id_plan  = $row_plan['id'];
-                        $hora     = $row_plan['hora_pendiente'];
-                        $minutos  = $row_plan['minutos_pendientes'];
+                        if(isset($_POST['time']))
+                        {
+                            $time = strtotime($_POST['time']);
+                            $hora     = Date("H", $time) * 1;
+                            $minutos  = 60 - Date("i", $time) * 1;
+                        }
+                        else
+                        {
+                            $hora     = $row_plan['hora_pendiente'];
+                            $minutos  = $row_plan['minutos_pendientes'];
+                        }
 
                         if($row_plan['total'] == 0)
                         {
@@ -328,11 +348,12 @@ function agregar_reporteA($id_orden)
         $breaktime  = 36;
         $start_flag = 1;
 
-        if($hora == 0) //If hour is 0 we use it like 24
-            $hora = 24;
+        
 
-        while($cantidad > 0)
+        while($cantidad > 0 && $lleno == 0)
         {
+            if($hora == 0) //If hour is 0 we use it like 24
+                $hora = 24;
 
             if($hora == 25) //If hour pass of 24 format restart it
                 $hora -= 24;
@@ -446,9 +467,9 @@ function editar_reporteA($id_orden)
             if($flag_clean == 1)
             {
 
-                if(isset($_POST['time']))
+                if(isset($_GET['time_start']))
                 {
-                    $time = strtotime($_POST['time']);
+                    $time = strtotime($_GET['time_start']);
                     $hora     = Date("H", $time) * 1;
                     $minutos  = 60 - Date("i", $time) * 1;
                 }

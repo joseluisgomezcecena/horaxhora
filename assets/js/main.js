@@ -315,11 +315,17 @@ document.addEventListener("DOMContentLoaded", function() {
         let inputs   = document.querySelectorAll("#editar-orden-modal input"),
             select   = document.querySelector("#editar-orden-modal select");
 
-        let url      = "_config/ajax-functions.php?f=editOrder&workorder=" + inputs[0].value + "&item=" + inputs[1].value + "&machine=" + select.value + "&quantity=" + inputs[2].value + "&pph=" + inputs[3].value + "&setup=" + inputs[4].value + "&id=" + id,
+        let url      = "_config/ajax-functions.php?f=editOrder&id=" + id,
             xmlhttps = new XMLHttpRequest();
 
         let data = new FormData();
 
+        data.append("workorder", inputs[0].value);
+        data.append("item", inputs[1].value);
+        data.append("machine", select.value);
+        data.append("quantity", inputs[2].value);
+        data.append("pph", inputs[3].value);
+        data.append("setup", inputs[4].value);
         data.append("headcount1", inputs[5].value);
         data.append("headcount2", inputs[6].value);
         data.append("headcount3", inputs[7].value);
