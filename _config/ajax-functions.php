@@ -11,10 +11,10 @@ if(isset($_GET['f']))
 {
     if($_GET['f'] == "addOrder")
     {
-        $work_order    = htmlspecialchars($_GET['workorder']);
-        $item          = htmlspecialchars($_GET['item']);
-        $machine       = htmlspecialchars($_GET['machine']);
-        $quantity      = htmlspecialchars($_GET['quantity']);
+        $work_order    = htmlspecialchars($_POST['workorder']);
+        $item          = htmlspecialchars($_POST['item']);
+        $machine       = htmlspecialchars($_POST['machine']);
+        $quantity      = htmlspecialchars($_POST['quantity']);
 
         /* filter space and transform to upper */
         $work_order = str_replace(" ", "", strtoupper($work_order));
@@ -82,12 +82,14 @@ if(isset($_GET['f']))
             {
                 while($row_pph_setup = $result_pph_setup->fetch_assoc())
                 {
+                    $no_pph = "";
                     $pph   = $row_pph_setup['pph'];
                     $setup = $row_pph_setup['setup'] * 60;
                 }
             }
             else
             {
+                $no_pph = "style='background-color: red; color: white; font-weight: bold'";
                 $pph   = 100;
                 $setup = 0;
             }
@@ -110,7 +112,7 @@ if(isset($_GET['f']))
             echo "<td >$item</td>";
             echo "<td>$quantity</td>";
             echo "<td>$machine</td>";
-            echo "<td id=\"pph$last_id\">$pph</td>";
+            echo "<td id=\"pph$last_id\" $no_pph>$pph</td>";
             echo "<td>$setup</td>";
             echo "<td style=\"text-align: center\"><button class=\"btn btn-primary start-order\" data-id=\"$last_id\">Comenzar <i class=\"fas fa-play\"></i></button> <button class=\"btn btn-warning edit-order\" data-id=\"$last_id\">Editar <i class=\"fas fa-edit\"></i></button> <button class=\"btn btn-danger delete-order\" data-id=\"$last_id\">Eliminar <i class=\"fas fa-trash-alt\"></i></button> </td></tr>";
 
@@ -307,9 +309,9 @@ function agregar_reporteA($id_orden)
 
                         if($row_plan['total'] == 0)
                         {
-                            if(isset($_GET['time']))
+                            if(isset($_POST['time']))
                             {
-                                $time = strtotime($_GET['time']);
+                                $time = strtotime($_POST['time']);
                                 $hora     = Date("H", $time) * 1;
                                 $minutos  = 60 - Date("i", $time) * 1;
                             }
@@ -444,9 +446,9 @@ function editar_reporteA($id_orden)
             if($flag_clean == 1)
             {
 
-                if(isset($_GET['time']))
+                if(isset($_POST['time']))
                 {
-                    $time = strtotime($_GET['time']);
+                    $time = strtotime($_POST['time']);
                     $hora     = Date("H", $time) * 1;
                     $minutos  = 60 - Date("i", $time) * 1;
                 }

@@ -228,13 +228,21 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if(work_order.value != "" && item != "" && machine.value != "" && quantity.value != "")
         {
-            let url      = "_config/ajax-functions.php?f=addOrder&workorder=" + work_order.value + "&item=" + item.value + "&machine=" + machine.value + "&quantity=" + quantity.value;
+            let url      = "_config/ajax-functions.php?f=addOrder";
                 xmlhttps = new XMLHttpRequest();
+
+            let data = new FormData();
+            data.append("workorder", work_order.value);
+            data.append("item", item.value);
+            data.append("machine", machine.value);
+            data.append("quantity", quantity.value);
 
             if(time.value)
             {
-                url += "&time="+time.value;
+                data.append("time", time.value);
             }
+
+            console.log(data);
             xmlhttps.onreadystatechange = function()
             {
                 if(xmlhttps.readyState == 4 && xmlhttps.status == 200)
@@ -256,8 +264,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 }
             };
-            xmlhttps.open("GET", url, true);
-            xmlhttps.send();
+            xmlhttps.open("POST", url, true);
+            xmlhttps.send(data);
             //console.log(url);
         }
         else
