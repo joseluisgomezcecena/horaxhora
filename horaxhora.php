@@ -15,7 +15,9 @@ else
     {
         border: none;
         text-align: center;
+        width: 70px;
     }
+
 </style>
 <!-- Page Heading -->
 <h1 class="h3 mb-4 text-gray-800">Hora X Hora</h1>
@@ -55,7 +57,7 @@ else
                         <th id="4pm" colspan="2">04:00 am</th>
                         <th id="5pm" colspan="2">05:00 am</th>
                         <th id="total" colspan="2">Total</th>          
-                    </tr>`
+                    </tr>
                     <tr>
                         <th>Real</th><th>Planeado</th>
                         <th>Real</th><th>Planeado</th>  
@@ -161,7 +163,7 @@ else
                         ?>
                                 
                                 <td>
-                                    <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="<?php echo $hr;?>" name="value" value="<?php echo $row[$x] ?>">
+                                    <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="<?php echo $hr;?>" name="value" value="<?php echo $row[$x] ?>" data-toggle="tooltip" title="Hora: <?php echo $hr;?>:00, Maquina: <?php echo $row['maquina'];?>">
                                 </td>
                                 <td>
                                     <?php 
@@ -174,6 +176,8 @@ else
                                     break;
 
                                 $hr++;
+                                if($hr == 25)
+                                    $hr -= 24;
                             }
                         ?>
                     </tr>
