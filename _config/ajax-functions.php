@@ -125,11 +125,11 @@ if(isset($_GET['f']))
         $id    = $_GET['id'];
         $pph   = $_GET['pph'];
         $hc    = $_GET['hc'];
-        if(isset($_GET['time_start']))
+        if(isset($_GET['time']))
         {
             $date  = date("Y/m/d");
-            $time = strtotime($_GET['time_start']);
-            $turno = turno(strtotime($_GET['time_start']));
+            $time = date("H:i", strtotime($_GET['time']));
+            $turno = turno($_GET['time']);
         }
         else
         {
@@ -467,10 +467,10 @@ function editar_reporteA($id_orden)
             if($flag_clean == 1)
             {
 
-                if(isset($_GET['time_start']))
+                if(isset($_GET['time']))
                 {
-                    $time = strtotime($_GET['time_start']);
-                    $hora     = Date("H", $time) * 1;
+                    $time = strtotime($_GET['time']);
+                    echo $hora     = Date("H", $time) * 1;
                     $minutos  = 60 - Date("i", $time) * 1;
                 }
                 else
@@ -565,7 +565,7 @@ function editar_reporteA($id_orden)
                                     $columna = $row_plan_items['hora'];
                                     if(!empty($columna))
                                     {
-                                    $columna .= "<br><b>$item</b>"; 
+                                        $columna .= "<br><b>$item</b>"; 
                                     }
                                     else
                                     {

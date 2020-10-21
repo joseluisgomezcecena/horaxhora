@@ -286,12 +286,15 @@ document.addEventListener("DOMContentLoaded", function() {
         {
             url += "&time="+time.value;
         }
+        
+        console.log(url)
 
         if(hc != "" && hc != 0 && pph != "" && pph != 0 ){
             xmlhttps.onreadystatechange = function()
             {
                 if(this.readyState == 4 && this.status == 200)
                 {
+                    console.log(this.responseText)
                     let item  = document.getElementById("row"+id);
                         orden = document.getElementById("wo"+id).textContent;
                     item.remove();
