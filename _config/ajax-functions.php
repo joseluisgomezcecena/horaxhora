@@ -367,9 +367,6 @@ function agregar_reporteA($id_orden)
 
             if($hora == $break1 || $hora == $break2 || $hora == $break3)
                 $minutos -= $breaktime;
-            
-            if($hora == 6 || $hora == 15 || $hora == 23)
-                $minutos -= 15;
 
             while($minutos <= 0) //Change hour
             {
@@ -409,15 +406,7 @@ function agregar_reporteA($id_orden)
                     if($result_plan_items->num_rows == 1)
                     {
                         $row_plan_items = $result_plan_items->fetch_assoc();
-                        $columna = $row_plan_items['hora'];
-                        if(!empty($columna))
-                        {
-                           $columna .= "<br><b>$item</b>"; 
-                        }
-                        else
-                        {
-                            $columna .= "<b>$item</b>"; 
-                        }
+                        $columna = (!empty($row_plan_items['hora']) ? $row_plan_items['hora'] . "<br><b>$item</b>" : "<b>$item</b>");
                         $query_insert_item = "UPDATE plan_items SET `$hora` = '$columna' WHERE maquina = '$maquina'";
                         $connection->query($query_insert_item);
                     }
@@ -470,7 +459,7 @@ function editar_reporteA($id_orden)
                 if(isset($_GET['time']))
                 {
                     $time = strtotime($_GET['time']);
-                    echo $hora     = Date("H", $time) * 1;
+                    $hora     = Date("H", $time) * 1;
                     $minutos  = 60 - Date("i", $time) * 1;
                 }
                 else
@@ -512,9 +501,6 @@ function editar_reporteA($id_orden)
             
                         if($hora == $break1 || $hora == $break2 || $hora == $break3)
                             $minutos -= $breaktime;
-                        
-                        if($hora == 6 || $hora == 15 || $hora == 23)
-                            $minutos -= 15;
             
                         while($minutos <= 0) //Change hour
                         {
@@ -562,15 +548,7 @@ function editar_reporteA($id_orden)
                                 if($result_plan_items->num_rows == 1)
                                 {
                                     $row_plan_items = $result_plan_items->fetch_assoc();
-                                    $columna = $row_plan_items['hora'];
-                                    if(!empty($columna))
-                                    {
-                                        $columna .= "<br><b>$item</b>"; 
-                                    }
-                                    else
-                                    {
-                                        $columna .= "<b>$item</b>"; 
-                                    }
+                                    $columna = (!empty($row_plan_items['hora']) ? $row_plan_items['hora'] . "<br><b>$item</b>" : "<b>$item</b>");
                                     $query_insert_item = "UPDATE plan_items SET `$hora` = '$columna' WHERE maquina = '$maquina'";
                                     $connection->query($query_insert_item);
                                 }

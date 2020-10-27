@@ -64,7 +64,7 @@
         echo "Failed with query: $query_create_plan_actual";
     }
     
-    $query_create_plan_loaded  = "SELECT orden_id FROM ordenes_main WHERE estado = 0 OR estado = 4";
+    $query_create_plan_loaded  = "SELECT orden_id FROM ordenes_main WHERE estado != 2";
     $result_create_plan_loaded = $connection->query($query_create_plan_loaded);
     if($result_create_plan_loaded)
     {
