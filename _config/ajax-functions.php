@@ -388,12 +388,14 @@ function agregar_reporteA($id_orden)
             if($cantidad > $cant_hour)
             {
                 $query_qty_hour  = "UPDATE plan SET `$hora`= `$hora`+$cant_hour, total = total + $cant_hour WHERE id = $id_plan";
+                //echo "<br>";
                 $cantidad -= $cant_hour;
             }
             else
             {   
                 $minutos_pendientes = 60 - ($cantidad * 60)/$pph_std;
                 $query_qty_hour = "UPDATE plan SET `$hora`= `$hora`+$cantidad, total = total + $cantidad, hora_pendiente = $hora, minutos_pendientes = $minutos_pendientes WHERE id = $id_plan";
+                //echo "<br>";
                 $cantidad = 0;
             }
             $result_qty_hour = $connection->query($query_qty_hour);
@@ -408,7 +410,12 @@ function agregar_reporteA($id_orden)
                         $row_plan_items = $result_plan_items->fetch_assoc();
                         $columna = (!empty($row_plan_items['hora']) ? $row_plan_items['hora'] . "<br><b>$item</b>" : "<b>$item</b>");
                         $query_insert_item = "UPDATE plan_items SET `$hora` = '$columna' WHERE maquina = '$maquina'";
-                        $connection->query($query_insert_item);
+                        //echo "<br>";
+                        if(!($connection->query($query_insert_item)))
+                        {
+                            echo "Something happen: {$connection->error}";
+                        }
+                        
                     }
                 }
                 $hora++;
@@ -421,6 +428,9 @@ function agregar_reporteA($id_orden)
                     break;
                 }
             } 
+            else{
+                echo "Something happen: {$connection->error}";
+            }
         }
         $result_datos->free();
         $connection->next_result();
@@ -550,7 +560,11 @@ function editar_reporteA($id_orden)
                                     $row_plan_items = $result_plan_items->fetch_assoc();
                                     $columna = (!empty($row_plan_items['hora']) ? $row_plan_items['hora'] . "<br><b>$item</b>" : "<b>$item</b>");
                                     $query_insert_item = "UPDATE plan_items SET `$hora` = '$columna' WHERE maquina = '$maquina'";
-                                    $connection->query($query_insert_item);
+                                    if(!($connection->query($query_insert_item)))
+                                    {
+                                        echo "Something happen: {$connection->error}";
+                                    }
+
                                 }
                             }
                             $hora++;
@@ -563,7 +577,12 @@ function editar_reporteA($id_orden)
                                 break;
                             }
                         } 
+                        else
+                        {
+                            echo "Something happen: {$connection->error}";
+                        }
                     }
+
                 }
                 $result_plan->free();
                 $connection->next_result();

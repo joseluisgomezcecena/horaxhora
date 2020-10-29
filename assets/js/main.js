@@ -247,6 +247,7 @@ document.addEventListener("DOMContentLoaded", function() {
             {
                 if(xmlhttps.readyState == 4 && xmlhttps.status == 200)
                 {
+                    console.log(this.responseText);
                     let tbody_ordenes = document.querySelector("#tabla-ordenes tbody");
 
                     tbody_ordenes.innerHTML += this.responseText;
