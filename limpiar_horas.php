@@ -69,20 +69,20 @@
         echo "Failed with query: $query_create_plan_actual";
     }
     
-    $query_create_plan_loaded  = "SELECT orden_id FROM ordenes_main WHERE estado = 0 OR estado = 3";
-    $result_create_plan_loaded = $connection->query($query_create_plan_loaded);
-    if($result_create_plan_loaded)
-    {
-        if($result_create_plan_loaded->num_rows > 0)
-        {
-            while($row_create_plan_loaded = $result_create_plan_loaded->fetch_assoc())
-            {
-                agregar_reporteA($row_create_plan_loaded['orden_id']);
-            }
-            $result_create_plan_loaded->close();
-        }
-    }
-    else
-    {
-        echo "Failed with query: $query_create_plan_loaded";
-    }
+    // $query_create_plan_loaded  = "SELECT orden_id FROM ordenes_main WHERE estado = 0 OR estado = 3";
+    // $result_create_plan_loaded = $connection->query($query_create_plan_loaded);
+    // if($result_create_plan_loaded)
+    // {
+    //     if($result_create_plan_loaded->num_rows > 0)
+    //     {
+    //         while($row_create_plan_loaded = $result_create_plan_loaded->fetch_assoc())
+    //         {
+    //             agregar_reporteA($row_create_plan_loaded['orden_id']);
+    //         }
+    //         $result_create_plan_loaded->close();
+    //     }
+    // }
+    // else
+    // {
+    //     echo "Failed with query: $query_create_plan_loaded";
+    // }

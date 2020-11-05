@@ -295,14 +295,22 @@ document.addEventListener("DOMContentLoaded", function() {
             {
                 if(this.readyState == 4 && this.status == 200)
                 {
-                    console.log(this.responseText)
                     let item  = document.getElementById("row"+id);
                         orden = document.getElementById("wo"+id).textContent;
-                    item.remove();
-                    //document.querySelector(".datos").innerHTML = this.responseText;
-                    swal("La orden " + orden +" ha comenzado", {
-                        icon: "success",
-                    });
+                    if(this.responseText == "start")
+                    {
+                        item.remove();
+                        //document.querySelector(".datos").innerHTML = this.responseText;
+                        swal("La orden " + orden +" ha comenzado", {
+                            icon: "success",
+                        });
+                    }
+                    else
+                    {
+                        swal("La orden " + orden +" no ha podido comenzar, puede que ya haya una orden en marcha", {
+                            icon: "error",
+                        });
+                    }
                 }
             };
             xmlhttps.open("GET", url, true);
