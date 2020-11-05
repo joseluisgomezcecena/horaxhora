@@ -297,20 +297,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 {
                     let item  = document.getElementById("row"+id);
                         orden = document.getElementById("wo"+id).textContent;
-                    if(this.responseText == "start")
-                    {
-                        item.remove();
-                        //document.querySelector(".datos").innerHTML = this.responseText;
-                        swal("La orden " + orden +" ha comenzado", {
-                            icon: "success",
-                        });
-                    }
-                    else
-                    {
-                        swal("La orden " + orden +" no ha podido comenzar, puede que ya haya una orden en marcha", {
-                            icon: "error",
-                        });
-                    }
+
+                    item.remove();
+                    swal("La orden " + orden +" ha comenzado", {
+                        icon: "success",
+                    });
                 }
             };
             xmlhttps.open("GET", url, true);

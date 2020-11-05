@@ -137,49 +137,35 @@ if(isset($_GET['f']))
             $time = date("H:i");
             $turno = turno(date("H:i"));
         }
-
-        $query_select  = "SELECT * FROM ordenes_main WHERE maquina = (SELECT maquina FROM ordenes_main WHERE orden_id = $id) AND estado = 1";
-        $result_select = $connection->query($query_select);
-        if($result_select)
+        $query = "UPDATE `ordenes_main` SET `pph_std` = $pph, `fecha_inicial` = '$date $time', `fecha_reinicio` = '$date $time', `head_count$turno` = $hc WHERE `orden_id` = $id;";
+        $connection->query($query);
+        editar_reporteA($id);
+        
+        $query = "UPDATE `ordenes_main` SET `estado` = 1 WHERE `orden_id` = $id;";
+        $result_insert = $connection->query($query);
+        if($result_insert)
         {
-            if($result_select->num_rows == 0)
-            {
-                $query = "UPDATE `ordenes_main` SET `pph_std` = $pph, `fecha_inicial` = '$date $time', `fecha_reinicio` = '$date $time', `head_count$turno` = $hc WHERE `orden_id` = $id;";
-                $connection->query($query);
-                editar_reporteA($id);
-                
-                $query = "UPDATE `ordenes_main` SET `estado` = 1 WHERE `orden_id` = $id;";
-                $result_insert = $connection->query($query);
-                if($result_insert)
-                {
-                    $connection->query("INSERT INTO ordenes_diarias(id_orden, fecha_dia) VALUES($id,'" . date("Y/m/d") ."');");
-                    echo "start";
-        
-        
-                    $select = "SELECT * FROM eficiencias WHERE maquina = (SELECT maquina from ordenes_main WHERE orden_id = $id) AND dia = '". date('Y/m/d') ."'";
-                    $result = $connection->query($select);
-                    if($result)
-                    {
-                        if($result->num_rows == 0)
-                        {
-                            $insert = "INSERT INTO eficiencias(maquina, dia) SELECT maquina, '". date('Y/m/d') ."' from ordenes_main WHERE orden_id = $id ";
-                            $result = $connection->query($insert);
-                        }
-                    }
-                    else
-                        echo "Failed query in: ". $select;
-                }
-                else
-                {
-                    echo $connection->error;
-                }
-            }
-            else{
-                echo "No entro";
-            }
-        }
+            $connection->query("INSERT INTO ordenes_diarias(id_orden, fecha_dia) VALUES($id,'" . date("Y/m/d") ."');");
+            echo "start";
 
-        
+
+            $select = "SELECT * FROM eficiencias WHERE maquina = (SELECT maquina from ordenes_main WHERE orden_id = $id) AND dia = '". date('Y/m/d') ."'";
+            $result = $connection->query($select);
+            if($result)
+            {
+                if($result->num_rows == 0)
+                {
+                    $insert = "INSERT INTO eficiencias(maquina, dia) SELECT maquina, '". date('Y/m/d') ."' from ordenes_main WHERE orden_id = $id ";
+                    $result = $connection->query($insert);
+                }
+            }
+            else
+                echo "Failed query in: ". $select;
+        }
+        else
+        {
+            echo $connection->error;
+        }
     }
     else if($_GET['f'] == "editOrder")
     {
@@ -641,7 +627,6 @@ function cleanPlanbyMachine($hora, $maquina) //Clean columns in database
     $y = $hora + 1;
     $query_clean_plan  = "UPDATE plan SET  `$y`=0 ";
     $query_clean_plan2 = "UPDATE plan SET `total`=`total`-`$y`";
-
     $query_clean_plan_items  = "UPDATE plan_items SET  `$y`= null ";
 
     if($hora != 5)
