@@ -204,8 +204,7 @@ document.addEventListener("DOMContentLoaded", function() {
         let work_order = document.getElementById("work-order"),
             item       = document.getElementById("item"),
             machine    = document.getElementById("machine"),
-            quantity   = document.getElementById("quantity"),
-            time       = document.getElementById("time-input-load");
+            quantity   = document.getElementById("quantity");
 
         //Validate that the inputs have values
         if(work_order.value == "")
@@ -236,11 +235,6 @@ document.addEventListener("DOMContentLoaded", function() {
             data.append("item", item.value);
             data.append("machine", machine.value);
             data.append("quantity", quantity.value);
-
-            if(time.value)
-            {
-                data.append("time", time.value);
-            }
 
             console.log(data);
             xmlhttps.onreadystatechange = function()
