@@ -57,7 +57,7 @@ else
             if($result_daily_data->num_rows == 1)
             {
                 //UPDATE datos_diarios SET planeado_turno1 = planeado_turno1 + (SELECT `10` FROM plan WHERE maquina = 'HEM01') WHERE maquina = 'HEM01' AND date = '2020/11/09'
-                $update_daily = "UPDATE datos_diarios SET `realizado_turno$turno` = `realizado_turno$turno` + $value, `realizado_total` = `realizado_total` + $value, planeado_turno$turno = planeado_turno$turno + (SELECT `$hr` FROM plan WHERE maquina = '$maquina'), planeado_total = planeado_total + (SELECT `$hr` FROM plan WHERE maquina = '$maquina')  WHERE maquina = '$maquina' AND date = '$date'";
+                $update_daily = "UPDATE datos_diarios SET `realizado_turno$turno` = `realizado_turno$turno` + $value, `realizado_total` = `realizado_total` + $value WHERE maquina = '$maquina' AND date = '$date'";
             }
             else
             {
