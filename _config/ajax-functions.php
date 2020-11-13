@@ -1,6 +1,4 @@
 <?php
-
-
 include_once "db.php";
 global $connection;
 
@@ -233,7 +231,7 @@ if(isset($_GET['f']))
     else if($_GET['f'] == "pauseOrder")
     {
         $id_orden = $_GET['id'];
-        $hora = hora_turno(date("H"));
+        $hora = hora_turno(date("H") * 1);
         $query_complete  = "UPDATE ordenes_main SET estado = 3 WHERE orden_id = $id_orden";
         $result_complete = $connection->query($query_complete);
         if($result_complete)
@@ -281,7 +279,6 @@ if(isset($_GET['f']))
             }
         }
     }
-
 }
 
 
@@ -611,12 +608,12 @@ function limpiar_reporteA($maquina, $pph, $hc)
 {
     global $connection;
 
-    $hora = date("H");
+    $hora = date("H") * 1;
     $minutes = 60 - date("i");
 
     $produccion_hora_actual = ($minutes * $pph * $hc) / 60;
 
-    $select_cantidad_planeada = "SELECT `$hora` FROM plan WHERE maquina = '$maquina'";
+    echo $select_cantidad_planeada = "SELECT `$hora` FROM plan WHERE maquina = '$maquina'";
     $result_cantidad_planeada = $connection->query($select_cantidad_planeada);
     if($result_cantidad_planeada)
     {
