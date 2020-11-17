@@ -137,8 +137,11 @@
           fixedColumns:   true,
           paging:         false,
       } );
+
+      var table_completadas = $('#tabla-ordenes').DataTable();
+      var table_actuales = $('#tabla-ordenes-actuales').DataTable();
   } );
-   
+
 
   </script>
 
