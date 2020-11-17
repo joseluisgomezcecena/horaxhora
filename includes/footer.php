@@ -131,6 +131,7 @@
 
   $(document).ready(function() {
       var table = $('#dataTable1').DataTable( {
+          scrollY:        "600px",
           scrollX:        true,
           scrollCollapse: true,  
           fixedColumns:   true,
