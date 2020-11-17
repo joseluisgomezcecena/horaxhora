@@ -48,6 +48,10 @@
 
   <!-- Bootstrap core JavaScript-->
   <script src="assets/vendor/jquery/jquery.min.js"></script>
+  <script src="assets/vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="assets/vendor/datatables/dataTables.fixedColumns.min.js"></script>
+  
+
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
   <!-- Core plugin JavaScript-->
@@ -125,7 +129,14 @@
 
   });//termina document ready
 
-  
+  $(document).ready(function() {
+      var table = $('#dataTable1').DataTable( {
+          scrollX:        true,
+          scrollCollapse: true,  
+          fixedColumns:   true,
+          paging:         false,
+      } );
+  } );
    
 
   </script>

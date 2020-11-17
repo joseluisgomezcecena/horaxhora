@@ -19,6 +19,10 @@ require_once("_config/db.php");
   <link href="assets/css/fonts.css" rel="stylesheet">
 
   <!-- Custom styles for this template-->
+  <link rel="stylesheet" href="assets/vendor/datatables/jquery.dataTable.min.css">
+  <link rel="stylesheet" href="assets/vendor/datatables/dataTable.fixedColumns.css">
+  
+
   <link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
