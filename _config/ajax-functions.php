@@ -113,9 +113,6 @@ if(isset($_GET['f']))
             echo "<td id=\"pph$last_id\" $no_pph>$pph</td>";
             echo "<td>$setup</td>";
             echo "<td style=\"text-align: center\"><button class=\"btn btn-primary start-order\" data-id=\"$last_id\">Comenzar <i class=\"fas fa-play\"></i></button> <button class=\"btn btn-warning edit-order\" data-id=\"$last_id\">Editar <i class=\"fas fa-edit\"></i></button> <button class=\"btn btn-danger delete-order\" data-id=\"$last_id\">Eliminar <i class=\"fas fa-trash-alt\"></i></button> </td></tr>";
-
-
-            //agregar_reporteA($last_id);
         }
     }
     else if($_GET['f'] == "startOrder")
@@ -453,7 +450,7 @@ function editar_reporteA($id_orden)
     global $connection;
     $flag_clean = 1;
     $date = date("Y/m/d");
-    $query_ordenes_maquina  = "SELECT * FROM ordenes_main WHERE maquina = (SELECT maquina from ordenes_main WHERE orden_id = $id_orden ) AND (estado = 0 OR estado = 3) ORDER BY `ordenes_main`.`estado` ASC, `ordenes_main`.`orden_id` ASC";
+    $query_ordenes_maquina  = "SELECT * FROM ordenes_main WHERE orden_id = $id_orden";
     $result_ordenes_maquina = $connection->query($query_ordenes_maquina);
     if($result_ordenes_maquina)
     {
@@ -471,24 +468,19 @@ function editar_reporteA($id_orden)
             $break2     = $row_ordenes_maquina['break2'];
             $break3     = $row_ordenes_maquina['break3'];
 
-            
-            if($flag_clean == 1)
+            if(isset($_GET['time']))
             {
-
-                if(isset($_GET['time']))
-                {
-                    $time = strtotime($_GET['time']);
-                    $hora     = Date("H", $time) * 1;
-                    $minutos  = 60 - Date("i", $time) * 1;
-                }
-                else
-                {
-                    $hora    = 1 * date("H"); //1 * to quit leading zero
-                    $minutos = 60 - date("i");
-                }
-                cleanPlanbyMachine($hora, $maquina);
-                $flag_clean = 0;
+                $time = strtotime($_GET['time']);
+                $hora     = Date("H", $time) * 1;
+                $minutos  = 60 - Date("i", $time) * 1;
             }
+            else
+            {
+                $hora    = 1 * date("H"); //1 * to quit leading zero
+                $minutos = 60 - date("i");
+            }
+            
+            
 
             //_config/ajax-functions.php?f=startOrder&id=41&pph=100&hc=2
             
@@ -623,7 +615,7 @@ function limpiar_reporteA($maquina, $pph, $hc)
 
         $cantidad = ($cantidad < $produccion_hora_actual ? 0 : $cantidad-$produccion_hora_actual);
 
-        $query = ($cantidad == 0 ? "UPDATE plan, horas, plan_items SET plan.`$hora`=$cantidad, plan.`total`=plan.`total`-$cantidad, plan_items.`$hora` = '' WHERE plan.maquina = '$maquina'" : "UPDATE plan, horas, plan_items SET plan.`$hora`=$cantidad, plan.`total`=plan.`total`-$cantidad WHERE plan.maquina = '$maquina'");
+        $query = ($cantidad == 0 ? "UPDATE plan, horas, plan_items SET plan.`$hora`= 0, plan.`total`=plan.`total`-$cantidad, plan_items.`$hora` = '' WHERE plan.maquina = '$maquina' AND plan_items.maquina = '$maquina'" : "UPDATE plan, horas, plan_items SET plan.`$hora`=$cantidad, plan.`total`=plan.`total`-$cantidad WHERE plan.maquina = '$maquina' AND plan_items.maquina = '$maquina'");
         $connection->query($query);
 
         $y = $hora + 1;
