@@ -5,6 +5,7 @@ include_once("includes/top-menu.php");
 
 include_once "_config/ajax-functions.php";
 include_once "modals/forms/start_order.php";
+include "modals/forms/edit_order.php";
 
 $turn = turno(date("H:i"));
 
@@ -113,6 +114,7 @@ else
                             </td>
                             <td style="text-align: center">
                                 <button class="btn btn-success complete-order m-1" data-id="<?php echo $row_orders['orden_id'];?>">Completar <i class="fas fa-play"></i></button>
+                                <button class="btn btn-primary edit-order" data-id="<?php echo $row_orders['orden_id'];?>">Editar <i class="fas fa-edit"></i></button>
                                 <button class="btn btn-warning pause-order m-1" data-id="<?php echo $row_orders['orden_id'];?>">Interrumpir <i class="fas fa-stop"></i></button>
                             </td>
                         </tr>

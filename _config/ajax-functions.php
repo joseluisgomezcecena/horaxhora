@@ -174,8 +174,7 @@ if(isset($_GET['f']))
         $headcount1    = htmlspecialchars($_POST['headcount1']);
         $headcount2    = htmlspecialchars($_POST['headcount2']);
         $headcount3    = htmlspecialchars($_POST['headcount3']);
-
-
+        $actual        = htmlspecialchars($_POST['actual']);
         
 
         $stmt_edit = $connection->prepare("UPDATE ordenes_main SET work_order = ?, item = ?, maquina = ?, meta_orden = ?, pph_std = ?, setup = ?, head_count1 = $headcount1, head_count2 = $headcount2, head_count3 = $headcount3  WHERE orden_id = $id ");
@@ -184,6 +183,10 @@ if(isset($_GET['f']))
         if($result)
         {
             echo "edit";
+            if($actual == 1)
+            {
+                editar_reporteA($id);
+            }
         }
         else
         {
@@ -228,8 +231,9 @@ if(isset($_GET['f']))
     else if($_GET['f'] == "pauseOrder")
     {
         $id_orden = $_GET['id'];
+        $reason   = $_POST['reason'];
         $hora = hora_turno(date("H") * 1);
-        $query_complete  = "UPDATE ordenes_main SET estado = 3 WHERE orden_id = $id_orden";
+        $query_complete  = "UPDATE ordenes_main SET estado = 3, reasonInt = '$reason' WHERE orden_id = $id_orden";
         $result_complete = $connection->query($query_complete);
         if($result_complete)
         {
@@ -479,6 +483,8 @@ function editar_reporteA($id_orden)
                 $hora    = 1 * date("H"); //1 * to quit leading zero
                 $minutos = 60 - date("i");
             }
+
+            limpiar_reporteA($maquina, $pph_std, $headcount1, $hora);
             
             
 
@@ -597,12 +603,14 @@ function editar_reporteA($id_orden)
     }
 }
 
-function limpiar_reporteA($maquina, $pph, $hc)
+function limpiar_reporteA($maquina, $pph, $hc, $hr = 0)
 {
     global $connection;
 
-    $hora = date("H") * 1;
-    $minutes = 60 - date("i");
+    $hora = $hr == 0 ? (date("H") * 1) : $hr ;
+    $minutes = $hr == 0 ? (60 - date("i")) : 60;
+
+    
 
     $produccion_hora_actual = ($minutes * $pph * $hc) / 60;
 
@@ -615,7 +623,7 @@ function limpiar_reporteA($maquina, $pph, $hc)
 
         $cantidad = ($cantidad < $produccion_hora_actual ? 0 : $cantidad-$produccion_hora_actual);
 
-        $query = ($cantidad == 0 ? "UPDATE plan, horas, plan_items SET plan.`$hora`= 0, plan.`total`=plan.`total`-$cantidad, plan_items.`$hora` = '' WHERE plan.maquina = '$maquina' AND plan_items.maquina = '$maquina'" : "UPDATE plan, horas, plan_items SET plan.`$hora`=$cantidad, plan.`total`=plan.`total`-$cantidad WHERE plan.maquina = '$maquina' AND plan_items.maquina = '$maquina'");
+        $query = ($cantidad == 0 ? "UPDATE plan, horas, plan_items SET plan.`lleno` = 0,  plan.`$hora`= 0, plan.`total`=plan.`total`-$cantidad, plan_items.`$hora` = '' WHERE plan.maquina = '$maquina' AND plan_items.maquina = '$maquina'" : "UPDATE plan, horas, plan_items SET plan.`$hora`=$cantidad, plan.`total`=plan.`total`-$cantidad WHERE plan.maquina = '$maquina' AND plan_items.maquina = '$maquina'");
         $connection->query($query);
 
         $y = $hora + 1;
