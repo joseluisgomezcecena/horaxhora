@@ -491,7 +491,7 @@ document.addEventListener("DOMContentLoaded", function() {
             buttons: [true, "Pausar"],
         })
         .then((willPause) => {
-            if (willPause) {
+            if (willPause != null) {
                 let url      = "_config/ajax-functions.php?f=pauseOrder&id=" + id,
                     xmlhttps = new XMLHttpRequest(),
                     data     = new FormData();
