@@ -116,7 +116,7 @@ else
                         ?>
                                 
                                 <td>
-                                    <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="<?php echo $hr;?>" name="value" value="<?php echo $row[$x] ?>" data-toggle="tooltip" title="Hora: <?php echo $hr;?>:00, Maquina: <?php echo $row['maquina'];?>">
+                                    <input class="tablahrxhr" data-maquina="<?php echo $row['maquina'] ?>" data-hr="<?php echo $hr;?>" name="value" value="<?php echo $row[$x] ?>">
                                 </td>
                                 <td>
                                     <?php 
