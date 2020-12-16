@@ -30,6 +30,7 @@ if(isset($_GET['f']))
                     $planta       = $row_machine_data['planta_id'];
                     $display      = $row_machine_data['display'];
                     $celda        = $row_machine_data['celda'];
+                    $pph_table    = $row_machine_data['pph_facility'];
                 }
             }
         }
@@ -65,7 +66,7 @@ if(isset($_GET['f']))
         }
 
         /* Search pph and setup */
-        if($planta == 1)
+        if($planta == 1 || $pph_table == 1)
         {
             $query_pph_setup  = "SELECT  pph, setup FROM pph WHERE routing = '$item' AND facility = '$machine'";
         }
