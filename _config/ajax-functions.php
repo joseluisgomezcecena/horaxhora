@@ -19,7 +19,7 @@ if(isset($_GET['f']))
         $item       = str_replace(" ", "", strtoupper($item));
 
         /* Search name, display and cell for machine */
-        $query_machine_data  = "SELECT planta_id, display, celda FROM horas WHERE maquina = '$machine'";
+        $query_machine_data  = "SELECT planta_id, display, celda, pph_facility FROM horas WHERE maquina = '$machine'";
         $result_machine_data = $connection->query($query_machine_data);
         if($result_machine_data)
         {
