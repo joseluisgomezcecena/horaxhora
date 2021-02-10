@@ -226,6 +226,10 @@ if(isset($_GET['f']))
 
                     echo "{\"workorder\" : \"{$row_next_order['work_order']}\", \"id\" : {$row_next_order['orden_id']}, \"headcount\" : {$row_next_order['head_count'.$turno]}, \"pph\" : {$row_next_order['pph_std']}}";
                 }
+                else
+                {
+                    echo "No data";
+                }
             }
         }
     }
@@ -753,7 +757,7 @@ function save_daily_plan($maquina)
                 {
                     if($result_select_daily->num_rows == 1)
                     {
-                        $query_insert_sumatoria = "UPDATE datos_diarios SET planeado_turno1 = $plan_turno1, planeado_turno2 = $plan_turno2, planeado_turno3 = $plan_turno3, planeado_total = $plan_total";
+                        $query_insert_sumatoria = "UPDATE datos_diarios SET planeado_turno1 = $plan_turno1, planeado_turno2 = $plan_turno2, planeado_turno3 = $plan_turno3, planeado_total = $plan_total WHERE maquina = '$maquina' AND date = '$date'";
                     }
                     else
                     {
@@ -772,3 +776,5 @@ function save_daily_plan($maquina)
 }
 
 ?>
+
+

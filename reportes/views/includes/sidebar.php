@@ -52,6 +52,20 @@
                 <h6 class="collapse-header">Reportes:</h6>
                 <a class="collapse-item" href="index.php?page=reporte_planta">Plantas</a>
                 <a class="collapse-item" href="index.php?page=reporte_celda">Celdas</a>
+                <a class="collapse-item" href="index.php?page=reporte_horas">Hrs Std / Hrs Tempus</a>
+            </div>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseImport" aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-file-import"></i>
+            <span>Importar reportes</span>
+        </a>
+        <div id="collapseImport" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Importar:</h6>
+                <a class="collapse-item" href="index.php?page=import_tempus">Reporte de Tempus</a>
+                <a class="collapse-item" href="index.php?page=import_xa">Reporte de hrs Standard</a>
             </div>
         </div>
     </li>

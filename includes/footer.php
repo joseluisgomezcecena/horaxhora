@@ -93,27 +93,29 @@
       function paintCols(){
         var id;
         var d = new Date(); // for now
+        
         d.getHours(); // => 9
         d.getMinutes(); // =>  30
         d.getSeconds(); // => 51
         if(window.location.pathname == "/horaxhora/horaxhora.php" || window.location.pathname == "/horaxhora/reporteA.php")
         {
-          if(d.getHours() < 12)
+          let hora = d.getHours() == 0 ? 24 : d.getHours();
+          if(hora < 12 )
           {
-            id = d.getHours() + "am";
+            id = hora + "am";
           }
           else
           {
-            id = d.getHours() + "pm";
+            id = hora + "pm";
           }
 
-          if(d.getHours() - 1 < 12)
+          if(hora - 1 < 12)
           {
-            old_id = d.getHours() - 1 + "am"
+            old_id = hora - 1 + "am"
           }
           else
           {
-            old_id = d.getHours() - 1 + "pm"
+            old_id = hora - 1 + "pm"
           }
           //#858796
           document.getElementById(id).style.backgroundColor = "#00a6ff";

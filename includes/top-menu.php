@@ -35,7 +35,7 @@ if(isset($_GET['plant']))
     <ul class="navbar-nav ml-auto">
       <!-- Nav Item - Menu -->
       <li class="nav-item dropdown no-arrow mx-1">
-        <a class="nav-link dropdown-toggle" href="index.php<?php if(isset($plant)) echo '?plant='.$plant;?>" id="hrxhr-icon" data-toggle="tooltip" title="HoraxHora" aria-haspopup="true" aria-expanded="false" style="font-size: 20px">
+        <a class="nav-link dropdown-toggle" href="index.php<?php if(isset($plant)) echo '?plant='.$plant;?>" id="hrxhr-icon" data-toggle="tooltip" title="Menu" aria-haspopup="true" aria-expanded="false" style="font-size: 20px">
         <i class="fas fa-home"></i><br>
         </a>
       </li>

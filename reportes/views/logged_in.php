@@ -14,6 +14,18 @@ switch($page)
         include("pages/reportes/reporte_celda.php");
     break;
 
+    case "reporte_horas":
+        include("pages/reportes/reporte_horas.php");
+    break;
+
+    case "import_tempus":
+        include("pages/imports/import_tempus.php");
+    break;
+
+    case "import_xa":
+        include("pages/imports/import_xa.php");
+    break;
+
     case "new_user":
         include("pages/usuarios/new_user.php");
     break;

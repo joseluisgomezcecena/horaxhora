@@ -441,7 +441,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     if(xmlhttps.readyState == 4 && xmlhttps.status == 200)
                     {            
                         console.log(this.responseText);   
-                        if(this.responseText.lenght > 0)
+                        if(this.responseText.trim() !== '')
                         {
                             let data = JSON.parse(this.responseText);
                             item.remove();

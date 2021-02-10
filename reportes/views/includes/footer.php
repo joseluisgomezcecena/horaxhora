@@ -88,6 +88,8 @@
   <!-- Date Picker -->
   <script src="views/assets/vendor/datepicker/js/bootstrap-datepicker.js"></script>
 
+  <script src="views/assets/js/ajaxTables.js"></script>
+
   <script>
     $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();

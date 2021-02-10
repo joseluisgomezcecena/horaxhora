@@ -60,7 +60,7 @@ else
                         <th id="21pm" colspan="2">21:00 pm</th>
                         <th id="22pm" colspan="2">22:00 pm</th>
                         <th id="23pm" colspan="2">23:00 pm</th>
-                        <th id="12pm" colspan="2">00:00 am</th>
+                        <th id="24pm" colspan="2">00:00 am</th>
                         <th id="1pm" colspan="2">01:00 am</th>
                         <th id="2pm" colspan="2">02:00 am</th>
                         <th id="3pm" colspan="2">03:00 am</th>
@@ -135,7 +135,7 @@ else
                         ?>
                     </tr>
                     <?php 
-                    endwhile;
+                        endwhile;
                     ?>
                 </tbody>
             </table>

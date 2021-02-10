@@ -6,7 +6,7 @@ $maquina = $_POST['maquina'];
 $hr      = $_POST['hr'];
 $value   = $_POST['value'];
 $turno   = hora_turno($hr);
-$date    = date("Y/m/d");
+echo $date    = $hr >= 6 && $hr != 24 ? date("Y/m/d") : date("Y/m/d", strtotime("-1 days"));
 
 $query_old_qty  = "SELECT `$hr` as Hora FROM horas WHERE maquina = '$maquina'";
 if($result_old_qty = $connection->query($query_old_qty))
@@ -123,7 +123,7 @@ function calc_eficiencia_turno($turno)
     else
     {
         $i = 23;
-        if($hr > 6)
+        if($hr > 5)
             $hr = 5;
     }
 
