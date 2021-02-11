@@ -190,43 +190,35 @@
         
         <?php
 
-        $date = date('Y/m/d',strtotime("-1 days")); // Return yesterday date
+        $date = date('Y/m/d', strtotime($_POST['date']));
         $columna = 2;
-        $columna_supervisor = 7;
+        $columna_supervisor = 0;
 
-        switch(date('w')) 
+        switch(date('w', strtotime($_POST['date']))) 
         {
-            case 2: // Martes -> Nos dara reporte de Lunes
+            case 1: // Martes -> Nos dara reporte de Lunes
                 $columna = 2;
-                $columna_supervisor = 7;
                 break;
-            case 3: // Miercoles -> Nos dara reporte de Martes
+            case 2: // Miercoles -> Nos dara reporte de Martes
                 $columna = 4;
-                $columna_supervisor = 10;
                 break;
-            case 4: // Jueves -> Nos dara reporte de Miercoles
+            case 3: // Jueves -> Nos dara reporte de Miercoles
                 $columna = 6;
-                $columna_supervisor = 13;
                 break;
-            case 5: // Viernes -> Nos dara reporte de Jueves
+            case 4: // Viernes -> Nos dara reporte de Jueves
                 $columna = 8;
-                $columna_supervisor = 16;
                 break;
-            case 6: // Sabado -> Nos dara reporte de Viernes
+            case 5: // Sabado -> Nos dara reporte de Viernes
                 $columna = 10;
-                $columna_supervisor = 19;
                 break;
-            case 0: // Domingo -> Nos dara reporte de Sabado
+            case 6: // Domingo -> Nos dara reporte de Sabado
                 $columna = 12;
-                $columna_supervisor = 22;
                 break;
-            case 1: // Lunes -> Nos dara reporte de Domingo
+            case 7: // Lunes -> Nos dara reporte de Domingo
                 $columna = 14;
-                $columna_supervisor = 25;
                 break;
             default:
                 $columna = 2;
-                $columna_supervisor = 7;
                 break;
         }
 
@@ -241,6 +233,27 @@
             $file_open = fopen($file,"r");
             while(($csv = fgetcsv($file_open, 10000, ",")) !== false)
             {
+                if($count == 5) 
+                {
+                    $x = 0;
+                    while($columna_supervisor == 0)
+                    {
+                        if( $csv[$x] == 'HrsExtras' )
+                            $columna_supervisor = $x + 1;
+                        else if( $csv[$x] == 'Super' )
+                            $columna_supervisor = $x;
+                        else if( $csv[$x] == 'Depto.' )
+                            $columna_supervisor = $x - 1;
+
+                        $x++;
+                        if($x > 30)
+                            break;
+                    }
+                    
+                    if($columna_supervisor == 0)
+                        break;
+                }
+
                 if($count < 6)
                 {
                     $count++;
@@ -282,7 +295,6 @@
             }
         }
 
-        $date = date('Y/m/d',strtotime("-1 days")); // Return yesterday date
         $query_std_xa  = "SELECT * FROM `horas_std_xa` WHERE posted = '$date'"; 
         $query_tress   = "SELECT * FROM `horas_tress` WHERE posted = '$date'"; 
         
@@ -359,6 +371,8 @@
                     </div>
                     <div class="box-body">
                         <form  id="submit_csv" action="index.php?page=import_tempus" method="post" enctype="multipart/form-data">
+                            <label for="date">Fecha de reporte: </label>
+                            <input id="date" type="date" name="date" class="mr-3" require>
                             <input id="file" type="file" name="file" accept=".csv" required>
                             <input id="submit" class="btn btn-primary" type="submit" name="submit_file" value="Import CSV"/>
                         </form>
@@ -395,7 +409,19 @@
     <div class="col-lg-12">
         <div class="card shadow mb-4">
             <div  class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-default">Daily hours by plant</h6>
+                <?php
+                    $query = "SELECT DISTINCT posted FROM `horas_tress`";
+                    $result = $connection->query($query);
+                    if($result)
+                    {
+                        while($row = $result->fetch_assoc())
+                        {
+                            $date = $row['posted'];
+                            break;
+                        }
+                    }
+                ?>
+                <h6 class="m-0 font-weight-bold text-default">Daily hours by plant <?php echo date('m/d/Y', strtotime($date)) ?></h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive" >
@@ -408,11 +434,10 @@
                         </thead>
                         <tbody>
                             <?php
-                                $date = date('Y/m/d',strtotime("-1 days")); // Return yesterday date
                                 $query = "SELECT `supervisores`.`planta_supervisor` AS 'planta', ROUND(SUM(`horas_tress`.`hours`),2) AS 'horas' 
                                         FROM `horas_tress` 
                                         INNER JOIN supervisores ON `horas_tress`.supervisor = `supervisores`.`nombre_supervisor` 
-                                        WHERE `horas_tress`.`supervisor` IN (SELECT nombre_supervisor from supervisores) AND posted = '$date'
+                                        WHERE `horas_tress`.`supervisor` IN (SELECT nombre_supervisor from supervisores)
                                         GROUP BY `supervisores`.`planta_supervisor`";
                                 $result = $connection->query($query);
                                 if($result)
