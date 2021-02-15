@@ -112,7 +112,7 @@
                                   FROM eficiencias AS A 
                                   LEFT JOIN datos_diarios AS B ON A.maquina = B.maquina AND A.dia = B.date 
                                   LEFT JOIN horas AS C ON A.maquina = C.maquina 
-                                  WHERE horas.planta_id = $planta AND A.dia BETWEEN '$inicio' AND '$final' ORDER BY horas.maquina";
+                                  WHERE C.planta_id = $planta AND A.dia BETWEEN '$inicio' AND '$final' ORDER BY C.maquina";
                     }
                     else
                     {
@@ -134,8 +134,9 @@
                             
                             <td data-toogle="tooltip" title="<?php echo "{$row['realizado_turno1']} / {$row['planeado_turno1']}" ?>">
                               <?php
-                              echo $row['eficiencia_turno1']; 
-                              if($row['eficiencia_turno1']!=0)
+                              $eff1 = $row['planeado_turno1'] != 0 ? round(($row['realizado_turno1']/$row['planeado_turno1']) * 100,2) : 0;
+                              echo $eff1; 
+                              if($eff1!=0)
                                 $cont1++;
                               //echo $cont1;  
                               ?>
@@ -144,8 +145,9 @@
                             
                             <td data-toogle="tooltip" title="<?php echo "{$row['realizado_turno2']} / {$row['planeado_turno2']}" ?>">
                               <?php
-                              echo $row['eficiencia_turno2']; 
-                              if($row['eficiencia_turno2']!=0)
+                              $eff2 = $row['planeado_turno2'] != 0 ? round(($row['realizado_turno2']/$row['planeado_turno2']) * 100,2) : 0;
+                              echo $eff2; 
+                              if($eff2!=0)
                                 $cont2++;
                               //echo $cont2;  
                               ?>
@@ -153,21 +155,27 @@
                             
                             <td data-toogle="tooltip" title="<?php echo "{$row['realizado_turno3']} / {$row['planeado_turno3']}" ?>">
                               <?php
-                              echo $row['eficiencia_turno3']; 
-                              if($row['eficiencia_turno3']!=0)
+                              $eff3 = $row['planeado_turno3'] != 0 ? round(($row['realizado_turno3']/$row['planeado_turno3']) * 100,2) : 0;
+                              echo $eff3; 
+                              if($eff3!=0)
                                 $cont3++;
                               //echo $cont3;
                               ?>
                             </td>
                             
-                            <td data-toogle="tooltip" title="<?php echo "{$row['realizado_total']} / {$row['planeado_total']}" ?>"><?php echo $row['eficiencia_total'] ?></td>
+                            <td data-toogle="tooltip" title="<?php echo "{$row['realizado_total']} / {$row['planeado_total']}" ?>">
+                            <?php 
+                              $efft = $row['planeado_total'] != 0 ? round(($row['realizado_total']/$row['planeado_total']) * 100,2) : 0;
+                              echo $efft; 
+                            ?>
+                            </td>
                         </tr>
 
                     <?php
 
-                    $sum1 +=  $row['eficiencia_turno1'];
-                    $sum2 +=  $row['eficiencia_turno2'];
-                    $sum3 +=  $row['eficiencia_turno3'];
+                    $sum1 +=  $eff1;
+                    $sum2 +=  $eff2;
+                    $sum3 +=  $eff3;
 
                     endwhile;
                     ?>

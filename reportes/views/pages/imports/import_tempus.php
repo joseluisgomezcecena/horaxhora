@@ -241,7 +241,7 @@
                         if( $csv[$x] == 'HrsExtras' )
                             $columna_supervisor = $x + 1;
                         else if( $csv[$x] == 'Super' )
-                            $columna_supervisor = $x;
+                            echo $columna_supervisor = $x;
                         else if( $csv[$x] == 'Depto.' )
                             $columna_supervisor = $x - 1;
 
