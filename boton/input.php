@@ -169,16 +169,36 @@ require_once("includes/header.php");
         <input type="hidden" name="maquina" value="<?php echo $maquina ?>">
         <input type="hidden" name="hora" value="<?php echo $hora ?>">
 
-        <input style="height:120px;" class="btn btn-danger btn-block btn-lg" type="submit" name="submit" value="CAPTURAR <?php echo $_GET['maquina'] ?>">
-	    <br><br>
-        <input style="height:120px;" class="btn btn-primary btn-block btn-lg" type="submit" name="submit2" value="CAPTURAR <?php echo $_GET['maquina'] ?> (X2)">
+        <div class="row">
+            <div class="col-lg-4">
+                <input style="height:120px;" class="btn btn-danger btn-block btn-lg" type="submit" name="submit" value="CAPTURAR <?php echo $_GET['maquina'] ?>">
+            </div>
+            
+            <div class="col-lg-4">
+                <input style="height:120px;" class="btn btn-primary btn-block btn-lg" type="submit" name="submit2" value="CAPTURAR <?php echo $_GET['maquina'] ?> (X2)">
+            </div>    
+            
+            <div class="col-lg-4">
+                <input style="height:120px;" class="btn btn-warning btn-block btn-lg" type="submit" name="submit6" value="CAPTURAR <?php echo $_GET['maquina'] ?> (X6)">
+            </div>
+        </div>
+        
+	    <div style="margin-top: 15px;" class="row">
+            <div class="col-lg-4">
+                <input style="height:120px;" class="btn btn-success btn-block btn-lg" type="submit" name="submit8" value="CAPTURAR <?php echo $_GET['maquina'] ?> (X8)">
+            </div>
+            
+            <div class="col-lg-4">
+                <input style="height:120px;" class="btn btn-secondary btn-block btn-lg" type="submit" name="submit20" value="CAPTURAR <?php echo $_GET['maquina'] ?> (X20)">
+            </div>
+        </div>
+        
+	    
+        
 
-        <br><br>
-        <input style="height:120px;" class="btn btn-warning btn-block btn-lg" type="submit" name="submit6" value="CAPTURAR <?php echo $_GET['maquina'] ?> (X6)">
-                    
+        
+                            
 
-        <br><br>
-        <input style="height:120px;" class="btn btn-success btn-block btn-lg" type="submit" name="submit8" value="CAPTURAR <?php echo $_GET['maquina'] ?> (X8)">
                     
 
 
@@ -204,7 +224,7 @@ require_once("includes/header.php");
         }
 
 
-	elseif(isset($_POST['submit2']))
+	    elseif(isset($_POST['submit2']))
         {
             $maquina = $_POST['maquina'];
 
@@ -219,7 +239,7 @@ require_once("includes/header.php");
         }
 
 
-	elseif(isset($_POST['submit6']))
+	    elseif(isset($_POST['submit6']))
         {
             $maquina = $_POST['maquina'];
 
@@ -234,7 +254,7 @@ require_once("includes/header.php");
         }
 
 
-	elseif(isset($_POST['submit8']))
+	    elseif(isset($_POST['submit8']))
         {
             $maquina = $_POST['maquina'];
             echo $insert = "UPDATE horas SET `$hora` = `$hora` + 8 WHERE maquina = '$maquina'";
@@ -243,6 +263,20 @@ require_once("includes/header.php");
             if($run_insert)
             {
                 saveTotal($maquina, 8);
+                header("Location: input.php?maquina=$maquina");
+            }
+        }
+
+
+        elseif(isset($_POST['submit20']))
+        {
+            $maquina = $_POST['maquina'];
+            echo $insert = "UPDATE horas SET `$hora` = `$hora` + 20 WHERE maquina = '$maquina'";
+            $run_insert = mysqli_query($connection, $insert );
+            
+            if($run_insert)
+            {
+                saveTotal($maquina, 20);
                 header("Location: input.php?maquina=$maquina");
             }
         }
