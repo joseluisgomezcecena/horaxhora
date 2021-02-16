@@ -233,32 +233,33 @@
             $file_open = fopen($file,"r");
             while(($csv = fgetcsv($file_open, 10000, ",")) !== false)
             {
-                if($count == 5) 
-                {
+                if($count == 0) {
+                    $count++;
+                    continue;
+                }
+                
+                if($csv[0] == '') {
+                    $count++;
+                    continue;
+                } else if($columna_supervisor == 0) {
+                    $count++;
                     $x = 0;
                     while($columna_supervisor == 0)
                     {
-                        if( $csv[$x] == 'HrsExtras' )
-                            $columna_supervisor = $x + 1;
-                        else if( $csv[$x] == 'Super' )
-                            echo $columna_supervisor = $x;
-                        else if( $csv[$x] == 'Depto.' )
-                            $columna_supervisor = $x - 1;
+                        if( $csv[$x] == 'Super' )
+                            $columna_supervisor = $x;
 
                         $x++;
                         if($x > 30)
                             break;
                     }
-                    
+
                     if($columna_supervisor == 0)
                         break;
-                }
-
-                if($count < 6)
-                {
-                    $count++;
+                    
                     continue;
                 }
+
                 
                 $employee_number = mysqli_real_escape_string($connection,$csv[0]);
                 $employee_name   = mysqli_real_escape_string($connection,$csv[1]);
@@ -372,7 +373,7 @@
                     <div class="box-body">
                         <form  id="submit_csv" action="index.php?page=import_tempus" method="post" enctype="multipart/form-data">
                             <label for="date">Fecha de reporte: </label>
-                            <input id="date" type="date" name="date" class="mr-3" require>
+                            <input id="date" type="date" name="date" class="mr-3" required>
                             <input id="file" type="file" name="file" accept=".csv" required>
                             <input id="submit" class="btn btn-primary" type="submit" name="submit_file" value="Import CSV"/>
                         </form>

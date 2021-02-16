@@ -19,7 +19,7 @@
                 <?php
                     $date =  isset($_POST['date']) ? date("m/d/Y", strtotime($_POST['date'])) : date("Y/m/d");
                 ?>
-                <h6 class="m-0 font-weight-bold text-default">Report Standard Hours / Tress Hours <?php echo "<small>$date</small>" ?></h6>
+                <h6 class="m-0 font-weight-bold text-default">Report Standard Hours / Tress Tempus <?php echo "<small>$date</small>" ?></h6>
             </div>
             <div class="card-body">
                 <form  id="submit_report" action="index.php?page=reporte_horas" method="post" class="mb-3">
@@ -68,7 +68,7 @@
                             <tr>
                                 <th>Plant</th>
                                 <th>Hours XA</th>
-                                <th>Hours tress</th>
+                                <th>Hours Tempus</th>
                                 <th>Efficiency</th>
                             </tr>
                         </thead>

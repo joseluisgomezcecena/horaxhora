@@ -311,11 +311,21 @@
                             $hours_tress[] = $row_tress['horas'];
                         }
                         for($x = 0; $x < count($plantas); $x++)
-                        {
-                            $eff = 100 * round($hours_xa[$x]/$hours_tress[$x], 4);
-                            $query_insert  = "INSERT INTO  `eficiencia_xa_tress`(planta, xa_hrs, tress_hrs, eficiencia, fecha) VALUES($plantas[$x], $hours_xa[$x], $hours_tress[$x], $eff, '$date');";
+                    {
+                        $eff = 100 * round($hours_xa[$x]/$hours_tress[$x], 4);
+
+                        $query_select = "SELECT * FROM eficiencia_xa_tress WHERE planta = '$plantas[$x]' AND fecha = '$date'";
+                        $result_select = $connection->query($query_select);
+                        if($result_select) {
+                            if($result_select->num_rows > 0) {
+                                $query_insert  = "UPDATE `eficiencia_xa_tress` SET xa_hrs = $hours_xa[$x], tress_hrs =$hours_tress[$x], eficiencia = $eff WHERE planta = '{$plantas[$x]}' AND fecha = '$date';";
+                            } else {
+                                $query_insert  = "INSERT INTO  `eficiencia_xa_tress`(planta, xa_hrs, tress_hrs, eficiencia, fecha) VALUES($plantas[$x], $hours_xa[$x], $hours_tress[$x], $eff, '$date');";
+                            }
+
                             $connection->query($query_insert);
                         }
+                    }
                     }
                 }
             }
