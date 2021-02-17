@@ -197,14 +197,16 @@ function calc_eficiencia_total()
     global $maquina;
 
     $hr = date("H") * 1;
+    $hrCom = $hr < 6 ? $hr + 24 : $hr;
 
     $query_cantidades_total  = "SELECT A.`6`";
     $query_cantidades_total2 = ", B.`6` ";
 
-    for($i = 7; $i <= $hr; $i++)
+    for($i = 7; $i <= $hrCom; $i++)
     {
-        $query_cantidades_total .= " + A.`$i`";
-        $query_cantidades_total2 .= " + B.`$i` ";
+        $a = $i > 24 ? $i - 24 : $i;
+        $query_cantidades_total .= " + A.`$a`";
+        $query_cantidades_total2 .= " + B.`$a` ";
     }
 
     if($hr == date("H"))
