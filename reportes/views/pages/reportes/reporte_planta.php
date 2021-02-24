@@ -70,21 +70,37 @@
                         <th>Fecha</th>
                         <th>Maquina</th>
                         <th>Celda</th>
+                        <th>Realizado 1er</th>
+                        <th>Planeado 1er</th>
                         <th>Eficiencia 1er</th>
+                        <th>Realizado 2do</th>
+                        <th>Planeado 2do</th>
                         <th>Eficiencia 2do</th>
+                        <th>Realizado 3er</th>
+                        <th>Planeado 3er</th>
                         <th>Eficiencia 3er</th>
+                        <th>Realizado Total</th>
+                        <th>Planeado Total</th>
                         <th>Eficiencia Total</th>
                         
                     </tr>
                     </thead>
                     <tfoot>
                     <tr>
-                        <th>Fecha</th>
+                    <th>Fecha</th>
                         <th>Maquina</th>
                         <th>Celda</th>
+                        <th>Realizado 1er</th>
+                        <th>Planeado 1er</th>
                         <th>Eficiencia 1er</th>
+                        <th>Realizado 2do</th>
+                        <th>Planeado 2do</th>
                         <th>Eficiencia 2do</th>
+                        <th>Realizado 3er</th>
+                        <th>Planeado 3er</th>
                         <th>Eficiencia 3er</th>
+                        <th>Realizado Total</th>
+                        <th>Planeado Total</th>
                         <th>Eficiencia Total</th>
                     </tr>
                     </tfoot>
@@ -131,6 +147,9 @@
                             <td><?php echo $row['maquina'] ?> </td>
                             
                             <td><?php echo $row['celda'] ?></td>
+
+                            <td><?php echo $row['realizado_turno1'] ?></td>
+                            <td><?php echo $row['planeado_turno1'] ?></td>
                             
                             <td data-toogle="tooltip" title="<?php echo "{$row['realizado_turno1']} / {$row['planeado_turno1']}" ?>">
                               <?php
@@ -143,6 +162,9 @@
                             
                             </td>
                             
+                            <td><?php echo $row['realizado_turno2'] ?></td>
+                            <td><?php echo $row['planeado_turno2'] ?></td>
+
                             <td data-toogle="tooltip" title="<?php echo "{$row['realizado_turno2']} / {$row['planeado_turno2']}" ?>">
                               <?php
                               $eff2 = $row['planeado_turno2'] != 0 ? round(($row['realizado_turno2']/$row['planeado_turno2']) * 100,2) : 0;
@@ -151,8 +173,11 @@
                                 $cont2++;
                               //echo $cont2;  
                               ?>
-                              </td>
+                            </td>
                             
+                            <td><?php echo $row['realizado_turno3'] ?></td>
+                            <td><?php echo $row['planeado_turno3'] ?></td>
+
                             <td data-toogle="tooltip" title="<?php echo "{$row['realizado_turno3']} / {$row['planeado_turno3']}" ?>">
                               <?php
                               $eff3 = $row['planeado_turno3'] != 0 ? round(($row['realizado_turno3']/$row['planeado_turno3']) * 100,2) : 0;
@@ -162,6 +187,9 @@
                               //echo $cont3;
                               ?>
                             </td>
+
+                            <td><?php echo $row['realizado_total'] ?></td>
+                            <td><?php echo $row['planeado_total'] ?></td>
                             
                             <td data-toogle="tooltip" title="<?php echo "{$row['realizado_total']} / {$row['planeado_total']}" ?>">
                             <?php 
