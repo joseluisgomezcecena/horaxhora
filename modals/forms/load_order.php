@@ -35,7 +35,7 @@ else
             <select id="machine" class="form-control" style="border-radius: .35rem!important; width: 205px!important;">
               <option value="" selected disabled>SELECCIONE MAQUINA</option>
               <?php
-              $query_maquinas  = "SELECT * FROM horas WHERE planta_id = $planta";
+              $query_maquinas  = "SELECT * FROM horas WHERE planta_id = $planta ORDER BY `horas`.`maquina` ASC ";
               $result_maquinas = $connection->query($query_maquinas);
               if($result_maquinas && $result_maquinas->num_rows > 0){
                 while($row_maquinas = $result_maquinas->fetch_assoc()){
@@ -53,16 +53,7 @@ else
             <input id="quantity" type="number" class="form-control" min="1" placeholder="CANTIDAD" style="border-radius: .35rem!important;">
           </div>
         </div>
-        <div class="form-check m-1 mx-2">
-          <label class="form-check-label">
-            <input id="time-check" type="checkbox" class="form-check-input" value="">Seleccionar hora de inicio
-          </label>
-        </div>
-        <div id="time" class="form-group m-1 mx-2" style="display:none">
-            <label style="font-size: 14px; margin: 0; margin-left: 0.5rem">Time </label>
-            <input type="time" id="time-input-load" class="form-control" style="border-radius: .35rem!important; max-width: 205px">
-          </div>
-        </div>
+        </div> 
 
       <!-- Modal footer -->
       <div class="modal-footer">
@@ -73,3 +64,4 @@ else
     </div>
   </div>
 </div>
+

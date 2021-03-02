@@ -162,6 +162,16 @@ require_once("includes/header.php");
 
         <h1 style="margin-top: -50px; margin-bottom: 50px;font-size:68px;" class="text-center"><?php echo $cantidad ?></h1>
 
+        <?php 
+            $query_order  = "SELECT * FROM ordenes_main WHERE maquina = '$maquina' AND estado = 1";
+            $result_order = $connection->query($query_order);
+            if($result_order) {
+                $row_order = $result_order->fetch_assoc();
+                ?>
+                    <h3 style="margin-bottom: 50px;font-size:52px;" class="text-center">Piezas totales de la orden <?php echo "{$row_order['work_order']}: {$row_order['cantidad_actual']}" ?> </h3>
+                <?php
+            }
+        ?>
         <form method="post">
 
 
@@ -178,16 +188,24 @@ require_once("includes/header.php");
                 <input style="height:120px;" class="btn btn-primary btn-block btn-lg" type="submit" name="submit2" value="CAPTURAR <?php echo $_GET['maquina'] ?> (X2)">
             </div>    
             
-            <div class="col-lg-4">
-                <input style="height:120px;" class="btn btn-warning btn-block btn-lg" type="submit" name="submit6" value="CAPTURAR <?php echo $_GET['maquina'] ?> (X6)">
+            <div class="col-lg-4">               
+                <input style="height:120px;" class="btn btn-warning btn-block btn-lg" type="submit" name="submit5" value="CAPTURAR <?php echo $_GET['maquina'] ?> (X5)">
             </div>
         </div>
         
 	    <div style="margin-top: 15px;" class="row">
             <div class="col-lg-4">
+                <input style="height:120px;" class="btn btn-info btn-block btn-lg" type="submit" name="submit6" value="CAPTURAR <?php echo $_GET['maquina'] ?> (X6)">
+            </div>
+
+            <div class="col-lg-4">
                 <input style="height:120px;" class="btn btn-success btn-block btn-lg" type="submit" name="submit8" value="CAPTURAR <?php echo $_GET['maquina'] ?> (X8)">
             </div>
             
+            <div class="col-lg-4">
+                <input style="height:120px;" class="btn btn-dark btn-block btn-lg" type="submit" name="submit10" value="CAPTURAR <?php echo $_GET['maquina'] ?> (X10)">
+            </div>
+
             <div class="col-lg-4">
                 <input style="height:120px;" class="btn btn-secondary btn-block btn-lg" type="submit" name="submit20" value="CAPTURAR <?php echo $_GET['maquina'] ?> (X20)">
             </div>
@@ -239,6 +257,20 @@ require_once("includes/header.php");
         }
 
 
+	    elseif(isset($_POST['submit5']))
+        {
+            $maquina = $_POST['maquina'];
+
+            echo $insert = "UPDATE horas SET `$hora` = `$hora` + 5 WHERE maquina = '$maquina'";
+            $run_insert = mysqli_query($connection, $insert );
+		
+            if($run_insert)
+            {
+                saveTotal($maquina, 5);
+                header("Location: input.php?maquina=$maquina");
+            }
+        }
+
 	    elseif(isset($_POST['submit6']))
         {
             $maquina = $_POST['maquina'];
@@ -267,6 +299,18 @@ require_once("includes/header.php");
             }
         }
 
+	    elseif(isset($_POST['submit10']))
+        {
+            $maquina = $_POST['maquina'];
+            echo $insert = "UPDATE horas SET `$hora` = `$hora` + 10 WHERE maquina = '$maquina'";
+            $run_insert = mysqli_query($connection, $insert );
+            
+            if($run_insert)
+            {
+                saveTotal($maquina, 10);
+                header("Location: input.php?maquina=$maquina");
+            }
+        }
 
         elseif(isset($_POST['submit20']))
         {

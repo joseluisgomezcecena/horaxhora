@@ -6,7 +6,7 @@ $maquina = $_POST['maquina'];
 $hr      = $_POST['hr'];
 $value   = $_POST['value'];
 $turno   = hora_turno($hr);
-$date    = date("Y/m/d");
+$date    = $hr >= 6 && $hr != 24 ? date("Y/m/d") : date("Y/m/d", strtotime("-1 days"));
 
 $query_old_qty  = "SELECT `$hr` as Hora FROM horas WHERE maquina = '$maquina'";
 if($result_old_qty = $connection->query($query_old_qty))
@@ -50,8 +50,21 @@ else
             {
                 $update_cantidad = "INSERT INTO ordenes_diarias(`cantidad_turno$turno`, id_orden, fecha_dia) VALUES($value, $id_orden, '$date')";
             }
+            $connection->query($update_cantidad);
+            
+            $query_daily_data  = "SELECT * FROM datos_diarios WHERE maquina = '$maquina' AND date = '$date'";
+            $result_daily_data = $connection->query($query_daily_data);
+            if($result_daily_data->num_rows == 1)
+            {
+                //UPDATE datos_diarios SET planeado_turno1 = planeado_turno1 + (SELECT `10` FROM plan WHERE maquina = 'HEM01') WHERE maquina = 'HEM01' AND date = '2020/11/09'
+                $update_daily = "UPDATE datos_diarios SET `realizado_turno$turno` = `realizado_turno$turno` + $value, `realizado_total` = `realizado_total` + $value WHERE maquina = '$maquina' AND date = '$date'";
+            }
+            else
+            {
+                $update_daily = "INSERT INTO datos_diarios(`realizado_turno$turno`,realizado_realizado, maquina, date) VALUES($value, $value, '$maquina', '$date')";
+            }
 
-            if($connection->query($update_cantidad))
+            if($connection->query($update_daily))
             {
                 
                 calc_cantidad_actual($id_orden);
@@ -110,7 +123,7 @@ function calc_eficiencia_turno($turno)
     else
     {
         $i = 23;
-        if($hr > 6)
+        if($hr > 5)
             $hr = 5;
     }
 
@@ -184,14 +197,16 @@ function calc_eficiencia_total()
     global $maquina;
 
     $hr = date("H") * 1;
+    $hrCom = $hr < 6 ? $hr + 24 : $hr;
 
     $query_cantidades_total  = "SELECT A.`6`";
     $query_cantidades_total2 = ", B.`6` ";
 
-    for($i = 7; $i <= $hr; $i++)
+    for($i = 7; $i <= $hrCom; $i++)
     {
-        $query_cantidades_total .= " + A.`$i`";
-        $query_cantidades_total2 .= " + B.`$i` ";
+        $a = $i > 24 ? $i - 24 : $i;
+        $query_cantidades_total .= " + A.`$a`";
+        $query_cantidades_total2 .= " + B.`$a` ";
     }
 
     if($hr == date("H"))

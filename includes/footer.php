@@ -48,6 +48,10 @@
 
   <!-- Bootstrap core JavaScript-->
   <script src="assets/vendor/jquery/jquery.min.js"></script>
+  <script src="assets/vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="assets/vendor/datatables/dataTables.fixedColumns.min.js"></script>
+  
+
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
   <!-- Core plugin JavaScript-->
@@ -58,7 +62,7 @@
 
 
   <!-- SweetAlert.js -->
-  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="assets/js/sweetalert.min.js"></script>
   
   <!-- Main js document for DOM and functions -->
   <script src="assets/js/main.js"></script>
@@ -89,27 +93,29 @@
       function paintCols(){
         var id;
         var d = new Date(); // for now
+        
         d.getHours(); // => 9
         d.getMinutes(); // =>  30
         d.getSeconds(); // => 51
         if(window.location.pathname == "/horaxhora/horaxhora.php" || window.location.pathname == "/horaxhora/reporteA.php")
         {
-          if(d.getHours() < 12)
+          let hora = d.getHours() == 0 ? 24 : d.getHours();
+          if(hora < 12 )
           {
-            id = d.getHours() + "am";
+            id = hora + "am";
           }
           else
           {
-            id = d.getHours() + "pm";
+            id = hora + "pm";
           }
 
-          if(d.getHours() - 1 < 12)
+          if(hora - 1 < 12)
           {
-            old_id = d.getHours() - 1 + "am"
+            old_id = hora - 1 + "am"
           }
           else
           {
-            old_id = d.getHours() - 1 + "pm"
+            old_id = hora - 1 + "pm"
           }
           //#858796
           document.getElementById(id).style.backgroundColor = "#00a6ff";
@@ -125,8 +131,19 @@
 
   });//termina document ready
 
-  
-   
+  $(document).ready(function() {
+      var table = $('#dataTable1').DataTable( {
+          scrollY:        "600px",
+          scrollX:        true,
+          scrollCollapse: true,  
+          fixedColumns:   true,
+          paging:         false,
+      } );
+
+      var table_completadas = $('#tabla-ordenes').DataTable();
+      var table_actuales = $('#tabla-ordenes-actuales').DataTable();
+  } );
+
 
   </script>
 

@@ -53,7 +53,7 @@ else
                     </tfoot>
                     <tbody>
                         <?php 
-                        $query_orders  = "SELECT A.orden_id, A.work_order, A.item, A.meta_orden, A.maquina, A.fecha_inicial, A.fecha_final, A.pph_std FROM ordenes_main AS A WHERE estado = 2 AND planta_id = $planta";
+                        $query_orders  = "SELECT A.orden_id, A.work_order, A.item, A.meta_orden, A.maquina, A.fecha_inicial, A.fecha_final, A.pph_std FROM ordenes_main AS A WHERE estado = 2 AND planta_id = $planta AND MONTHNAME(`fecha_inicial`) = MONTHNAME(now()) ORDER BY A.`fecha_final` DESC";
                         $result_orders = $connection->query($query_orders);
   
                         if(!$result_orders)

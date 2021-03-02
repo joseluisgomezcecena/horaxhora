@@ -28,7 +28,7 @@
         </div>
         <div id="time" class="form-group m-1 mx-2" style="display:none">
           <label style="font-size: 14px; margin: 0; margin-left: 0.5rem">Time </label>
-          <input type="time" id="time-input-start" class="form-control" style="border-radius: .35rem!important; max-width: 205px">
+          <input type="time" id="time-input-start" name="time" class="form-control" style="border-radius: .35rem!important; max-width: 205px">
         </div>
       </div>
 

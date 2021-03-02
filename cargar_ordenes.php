@@ -67,8 +67,11 @@ else
                         <td><?php echo $row_orders['setup'];?></td>
                         <td style="text-align: center">
                             <?php
+                                $reason = ($row_orders['reasonInt'] != "" ? "data-toggle=\"tooltip\" title=\"{$row_orders['reasonInt']}\"" : "");
+
+
                                 if($row_orders['estado'] == 3)
-                                    echo "<button class=\"btn btn-outline-warning\">Interrumpida</button>";
+                                    echo "<button class=\"btn btn-outline-warning\" $reason>Interrumpida</button>";
                             ?>
                             <button class="btn btn-primary start-order" data-id="<?php echo $row_orders['orden_id'];?>">Comenzar <i class="fas fa-play"></i></button>
                             <button class="btn btn-warning edit-order" data-id="<?php echo $row_orders['orden_id'];?>">Editar <i class="fas fa-edit"></i></button>
