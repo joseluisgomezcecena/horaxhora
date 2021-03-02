@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="83px" height="83px" viewBox="0 0 83 83" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 61 (89581) - https://sketch.com -->
+    <title>mini/tangerine/dark/network</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="20.6539526%" y1="15.6437092%" x2="120.114243%" y2="120.02909%" id="linearGradient-1">
+            <stop stop-color="#FF8C00" offset="0%"></stop>
+            <stop stop-color="#F22E83" offset="59.5729519%"></stop>
+            <stop stop-color="#002EC7" offset="99.9234586%"></stop>
+        </linearGradient>
+        <linearGradient x1="20.6539526%" y1="15.6437092%" x2="120.19043%" y2="120.109049%" id="linearGradient-2">
+            <stop stop-color="#FF8C00" offset="0%"></stop>
+            <stop stop-color="#F22E83" offset="59.5729519%"></stop>
+            <stop stop-color="#002EC7" offset="99.9234586%"></stop>
+        </linearGradient>
+        <linearGradient x1="15.0669643%" y1="0%" x2="113.229309%" y2="120.703672%" id="linearGradient-3">
+            <stop stop-color="#FF8C00" offset="0%"></stop>
+            <stop stop-color="#F22E83" offset="55.2628554%"></stop>
+            <stop stop-color="#002EC7" offset="99.9234586%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="DevOpsHeader3" transform="translate(-741.000000, -557.000000)">
+            <g id="mini/tangerine/dark/network" transform="translate(737.000000, 552.000000)">
+                <polyline id="Stroke-1" stroke="#FFFFFF" stroke-width="1" stroke-linecap="round" points="57.9894208 18.3593667 20.5090042 43.4178667 57.7757125 62.9074917"></polyline>
+                <path d="M69.9583333,17.25 C69.9583333,23.60127 64.8096033,28.75 58.4583333,28.75 C52.1070633,28.75 46.9583333,23.60127 46.9583333,17.25 C46.9583333,10.89873 52.1070633,5.75 58.4583333,5.75 C64.8096033,5.75 69.9583333,10.89873 69.9583333,17.25" id="Fill-2" fill="url(#linearGradient-1)" fill-rule="evenodd"></path>
+                <path d="M19.1666667,30.6666667 C11.2272524,30.6666667 4.79166667,37.1022524 4.79166667,45.0416667 C4.79166667,52.9810809 11.2272524,59.4166667 19.1666667,59.4166667 C27.1060809,59.4166667 33.5416667,52.9810809 33.5416667,45.0416667 C33.5416667,37.1022524 27.1060809,30.6666667 19.1666667,30.6666667" id="Fill-4" fill="url(#linearGradient-2)" fill-rule="evenodd"></path>
+                <path d="M62.9977033,72.0002797 C62.2454594,71.592216 61.6162763,70.9620768 61.2073073,70.2097962 C58.2334921,64.7300839 63.7712283,59.1911515 69.2515979,62.1660375 C70.0038417,62.5741012 70.6330248,63.2033151 71.0419938,63.956521 C74.0176596,69.4362333 68.4780728,74.976091 62.9977033,72.0002797 M66.1254768,46.9583333 C55.0109806,46.9583333 46,55.9683603 46,67.0838101 C46,78.1973528 55.0109806,87.2083333 66.1254768,87.2083333 C77.239973,87.2083333 86.25,78.1973528 86.25,67.0838101 C86.25,55.9683603 77.239973,46.9583333 66.1254768,46.9583333" id="Fill-6" fill="url(#linearGradient-3)" fill-rule="evenodd"></path>
+            </g>
+        </g>
+    </g>
+</svg>
