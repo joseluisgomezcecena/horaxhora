@@ -172,8 +172,6 @@ require_once("includes/header.php");
                 <?php
             }
         ?>
-
-
         <form method="post">
 
 
@@ -190,7 +188,7 @@ require_once("includes/header.php");
                 <input style="height:120px;" class="btn btn-primary btn-block btn-lg" type="submit" name="submit2" value="CAPTURAR <?php echo $_GET['maquina'] ?> (X2)">
             </div>    
             
-            <div class="col-lg-4">
+            <div class="col-lg-4">               
                 <input style="height:120px;" class="btn btn-warning btn-block btn-lg" type="submit" name="submit5" value="CAPTURAR <?php echo $_GET['maquina'] ?> (X5)">
             </div>
         </div>
@@ -313,7 +311,6 @@ require_once("includes/header.php");
                 header("Location: input.php?maquina=$maquina");
             }
         }
-
 
         elseif(isset($_POST['submit20']))
         {
