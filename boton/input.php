@@ -168,7 +168,7 @@ require_once("includes/header.php");
             if($result_order) {
                 $row_order = $result_order->fetch_assoc();
                 ?>
-                    <h3 style="margin-bottom: 50px;font-size:52px;" class="text-center">Piezas totales de la orden <?php echo "{$row_order['work_order']}: {$row_order['cantidad_actual']}" ?> </h3>
+                    <h3 style="margin-bottom: 50px;font-size:36px;" class="text-center">Piezas totales de la orden <?php echo "{$row_order['work_order']}: {$row_order['cantidad_actual']}" ?> </h3>
                 <?php
             }
         ?>
@@ -205,7 +205,9 @@ require_once("includes/header.php");
             <div class="col-lg-4">
                 <input style="height:120px;" class="btn btn-dark btn-block btn-lg" type="submit" name="submit10" value="CAPTURAR <?php echo $_GET['maquina'] ?> (X10)">
             </div>
+        </div>
 
+	    <div style="margin-top: 15px;" class="row">
             <div class="col-lg-4">
                 <input style="height:120px;" class="btn btn-secondary btn-block btn-lg" type="submit" name="submit20" value="CAPTURAR <?php echo $_GET['maquina'] ?> (X20)">
             </div>
