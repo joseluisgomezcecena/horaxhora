@@ -120,13 +120,13 @@
                       $eff_t3 = $row['sum_planeado3'] > 0 ? round(($row['sum_realizado3'] / $row['sum_planeado3']) * 100, 1) : 0;
                     ?>
                         <tr>
-                            <td><?php echo $row['celda'] ?> </td>
+                            <td ><?php echo $row['celda'] ?> </td>
 
-                            <td><?php echo $eff_t1 ?> </td>
+                            <td data-toogle="tooltip" title="<?php echo "{$row['sum_realizado1']} / {$row['sum_planeado1']}" ?>"><?php echo $eff_t1 ?> </td>
                             
-                            <td><?php echo $eff_t2 ?></td>               
+                            <td data-toogle="tooltip" title="<?php echo "{$row['sum_realizado2']} / {$row['sum_planeado2']}" ?>"><?php echo $eff_t2 ?></td>               
                             
-                            <td><?php echo $eff_t3 ?></td>
+                            <td data-toogle="tooltip" title="<?php echo "{$row['sum_realizado3']} / {$row['sum_planeado3']}" ?>"><?php echo $eff_t3 ?></td>
                         </tr>
 
                     <?php
