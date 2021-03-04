@@ -115,9 +115,9 @@
                     if(!$result) echo $connection->error;
                     while($row = mysqli_fetch_array($result)):
 
-                      $eff_t1 = $row['sum_planeado1'] > 0 ? round(($row['sum_realizado1'] / $row['sum_planeado1']), 1) : 0;
-                      $eff_t2 = $row['sum_planeado2'] > 0 ? round(($row['sum_realizado2'] / $row['sum_planeado2']), 1) : 0;
-                      $eff_t3 = $row['sum_planeado3'] > 0 ? round(($row['sum_realizado3'] / $row['sum_planeado3']), 1) : 0;
+                      $eff_t1 = $row['sum_planeado1'] > 0 ? round(($row['sum_realizado1'] / $row['sum_planeado1']) * 100, 1) : 0;
+                      $eff_t2 = $row['sum_planeado2'] > 0 ? round(($row['sum_realizado2'] / $row['sum_planeado2']) * 100, 1) : 0;
+                      $eff_t3 = $row['sum_planeado3'] > 0 ? round(($row['sum_realizado3'] / $row['sum_planeado3']) * 100, 1) : 0;
                     ?>
                         <tr>
                             <td><?php echo $row['celda'] ?> </td>
