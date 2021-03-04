@@ -66,43 +66,43 @@
                 <div class="table-responsive">
                 <table style="font-size: 12px;" class="table table-hover" id="dataTable2" width="100%" cellspacing="0">
                     <thead>
-                    <tr>
-                        <th>Fecha</th>
-                        <th>Maquina</th>
-                        <th>Celda</th>
-                        <th>Realizado 1er</th>
-                        <th>Planeado 1er</th>
-                        <th>Eficiencia 1er</th>
-                        <th>Realizado 2do</th>
-                        <th>Planeado 2do</th>
-                        <th>Eficiencia 2do</th>
-                        <th>Realizado 3er</th>
-                        <th>Planeado 3er</th>
-                        <th>Eficiencia 3er</th>
-                        <th>Realizado Total</th>
-                        <th>Planeado Total</th>
-                        <th>Eficiencia Total</th>
-                        
-                    </tr>
+                      <tr>
+                          <th>Fecha</th>
+                          <th>Maquina</th>
+                          <th>Celda</th>
+                          <th>Realizado 1er</th>
+                          <th>Planeado 1er</th>
+                          <th>Eficiencia 1er</th>
+                          <th>Realizado 2do</th>
+                          <th>Planeado 2do</th>
+                          <th>Eficiencia 2do</th>
+                          <th>Realizado 3er</th>
+                          <th>Planeado 3er</th>
+                          <th>Eficiencia 3er</th>
+                          <th>Realizado Total</th>
+                          <th>Planeado Total</th>
+                          <th>Eficiencia Total</th>
+                          
+                      </tr>
                     </thead>
                     <tfoot>
-                    <tr>
-                    <th>Fecha</th>
-                        <th>Maquina</th>
-                        <th>Celda</th>
-                        <th>Realizado 1er</th>
-                        <th>Planeado 1er</th>
-                        <th>Eficiencia 1er</th>
-                        <th>Realizado 2do</th>
-                        <th>Planeado 2do</th>
-                        <th>Eficiencia 2do</th>
-                        <th>Realizado 3er</th>
-                        <th>Planeado 3er</th>
-                        <th>Eficiencia 3er</th>
-                        <th>Realizado Total</th>
-                        <th>Planeado Total</th>
-                        <th>Eficiencia Total</th>
-                    </tr>
+                      <tr>
+                        <th>Fecha</th>
+                          <th>Maquina</th>
+                          <th>Celda</th>
+                          <th>Realizado 1er</th>
+                          <th>Planeado 1er</th>
+                          <th>Eficiencia 1er</th>
+                          <th>Realizado 2do</th>
+                          <th>Planeado 2do</th>
+                          <th>Eficiencia 2do</th>
+                          <th>Realizado 3er</th>
+                          <th>Planeado 3er</th>
+                          <th>Eficiencia 3er</th>
+                          <th>Realizado Total</th>
+                          <th>Planeado Total</th>
+                          <th>Eficiencia Total</th>
+                      </tr>
                     </tfoot>
                     <tbody>
 
@@ -143,11 +143,8 @@
                     ?>
                         <tr>
                             <td><?php echo $row['dia'] ?> </td>
-
                             <td><?php echo $row['maquina'] ?> </td>
-                            
                             <td><?php echo $row['celda'] ?></td>
-
                             <td><?php echo $row['realizado_turno1'] ?></td>
                             <td><?php echo $row['planeado_turno1'] ?></td>
                             

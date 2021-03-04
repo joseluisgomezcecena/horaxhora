@@ -102,24 +102,31 @@
                         $inicio = $_POST['inicio'];
                         $final = $_POST['final'];
                         $planta = $_POST['planta'];
-                        $query = "SELECT AVG(eficiencia_turno1) AS ef1, AVG(eficiencia_turno2) AS ef2, AVG(eficiencia_turno3) AS ef3, horas.celda FROM eficiencias LEFT JOIN horas ON eficiencias.maquina = horas.maquina WHERE horas.planta_id = '$planta' AND eficiencias.dia BETWEEN '$inicio' AND '$final' GROUP BY horas.celda ORDER BY horas.maquina";
+                        // $query = "SELECT AVG(eficiencia_turno1) AS ef1, AVG(eficiencia_turno2) AS ef2, AVG(eficiencia_turno3) AS ef3, horas.celda FROM eficiencias LEFT JOIN horas ON eficiencias.maquina = horas.maquina WHERE horas.planta_id = '$planta' AND eficiencias.dia BETWEEN '$inicio' AND '$final' GROUP BY horas.celda ORDER BY horas.maquina";
+                        $query = "SELECT SUM(`realizado_turno1`) as sum_realizado1, SUM(`planeado_turno1`) as sum_planeado1, SUM(`realizado_turno2`) as sum_realizado2, SUM(`planeado_turno2`) as sum_planeado2, SUM(`realizado_turno3`) as sum_realizado3, SUM(`planeado_turno3`) as sum_planeado3, horas.celda FROM datos_diarios LEFT JOIN horas ON datos_diarios.maquina = horas.maquina WHERE datos_diarios.planta_id = '$planta' AND datos_diarios.date BETWEEN '$inicio' AND '$final' GROUP BY horas.celda ORDER BY horas.maquina";
                     }
                     else
                     {
-                        $query = "SELECT AVG(eficiencia_turno1) AS ef1, AVG(eficiencia_turno2) AS ef2, AVG(eficiencia_turno3) AS ef3, horas.celda FROM eficiencias LEFT JOIN horas ON eficiencias.maquina = horas.maquina WHERE eficiencias.dia = '$today'  GROUP BY horas.celda ORDER BY horas.maquina";
+                        // $query = "SELECT AVG(eficiencia_turno1) AS ef1, AVG(eficiencia_turno2) AS ef2, AVG(eficiencia_turno3) AS ef3, horas.celda FROM eficiencias LEFT JOIN horas ON eficiencias.maquina = horas.maquina WHERE eficiencias.dia = '$today'  GROUP BY horas.celda ORDER BY horas.maquina";
+                        $query = "SELECT SUM(`realizado_turno1`) as sum_realizado1, SUM(`planeado_turno1`) as sum_planeado1, SUM(`realizado_turno2`) as sum_realizado2, SUM(`planeado_turno2`) as sum_planeado2, SUM(`realizado_turno3`) as sum_realizado3, SUM(`planeado_turno3`) as sum_planeado3, horas.celda FROM datos_diarios LEFT JOIN horas ON datos_diarios.maquina = horas.maquina WHERE datos_diarios.date = '$today'  GROUP BY horas.celda ORDER BY horas.maquina";
                         
                     }
                     $result = mysqli_query($connection, $query);
+                    if(!$result) echo $connection->error;
                     while($row = mysqli_fetch_array($result)):
+
+                      $eff_t1 = $row['sum_planeado1'] > 0 ? round(($row['sum_realizado1'] / $row['sum_planeado1']), 1) : 0;
+                      $eff_t2 = $row['sum_planeado2'] > 0 ? round(($row['sum_realizado2'] / $row['sum_planeado2']), 1) : 0;
+                      $eff_t3 = $row['sum_planeado3'] > 0 ? round(($row['sum_realizado3'] / $row['sum_planeado3']), 1) : 0;
                     ?>
                         <tr>
-                            <td><?php echo $row['3'] ?> </td>
+                            <td><?php echo $row['celda'] ?> </td>
 
-                            <td><?php echo round($row['0'],1) ?> </td>
+                            <td><?php echo $eff_t1 ?> </td>
                             
-                            <td><?php echo round($row['1'],1) ?></td>               
+                            <td><?php echo $eff_t2 ?></td>               
                             
-                            <td><?php echo round($row['2'],1) ?></td>
+                            <td><?php echo $eff_t3 ?></td>
                         </tr>
 
                     <?php
