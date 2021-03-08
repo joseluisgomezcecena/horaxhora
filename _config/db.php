@@ -12,3 +12,8 @@ if ($connection->connect_errno)
     echo "Error al conectar a Base de datos";
 }
 
+$connection2 = new mysqli("localhost", "root", "", "smartstu_martech_dev");
+if ($connection2->connect_errno) 
+{
+    echo "Error al conectar a Base de datos";
+}
