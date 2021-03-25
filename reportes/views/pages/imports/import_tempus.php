@@ -233,16 +233,10 @@
             $file_open = fopen($file,"r");
             while(($csv = fgetcsv($file_open, 10000, ",")) !== false)
             {
-                if($count == 0) {
-                    $count++;
-                    continue;
-                }
                 
-                if($csv[0] == '') {
-                    $count++;
+                if($csv[0] !== 'ID_Empleado') {
                     continue;
                 } else if($columna_supervisor == 0) {
-                    $count++;
                     $x = 0;
                     while($columna_supervisor == 0)
                     {
@@ -292,7 +286,6 @@
                         echo "<br>Query: " . $run_search;
                     }
                 }
-                $count++;
             }
         }
 
