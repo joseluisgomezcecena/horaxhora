@@ -234,7 +234,7 @@
             while(($csv = fgetcsv($file_open, 10000, ",")) !== false)
             {
                 
-                if($csv[0] !== 'ID_Empleado') {
+                if($csv[0] == '') {
                     continue;
                 } else if($columna_supervisor == 0) {
                     $x = 0;
