@@ -240,6 +240,7 @@
                     $x = 0;
                     while($columna_supervisor == 0)
                     {
+                        echo $csv[$x];
                         if( $csv[$x] == 'Super' )
                             $columna_supervisor = $x;
 
