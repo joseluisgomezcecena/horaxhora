@@ -223,7 +223,7 @@
         }
 
 
-        $count = 0;
+        $count = 1;
         $file = $_FILES["file"]["tmp_name"];
         if($file != "")
         {
@@ -233,14 +233,13 @@
             $file_open = fopen($file,"r");
             while(($csv = fgetcsv($file_open, 10000, ",")) !== false)
             {
-                echo trim($csv[0]);
-                if(trim($csv[0]) == '') {
+                if($count < 5) {
+                    $count++;
                     continue;
                 } else if($columna_supervisor == 0) {
                     $x = 0;
                     while($columna_supervisor == 0)
                     {
-                        echo $csv[$x];
                         if( $csv[$x] == 'Super' )
                             $columna_supervisor = $x;
 
