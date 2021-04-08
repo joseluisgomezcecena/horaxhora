@@ -233,7 +233,7 @@
             $file_open = fopen($file,"r");
             while(($csv = fgetcsv($file_open, 10000, ",")) !== false)
             {
-                if($count < 5) {
+                if($count < 6) {
                     $count++;
                     continue;
                 } else if($columna_supervisor == 0) {
