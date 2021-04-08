@@ -244,8 +244,7 @@
                             $columna_supervisor = $x;
 
                         $x++;
-                        if($x > 30)
-                            break;
+                        if(!isset($csv[$x])) break;
                     }
 
                     if($columna_supervisor == 0)
