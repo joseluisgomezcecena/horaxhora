@@ -244,6 +244,7 @@
                             $columna_supervisor = $x;
 
                         $x++;
+                        echo !isset($csv[$x]);
                         if(!isset($csv[$x])) break;
                     }
 
