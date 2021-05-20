@@ -35,7 +35,7 @@
                         $flag = 1;
     
                         $query_std_xa  = "SELECT * FROM `horas_std_xa` WHERE posted = '$date'"; 
-                        $query_tress   = "SELECT * FROM `horas_tress` WHERE fecha = '$date'"; 
+                        $query_tress   = "SELECT * FROM `horas_tress` WHERE posted = '$date'"; 
                         
                         $result_std_xa = $connection->query($query_std_xa);
                         $result_tress  = $connection->query($query_tress);
