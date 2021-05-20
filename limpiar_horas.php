@@ -35,15 +35,17 @@
     if(!($connection->query($query_limpiar_plan)))
         echo $connection->error;
 
-    $query_create_plan_actual  = "SELECT orden_id FROM ordenes_main WHERE estado = 1";
+    $query_create_plan_actual  = "SELECT orden_id, maquina FROM ordenes_main WHERE estado = 1";
     $result_create_plan_actual = $connection->query($query_create_plan_actual);
     if($result_create_plan_actual)
     {
         if($result_create_plan_actual->num_rows > 0)
         {
+            $currentDate = Date("Y/m/d");
             while($row_create_plan_actual = $result_create_plan_actual->fetch_assoc())
             {
                 agregar_reporteA($row_create_plan_actual['orden_id']);
+                $insert_registro_diario = "INSERT INTO datos_diarios(maquina, date) VALUES('{$row_create_plan_actual['maquina']}', '$currentDate')";
             }
             $result_create_plan_actual->close();
         }

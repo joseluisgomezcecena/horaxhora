@@ -35,7 +35,7 @@
                         $flag = 1;
     
                         $query_std_xa  = "SELECT * FROM `horas_std_xa` WHERE posted = '$date'"; 
-                        $query_tress   = "SELECT * FROM `eficiencia_xa_tress` WHERE fecha = '$date'"; 
+                        $query_tress   = "SELECT * FROM `horas_tress` WHERE fecha = '$date'"; 
                         
                         $result_std_xa = $connection->query($query_std_xa);
                         $result_tress  = $connection->query($query_tress);
@@ -50,14 +50,14 @@
                                     </div>
                                 <?php
 
-                                if($result_std_xa->num_rows == 0) 
-                                {
-                                    ?>
-                                        <div class="alert alert-danger text-center">
-                                        <strong>Warning!</strong> You haven't import the XA file yet.
-                                        </div>
-                                    <?php
-                                }
+                            }
+                            if($result_std_xa->num_rows == 0) 
+                            {
+                                ?>
+                                    <div class="alert alert-danger text-center">
+                                    <strong>Warning!</strong> You haven't import the XA file yet.
+                                    </div>
+                                <?php
                             }
                         }
                     }

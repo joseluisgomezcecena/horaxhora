@@ -61,7 +61,7 @@ else
             }
             else
             {
-                $update_daily = "INSERT INTO datos_diarios(`realizado_turno$turno`,realizado_realizado, maquina, date) VALUES($value, $value, '$maquina', '$date')";
+                $update_daily = "INSERT INTO datos_diarios(`realizado_turno$turno`,realizado_total, maquina, date) VALUES($value, $value, '$maquina', '$date')";
             }
 
             if($connection->query($update_daily))
