@@ -186,10 +186,6 @@
     if(isset($_POST["submit_file"]))
     {
 
-        ?>
-        
-        <?php
-
         $date = date('Y/m/d', strtotime($_POST['date']));
         $columna = 2;
         $columna_supervisor = 0;
@@ -233,10 +229,8 @@
             $file_open = fopen($file,"r");
             while(($csv = fgetcsv($file_open, 10000, ",")) !== false)
             {
-                if($count < 6) {
+                if($count == 1) {
                     $count++;
-                    continue;
-                } else if($columna_supervisor == 0) {
                     $x = 0;
                     while($columna_supervisor == 0)
                     {
