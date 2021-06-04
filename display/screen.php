@@ -37,7 +37,7 @@ include_once("includes/header.php");
                                     <th style="width: 15%;">Maquina</th>
                                     <th style="width: 15%;">Orden/Item</th>
                                     <th style="width: 20%;">Actual/Planeado</th>
-                                    <th style="width: 20%;">Eficiencia</th>
+                                    <th style="width: 20%;">Plan %</th>
                                 </thead>
                                 <tbody class="text-center"  id="table1">
                                     
@@ -273,7 +273,7 @@ include_once("includes/header.php");
 
                                 $since_start = $start_date->diff(new DateTime($hoy));
                                 $td = $since_start->days.' total days<br>';
-                                $y  = $since_start->y.' años';
+                                $y  = $since_start->y.' aï¿½os';
                                 $mo =$since_start->m.' meses';
                                 $d = $since_start->d.' dias ';
                                 $h = $since_start->h.' horas ';
