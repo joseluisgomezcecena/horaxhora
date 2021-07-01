@@ -193,6 +193,8 @@
         $count = 0;
         if(count($_FILES['file']['name']) > 0)
         {
+
+            $posted = "";
             for( $index = 0; $index < count($_FILES['file']['name']); $index++ )
             {
                 $count = 0;
@@ -202,7 +204,7 @@
                 {
                     if($count < 1)
                     {
-                        if(mysqli_real_escape_string($connection,$csv[4]) == "Posted") {
+                        if(trim(mysqli_real_escape_string($connection,$csv[4])) == "Posted") {
                             $columnPosted = 4;
                             $columnWhs = 3;
                         } else {
@@ -217,17 +219,18 @@
                     $description   = trim(mysqli_real_escape_string($connection,$csv[1]));
                     $planner       = trim(mysqli_real_escape_string($connection,$csv[2]));
                     $whs           = trim(mysqli_real_escape_string($connection,$csv[$columnWhs]));
-                    $posted        = trim(mysqli_real_escape_string($connection,$csv[$columnPosted]));
                     $txn           = trim(mysqli_real_escape_string($connection,$csv[5]));
                     $order         = trim(mysqli_real_escape_string($connection,$csv[6]));
                     $quantity      = trim(mysqli_real_escape_string($connection,$csv[7]));
                     $class         = trim(mysqli_real_escape_string($connection,$csv[8]));
-    
-                    $posted = date("Y/m/d", strtotime($posted));
+                    
                     $quantity = str_replace(",", "", $quantity);
                     
                     if($item != "" && str_replace("_", "", $item) != "")
                     {
+
+                        $posted        = trim(mysqli_real_escape_string($connection,$csv[$columnPosted]));
+                        $posted = date("Y/m/d", strtotime($posted));
     
                         $query_labor  = "SELECT run_labor, cur_yield, setup_hours FROM pph_planta1 WHERE routing = '$item'";
                         $result_labor = $connection->query($query_labor);
@@ -275,8 +278,8 @@
                     }
                     $count++;
                 }
-            }
 
+            }
             $date = $posted;
             // $date = date('Y/m/d',strtotime("-1 days")); // Return yesterday date
             $query_std_xa  = "SELECT * FROM `horas_std_xa` WHERE posted = '$date'"; 
@@ -320,21 +323,21 @@
                             $hours_tress[] = $row_tress['horas'];
                         }
                         for($x = 0; $x < count($plantas); $x++)
-                    {
-                        $eff = 100 * round($hours_xa[$x]/$hours_tress[$x], 4);
+                        {
+                            $eff = 100 * round($hours_xa[$x]/$hours_tress[$x], 4);
 
-                        $query_select = "SELECT * FROM eficiencia_xa_tress WHERE planta = '$plantas[$x]' AND fecha = '$date'";
-                        $result_select = $connection->query($query_select);
-                        if($result_select) {
-                            if($result_select->num_rows > 0) {
-                                $query_insert  = "UPDATE `eficiencia_xa_tress` SET xa_hrs = $hours_xa[$x], tress_hrs =$hours_tress[$x], eficiencia = $eff WHERE planta = '{$plantas[$x]}' AND fecha = '$date';";
-                            } else {
-                                $query_insert  = "INSERT INTO  `eficiencia_xa_tress`(planta, xa_hrs, tress_hrs, eficiencia, fecha) VALUES($plantas[$x], $hours_xa[$x], $hours_tress[$x], $eff, '$date');";
+                            $query_select = "SELECT * FROM eficiencia_xa_tress WHERE planta = '$plantas[$x]' AND fecha = '$date'";
+                            $result_select = $connection->query($query_select);
+                            if($result_select) {
+                                if($result_select->num_rows > 0) {
+                                    $query_insert  = "UPDATE `eficiencia_xa_tress` SET xa_hrs = $hours_xa[$x], tress_hrs =$hours_tress[$x], eficiencia = $eff WHERE planta = '{$plantas[$x]}' AND fecha = '$date';";
+                                } else {
+                                    $query_insert  = "INSERT INTO  `eficiencia_xa_tress`(planta, xa_hrs, tress_hrs, eficiencia, fecha) VALUES($plantas[$x], $hours_xa[$x], $hours_tress[$x], $eff, '$date');";
+                                }
+
+                                $connection->query($query_insert);
                             }
-
-                            $connection->query($query_insert);
                         }
-                    }
                     }
                 }
             }
