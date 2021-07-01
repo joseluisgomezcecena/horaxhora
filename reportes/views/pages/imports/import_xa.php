@@ -202,6 +202,13 @@
                 {
                     if($count < 1)
                     {
+                        if(mysqli_real_escape_string($connection,$csv[4]) == "Posted") {
+                            $columnPosted = 4;
+                            $columnWhs = 3;
+                        } else {
+                            $columnPosted = 3;
+                            $columnWhs = 4;
+                        }
                         $count++;
                         continue;
                     }
@@ -209,8 +216,8 @@
                     $item          = trim(mysqli_real_escape_string($connection,$csv[0]));
                     $description   = trim(mysqli_real_escape_string($connection,$csv[1]));
                     $planner       = trim(mysqli_real_escape_string($connection,$csv[2]));
-                    $whs           = trim(mysqli_real_escape_string($connection,$csv[3]));
-                    $posted        = trim(mysqli_real_escape_string($connection,$csv[4]));
+                    $whs           = trim(mysqli_real_escape_string($connection,$csv[$columnWhs]));
+                    $posted        = trim(mysqli_real_escape_string($connection,$csv[$columnPosted]));
                     $txn           = trim(mysqli_real_escape_string($connection,$csv[5]));
                     $order         = trim(mysqli_real_escape_string($connection,$csv[6]));
                     $quantity      = trim(mysqli_real_escape_string($connection,$csv[7]));
@@ -252,6 +259,7 @@
                                 $query = "UPDATE horas_std_xa SET `quantity` = `quantity` + $quantity, rates = '$run_labor', yield = '$yield', setup = '$setup', std_hours = '$std_hours', `posted` = '$posted'
                                             WHERE item = '$item' AND order_number = '$order' AND posted = '$posted'";
                 
+
                             $result = mysqli_query($connection, $query);
                             if(!$result)
                             {
@@ -269,7 +277,8 @@
                 }
             }
 
-            $date = date('Y/m/d',strtotime("-1 days")); // Return yesterday date
+            $date = $posted;
+            // $date = date('Y/m/d',strtotime("-1 days")); // Return yesterday date
             $query_std_xa  = "SELECT * FROM `horas_std_xa` WHERE posted = '$date'"; 
             $query_tress   = "SELECT * FROM `horas_tress` WHERE posted = '$date'"; 
             
